@@ -1,0 +1,18 @@
+      .table>thead>tr>td, .table>tbody>tr>td{
+        padding: 3px;
+      }
+      .btn{
+        padding: 5px 10px;
+        font-size: 12px;
+      }
+      .btn-group-xs>.btn, .btn-xs {
+          padding: 1px 5px;
+          font-size: 10px;
+          line-height: 1.5;
+          border-radius: 3px;
+      }
+      .dt-body-center{
+        text-align: center;
+      }
+
+      
