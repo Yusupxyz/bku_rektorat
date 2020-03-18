@@ -2,7 +2,7 @@
 <div class="col-xs-12">
     <div class="box">
       <div class="box-header">
-        <h3 class="box-title">Kontrol Transaksi</h3>
+        <h3 class="box-title">Kontrol Transaksi Tahun</h3>
         <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                     title="Collapse">
@@ -26,7 +26,7 @@
             <div class="col-md-1 text-right">
             </div>
             <div class="col-md-3 text-right">
-		<?php echo anchor(site_url('transaksi/printdoc'), '<i class="fa fa-print"></i> Print Preview', 'class="btn bg-maroon"'); ?>
+		<!-- <?php echo anchor(site_url('transaksi/printdoc'), '<i class="fa fa-print"></i> Print Preview', 'class="btn bg-maroon"'); ?> -->
 		<?php echo anchor(site_url('transaksi/excel'), '<i class="fa fa-file-excel"></i> Excel', 'class="btn btn-success"'); ?><form action="<?php echo site_url('transaksi/index'); ?>" class="form-inline" method="get" style="margin-top:10px">
                     <div class="input-group">
                         <input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
@@ -45,6 +45,28 @@
                 </form>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="int">Total Penerimaan : <mark style="color:red">Rp 0 </mark> </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group form-inline">
+                    <label for="int">Nomor Bukti :</label>
+                    <?php
+                        echo form_dropdown('trx_id_nomor_bukti', $no_bukti, $trx_id_nomor_bukti, $attribute);
+                    ?>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="int">Tanggal Nomor Bukti : <mark style="color:blue">date </mark> </label>
+            </div>
+            <div class="col-md-4">
+                <label for="int">Total Pengeluaran : <mark style="color:blue">Rp 0 </mark> </label>
+            </div>
+        </div>
+
         <form method="post" action="<?= site_url('transaksi/deletebulk');?>" id="formbulk">
         <table class="table table-bordered" style="margin-bottom: 10px" style="width:100%">
             <tr>
@@ -56,11 +78,11 @@
 		    <th>Penerima</th>
 		    <th>Uraian</th>
 		    <th>Jumlah Kotor</th>
-		    <th>PPN</th>
-		    <th>PPH 21</th>
-		    <th>PPH 22</th>
-		    <th>PPH 23</th>
-		    <th>PPH 4(2)</th>
+		    <th>PPn</th>
+		    <th>PPh 21</th>
+		    <th>PPh 22</th>
+		    <th>PPh 23</th>
+		    <th>PPh 4(2)</th>
 		    <th>Jumlah Pajak</th>
 		    <th>Jumlah Bersih</th>
 		    <th>Jenis Pembayaran</th>
@@ -109,7 +131,7 @@
         </table>
          <div class="row" style="margin-bottom: 10px;">
             <div class="col-md-12">
-                <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i> Hapus Data Terpilih</button> <a href="#" class="btn bg-yellow">Total Record : <?php echo $total_rows ?></a>
+                 <a href="#" class="btn bg-yellow">Total Transaksi : <?php echo $total_rows ?></a>
             </div>
         </div>
         </form>
@@ -120,6 +142,39 @@
                 <?php echo $pagination ?>
             </div>
         </div>
+        <form method="post" action="<?= site_url('transaksi/deletebulk');?>" id="formbulk">
+        <table class="table table-bordered" style="margin-bottom: 10px" style="width:100%">
+            <tr>
+            <th>No</th>
+            <th>Uraian</th>
+            <th>Pengeluaran</th>
+            </tr>
+            <tr>              
+			<td width="40px">1.</td>
+			<td>Pajak PPn</td>
+			<td><?php  ?></td>
+		    </tr>
+            <tr>              
+			<td width="40px">2.</td>
+			<td>Pajak PPh 21</td>
+			<td><?php  ?></td>
+		    </tr>
+            <tr>              
+			<td width="40px">3.</td>
+			<td>Pajak PPh 22</td>
+			<td><?php  ?></td>
+		    </tr>
+            <tr>              
+			<td width="40px">4.</td>
+			<td>Pajak PPh 23</td>
+			<td><?php  ?></td>
+		    </tr>
+            <tr>              
+			<td width="40px">5.</td>
+			<td>Pajak PPh 4(2) </td>
+			<td><?php  ?></td>
+		    </tr>
+        </table>
     </div>
     </div>
   </div>

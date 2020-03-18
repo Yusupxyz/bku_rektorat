@@ -48,10 +48,16 @@
                 <th style="width: 10px;"><input type="checkbox" name="selectall" /></th>
                 <th>No</th>
 		<th>Tahun</th>
+		<th>Status</th>
 		<th>Action</th>
             </tr><?php
             foreach ($tahun_data as $tahun)
             {
+                if ($tahun->tahun_status==1){
+                    $th="aktif";
+                }else{
+                    $th="tidak aktif"; 
+                }
                 ?>
                 <tr>
                 
@@ -59,10 +65,10 @@
                 
 			<td width="80px"><?php echo ++$start ?></td>
 			<td><?php echo $tahun->tahun_nama ?></td>
+            <td><?php echo $th ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
-				echo anchor(site_url('tahun/read/'.$tahun->tahun_id),'<i class="fa fa-search"></i>', 'class="btn btn-xs btn-primary"  data-toggle="tooltip" title="Detail"'); 
-				echo ' '; 
+				
 				echo anchor(site_url('tahun/update/'.$tahun->tahun_id),' <i class="fa fa-edit"></i>', 'class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit"'); 
 				echo ' '; 
 				echo anchor(site_url('tahun/delete/'.$tahun->tahun_id),' <i class="fa fa-trash"></i>','class="btn btn-xs btn-danger" onclick="javasciprt: return confirmdelete(\'tahun/delete/'.$tahun->tahun_id.'\')"  data-toggle="tooltip" title="Delete" '); 

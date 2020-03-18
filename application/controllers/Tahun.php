@@ -81,14 +81,20 @@ class Tahun extends CI_Controller
             'button' => 'Create',
             'action' => site_url('tahun/create_action'),
 	    'tahun_id' => set_value('tahun_id'),
-	    'tahun_nama' => set_value('tahun_nama'),
+        'tahun_nama' => set_value('tahun_nama'),
+        'tahun_status' => set_value('tahun_status'),
 	);
         $data['title'] = 'Tahun';
         $data['subtitle'] = '';
         $data['crumb'] = [
             'Dashboard' => '',
         ];
-
+        $data['status'] = array(
+			''     => '--Pilih Status--',
+			'1'    => 'Aktif',
+			'0'    => 'Tidak Aktif',
+        );
+        $data['attribute'] = 'class="form-control" required';
         $data['page'] = 'tahun/Tahun_form';
         $this->load->view('template/backend', $data);
     }
@@ -101,10 +107,15 @@ class Tahun extends CI_Controller
             $this->create();
         } else {
             $data = array(
-		'tahun_id' => $this->input->post('tahun_id',TRUE),
 		'tahun_nama' => $this->input->post('tahun_nama',TRUE),
+		'tahun_status' => $this->input->post('tahun_status',TRUE),
 	    );
 if(! $this->Tahun_model->is_exist($this->input->post('tahun_id'))){
+            if($this->input->post('tahun_status',TRUE)==1){
+                $this->Tahun_model->update_status('0');
+            }else{
+                $this->Tahun_model->update_status('1');
+            }
                 $this->Tahun_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('tahun'));
@@ -117,20 +128,25 @@ if(! $this->Tahun_model->is_exist($this->input->post('tahun_id'))){
     public function update($id) 
     {
         $row = $this->Tahun_model->get_by_id($id);
-
         if ($row) {
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('tahun/update_action'),
 		'tahun_id' => set_value('tahun_id', $row->tahun_id),
 		'tahun_nama' => set_value('tahun_nama', $row->tahun_nama),
+		'tahun_status' => set_value('tahun_status', $row->tahun_status),
 	    );
             $data['title'] = 'Tahun';
         $data['subtitle'] = '';
         $data['crumb'] = [
             'Dashboard' => '',
         ];
-
+        $data['status'] = array(
+			''     => '--Pilih Status--',
+			'1'    => 'Aktif',
+			'0'    => 'Tidak Aktif',
+        );
+        $data['attribute'] = 'class="form-control" required';
         $data['page'] = 'tahun/Tahun_form';
         $this->load->view('template/backend', $data);
         } else {
@@ -149,9 +165,16 @@ if(! $this->Tahun_model->is_exist($this->input->post('tahun_id'))){
             $data = array(
 		'tahun_id' => $this->input->post('tahun_id',TRUE),
 		'tahun_nama' => $this->input->post('tahun_nama',TRUE),
+		'tahun_status' => $this->input->post('tahun_status',TRUE),
 	    );
 
             $this->Tahun_model->update($this->input->post('tahun_id', TRUE), $data);
+            if($this->input->post('tahun_status',TRUE)==1){
+                $this->Tahun_model->update_status_lain($this->input->post('tahun_id',TRUE),'0');
+            }else{
+                $this->Tahun_model->update_status_lain($this->input->post('tahun_id',TRUE),'1');
+            }
+            // echo $this->db->last_query();
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('tahun'));
         }

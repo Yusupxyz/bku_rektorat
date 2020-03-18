@@ -52,6 +52,9 @@ class Transaksi extends CI_Controller
         $data['crumb'] = [
             'Transaksi' => '',
         ];
+        $data['no_bukti']=$this->Nomor_bukti_model->dd();
+        $data['attribute'] = 'class="form-control" required';
+        $data['trx_id_nomor_bukti'] = '';
         $data['code_js'] = 'transaksi/codejs';
         $data['page'] = 'transaksi/Transaksi_list';
         $this->load->view('template/backend', $data);

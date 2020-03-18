@@ -28,6 +28,13 @@ class Tahun_model extends CI_Model
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
+
+    // get tahun aktif
+    function get_tahun_aktif()
+    {
+        $this->db->where('tahun_status', '1');
+        return $this->db->get($this->table)->row();
+    }
     
     // get total rows
     function total_rows($q = NULL) {
@@ -59,6 +66,21 @@ class Tahun_model extends CI_Model
     {
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
+    }
+
+    // update status data lain
+    function update_status($status)
+    {
+        $this->db->set('tahun_status', $status);
+        $this->db->update($this->table);
+    }
+
+    // update status data lain
+    function update_status_lain($id,$status)
+    {
+        $this->db->set('tahun_status', $status);
+        $this->db->where_not_in('tahun_id', $id);
+        $this->db->update($this->table);
     }
 
     // delete data

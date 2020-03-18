@@ -18,8 +18,14 @@
             <input type="hidden" class="form-control" name="tahun_id" id="tahun_id" placeholder="Tahun Id" value="<?php echo $tahun_id; ?>" />
         </div>
 	    <div class="form-group">
-            <label for="int">Tahun Nama <?php echo form_error('tahun_nama') ?></label>
-            <input type="text" class="form-control" name="tahun_nama" id="tahun_nama" placeholder="Tahun Nama" value="<?php echo $tahun_nama; ?>" />
+            <label for="int">Tahun <?php echo form_error('tahun_nama') ?></label>
+            <input type="text" class="form-control" name="tahun_nama" id="tahun_nama" placeholder="Tahun" value="<?php echo $tahun_nama; ?>" />
+        </div>
+        <div class="form-group">
+            <label for="int">Status <?php echo form_error('tahun_status') ?></label>
+            <?php
+                echo form_dropdown('tahun_status', $status, $tahun_status, $attribute);
+            ?>
         </div>
 	    <button type="submit" class="btn btn-primary"><?php echo $button ?></button> 
 	    <a href="<?php echo site_url('tahun') ?>" class="btn btn-default">Cancel</a>

@@ -109,7 +109,8 @@ class Nomor_bukti extends CI_Controller
 		'nb_id' => $this->input->post('nb_id',TRUE),
 		'nb_no' => $this->input->post('nb_no',TRUE),
 		'nb_tanggal' => $this->input->post('nb_tanggal',TRUE),
-		'uraian' => $this->input->post('uraian',TRUE),
+        'uraian' => $this->input->post('uraian',TRUE),
+        'nb_id_tahun' =>  $this->session->userdata('tahun_aktif'),
 	    );
 if(! $this->Nomor_bukti_model->is_exist($this->input->post('nb_id'))){
                 $this->Nomor_bukti_model->insert($data);
@@ -133,7 +134,8 @@ if(! $this->Nomor_bukti_model->is_exist($this->input->post('nb_id'))){
 		'nb_no' => set_value('nb_no', $row->nb_no),
 		'nb_tanggal' => set_value('nb_tanggal', $row->nb_tanggal),
 		'uraian' => set_value('uraian', $row->uraian),
-		'tbl_pengeluaran' => set_value('tbl_pengeluaran', $row->tbl_pengeluaran),
+        'tbl_pengeluaran' => set_value('tbl_pengeluaran', $row->tbl_pengeluaran),
+
 	    );
             $data['title'] = 'Nomor Bukti';
         $data['subtitle'] = '';
