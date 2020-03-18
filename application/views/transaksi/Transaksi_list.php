@@ -70,28 +70,29 @@
             </tr><?php
             foreach ($transaksi_data as $transaksi)
             {
+                $pajak=$transaksi->trx_ppn+$transaksi->trx_pph_21+$transaksi->trx_pph_22+$transaksi->trx_pph_23+$transaksi->trx_pph_4_2;
                 ?>
                 <tr>
                 
 		<td  style="width: 10px;padding-left: 8px;"><input type="checkbox" name="id" value="<?= $transaksi->trx_id;?>" />&nbsp;</td>
                 
-			<td width="80px"><?php echo ++$start ?></td>
-			<td><?php echo $transaksi->trx_id ?></td>
-			<td><?php echo $transaksi->trx_id_nomor_bukti ?></td>
+			<td width="40px"><?php echo ++$start ?></td>
+			<td><?php echo $transaksi->trx_tanggal ?></td>
+			<td><?php echo $transaksi->nb_no ?></td>
 			<td><?php echo $transaksi->trx_mak ?></td>
 			<td><?php echo $transaksi->trx_penerima ?></td>
 			<td><?php echo $transaksi->trx_uraian ?></td>
-			<td><?php echo $transaksi->trx_jml_kotor ?></td>
-			<td><?php echo $transaksi->trx_ppn ?></td>
-			<td><?php echo $transaksi->trx_pph_21 ?></td>
-			<td><?php echo $transaksi->trx_pph_22 ?></td>
-			<td><?php echo $transaksi->trx_pph_23 ?></td>
-			<td><?php echo $transaksi->trx_pph_4_2 ?></td>
-			<td><?php echo $transaksi->trx_jml_bersih ?></td>
-			<td><?php echo $transaksi->trx_tanggal ?></td>
-			<td><?php echo $transaksi->trx_id_jenis_pembayaran ?></td>
-			<td><?php echo $transaksi->trx_id_metode_pembayaran ?></td>
-			<td><?php echo $transaksi->trx_id_unit ?></td>
+			<td><?php echo 'Rp '.number_format($transaksi->trx_jml_kotor) ?></td>
+            <td><?php echo 'Rp '.number_format($transaksi->trx_ppn) ?></td>
+            <td><?php echo 'Rp '.number_format($transaksi->trx_pph_21) ?></td>
+            <td><?php echo 'Rp '.number_format($transaksi->trx_pph_22) ?></td>
+            <td><?php echo 'Rp '.number_format($transaksi->trx_pph_23) ?></td>
+            <td><?php echo 'Rp '.number_format($transaksi->trx_pph_4_2) ?></td>
+            <td><?php echo 'Rp '.number_format($pajak) ?></td>
+            <td><?php echo 'Rp '.number_format($transaksi->trx_jml_bersih) ?></td>
+			<td><?php echo $transaksi->jp_nama ?></td>
+			<td><?php echo $transaksi->mp_nama ?></td>
+			<td><?php echo $transaksi->deskripsi ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
 				echo anchor(site_url('transaksi/read/'.$transaksi->trx_id),'<i class="fa fa-search"></i>', 'class="btn btn-xs btn-primary"  data-toggle="tooltip" title="Detail"'); 

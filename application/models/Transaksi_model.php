@@ -72,6 +72,10 @@ class Transaksi_model extends CI_Model
 	$this->db->or_like('trx_id_jenis_pembayaran', $q);
 	$this->db->or_like('trx_id_metode_pembayaran', $q);
 	$this->db->or_like('trx_id_unit', $q);
+	$this->db->join('tbl_nomor_bukti', 'trx_id_nomor_bukti=nb_id','left');
+	$this->db->join('tbl_jenis_pembayaran', 'trx_id_jenis_pembayaran=jp_id','left');
+	$this->db->join('tbl_metode_pembayaran', 'trx_id_metode_pembayaran=mp_id','left');
+	$this->db->join('unit', 'trx_id_unit=id_unit','left');
 	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }

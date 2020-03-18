@@ -134,37 +134,49 @@ class Transaksi extends CI_Controller
     
     public function create_action() 
     {
-        // $this->_rules();
+        $ppn=0;
+        $pph21=0;
+        $pph22=0;
+        $pph23=0;
+        $pph42=0;
+        $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
-            // $this->create();
+            $this->create();
         } else {
-            echo $this->input->post('trx_ppnc',TRUE);
+            if($this->input->post('trx_ppnc',TRUE)) $ppn=substr_replace(str_replace(',','',$this->input->post('trx_ppn',TRUE)),'',-3);
+            if($this->input->post('trx_pph_21c',TRUE)) $pph21=substr_replace(str_replace(',','',$this->input->post('trx_pph_21',TRUE)),'',-3);
+            if($this->input->post('trx_pph_22c',TRUE)) $pph22=substr_replace(str_replace(',','',$this->input->post('trx_pph_22',TRUE)),'',-3);
+            if($this->input->post('trx_pph_23c',TRUE)) $pph23=substr_replace(str_replace(',','',$this->input->post('trx_pph_23',TRUE)),'',-3);
+            if($this->input->post('trx_pph_4_2c',TRUE)) $pph42=substr_replace(str_replace(',','',$this->input->post('trx_pph_4_2',TRUE)),'',-3);
+            $pajak_total=$ppn+$pph21+$pph22+$pph23+$pph42;
+            $bersih=$this->input->post('trx_jml_kotor',TRUE)-$pajak_total;
+
             $data = array(
-		// 'trx_id' => $this->input->post('trx_id',TRUE),
 		'trx_id_nomor_bukti' => $this->input->post('trx_id_nomor_bukti',TRUE),
 		'trx_mak' => $this->input->post('trx_mak',TRUE),
 		'trx_penerima' => $this->input->post('trx_penerima',TRUE),
 		'trx_uraian' => $this->input->post('trx_uraian',TRUE),
 		'trx_jml_kotor' => $this->input->post('trx_jml_kotor',TRUE),
-		'trx_ppn' => $this->input->post('trx_ppn',TRUE),
-		'trx_pph_21' => $this->input->post('trx_pph_21',TRUE),
-		'trx_pph_22' => $this->input->post('trx_pph_22',TRUE),
-		'trx_pph_23' => $this->input->post('trx_pph_23',TRUE),
-		'trx_pph_4_2' => $this->input->post('trx_pph_4_2',TRUE),
-		'trx_jml_bersih' => $this->input->post('trx_jml_bersih',TRUE),
+		'trx_ppn' => $ppn,
+		'trx_pph_21' => $pph21,
+		'trx_pph_22' => $pph22,
+		'trx_pph_23' => $pph23,
+		'trx_pph_4_2' => $pph42,
+		'trx_jml_bersih' => $bersih,
 		'trx_tanggal' => $this->input->post('trx_tanggal',TRUE),
 		'trx_id_jenis_pembayaran' => $this->input->post('trx_id_jenis_pembayaran',TRUE),
 		'trx_id_metode_pembayaran' => $this->input->post('trx_id_metode_pembayaran',TRUE),
 		'trx_id_unit' => $this->input->post('trx_id_unit',TRUE),
-	    );
+        );
+        var_dump($data);
 if(! $this->Transaksi_model->is_exist($this->input->post('trx_id'))){
                 $this->Transaksi_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('transaksi'));
             }else{
-                // $this->create();
-                // $this->session->set_flashdata('message', 'Create Record Faild, trx_id is exist');
+                $this->create();
+                $this->session->set_flashdata('message', 'Create Record Faild, trx_id is exist');
             }}
     }
     
@@ -265,24 +277,24 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_id'))){
    
     public function _rules() 
     {
-	$this->form_validation->set_rules('trx_id', 'trx id', 'trim|required');
+	// $this->form_validation->set_rules('trx_id', 'trx id', 'trim|required');
 	$this->form_validation->set_rules('trx_id_nomor_bukti', 'trx id nomor bukti', 'trim|required');
 	$this->form_validation->set_rules('trx_mak', 'trx mak', 'trim|required');
 	$this->form_validation->set_rules('trx_penerima', 'trx penerima', 'trim|required');
 	$this->form_validation->set_rules('trx_uraian', 'trx uraian', 'trim|required');
 	$this->form_validation->set_rules('trx_jml_kotor', 'trx jml kotor', 'trim|required|numeric');
-	$this->form_validation->set_rules('trx_ppn', 'trx ppn', 'trim|required|numeric');
-	$this->form_validation->set_rules('trx_pph_21', 'trx pph 21', 'trim|required|numeric');
-	$this->form_validation->set_rules('trx_pph_22', 'trx pph 22', 'trim|required|numeric');
-	$this->form_validation->set_rules('trx_pph_23', 'trx pph 23', 'trim|required|numeric');
-	$this->form_validation->set_rules('trx_pph_4_2', 'trx pph 4 2', 'trim|required|numeric');
-	$this->form_validation->set_rules('trx_jml_bersih', 'trx jml bersih', 'trim|required|numeric');
+	// $this->form_validation->set_rules('trx_ppn', 'trx ppn', 'trim|required|numeric');
+	// $this->form_validation->set_rules('trx_pph_21', 'trx pph 21', 'trim|required|numeric');
+	// $this->form_validation->set_rules('trx_pph_22', 'trx pph 22', 'trim|required|numeric');
+	// $this->form_validation->set_rules('trx_pph_23', 'trx pph 23', 'trim|required|numeric');
+	// $this->form_validation->set_rules('trx_pph_4_2', 'trx pph 4 2', 'trim|required|numeric');
+	// $this->form_validation->set_rules('trx_jml_bersih', 'trx jml bersih', 'trim|required|numeric');
 	$this->form_validation->set_rules('trx_tanggal', 'trx tanggal', 'trim|required');
 	$this->form_validation->set_rules('trx_id_jenis_pembayaran', 'trx id jenis pembayaran', 'trim|required');
 	$this->form_validation->set_rules('trx_id_metode_pembayaran', 'trx id metode pembayaran', 'trim|required');
 	$this->form_validation->set_rules('trx_id_unit', 'trx id unit', 'trim|required');
 
-	$this->form_validation->set_rules('trx_id', 'trx_id', 'trim');
+	// $this->form_validation->set_rules('trx_id', 'trx_id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
