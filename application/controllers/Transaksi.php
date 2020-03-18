@@ -134,13 +134,14 @@ class Transaksi extends CI_Controller
     
     public function create_action() 
     {
-        $this->_rules();
+        // $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->create();
+            // $this->create();
         } else {
+            echo $this->input->post('trx_ppnc',TRUE);
             $data = array(
-		'trx_id' => $this->input->post('trx_id',TRUE),
+		// 'trx_id' => $this->input->post('trx_id',TRUE),
 		'trx_id_nomor_bukti' => $this->input->post('trx_id_nomor_bukti',TRUE),
 		'trx_mak' => $this->input->post('trx_mak',TRUE),
 		'trx_penerima' => $this->input->post('trx_penerima',TRUE),
@@ -162,8 +163,8 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_id'))){
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('transaksi'));
             }else{
-                $this->create();
-                $this->session->set_flashdata('message', 'Create Record Faild, trx_id is exist');
+                // $this->create();
+                // $this->session->set_flashdata('message', 'Create Record Faild, trx_id is exist');
             }}
     }
     
