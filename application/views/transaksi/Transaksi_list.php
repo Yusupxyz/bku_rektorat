@@ -100,7 +100,7 @@
 			<td width="40px"><?php echo ++$start ?></td>
 			<td><?php echo $transaksi->trx_tanggal ?></td>
 			<td><?php echo $transaksi->nb_no ?></td>
-			<td><?php echo substr_replace($transaksi->trx_mak, ' ', 13, 0); ?></td>
+			<td><?php echo $transaksi->trx_mak ?></td>
 			<td><?php echo $transaksi->trx_penerima ?></td>
 			<td><?php echo substr($transaksi->trx_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView<?php echo $transaksi->trx_id;?>">detail</a></td>
 			<td><?php echo 'Rp '.number_format($transaksi->trx_jml_kotor) ?></td>
