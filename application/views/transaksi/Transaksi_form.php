@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-group">
                     <label for="varchar">Uraian <?php echo form_error('trx_uraian') ?></label>
-                    <input type="text" class="form-control" name="trx_uraian" id="trx_uraian" placeholder="Uraian" value="<?php echo $trx_uraian; ?>" />
+                    <textarea class="form-control" rows="5" name="trx_uraian" id="trx_uraian" placeholder="Uraian"><?php echo $trx_uraian; ?></textarea>
                 </div>
                 <div class="form-group">
                     <label for="double">Jumlah Kotor <?php echo form_error('trx_jml_kotor') ?></label>

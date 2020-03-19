@@ -16,6 +16,7 @@ class Transaksi extends CI_Controller
         $this->load->model('Jenis_pembayaran_model');
         $this->load->model('Metode_pembayaran_model');
         $this->load->model('Unit_model');
+        $this->load->model('Tahun_model');
         $this->load->library('form_validation');
     }
 
@@ -35,8 +36,15 @@ class Transaksi extends CI_Controller
         $config['per_page'] = 10;
         $config['page_query_string'] = TRUE;
         $config['total_rows'] = $this->Transaksi_model->total_rows($q);
-        $transaksi = $this->Transaksi_model->get_limit_data($config['per_page'], $start, $q);
+        if($this->input->get('nb_id')){
+            $nb_id = $this->input->get('nb_id'); 
+            $tgl = $this->Nomor_bukti_model->get_by_id($nb_id)->nb_tanggal;
+        }else{
+            $nb_id = '';   
+            $tgl  ='-';      
+        }
 
+        $transaksi = $this->Transaksi_model->get_limit_data($config['per_page'], $start, $q,$nb_id);
         $this->load->library('pagination');
         $this->pagination->initialize($config);
 
@@ -52,9 +60,20 @@ class Transaksi extends CI_Controller
         $data['crumb'] = [
             'Transaksi' => '',
         ];
+        $data['tgl']=$tgl;
         $data['no_bukti']=$this->Nomor_bukti_model->dd();
         $data['attribute'] = 'class="form-control" required';
-        $data['trx_id_nomor_bukti'] = '';
+        $data['trx_id_nomor_bukti'] = $nb_id;
+        $data['penerimaan'] = $this->Transaksi_model->penerimaan($this->session->userdata('tahun_aktif'))->row()->total;
+        $data['pengeluaran'] = $this->Transaksi_model->pengeluaran($this->session->userdata('tahun_aktif'),$nb_id)->row()->total;
+        $data['ppn'] = $this->Transaksi_model->pajak($this->session->userdata('tahun_aktif'))->row()->ppn;
+        $data['pph21'] = $this->Transaksi_model->pajak($this->session->userdata('tahun_aktif'))->row()->pph21;
+        $data['pph22'] = $this->Transaksi_model->pajak($this->session->userdata('tahun_aktif'))->row()->pph22;
+        $data['pph23'] = $this->Transaksi_model->pajak($this->session->userdata('tahun_aktif'))->row()->pph23;
+        $data['pph42'] = $this->Transaksi_model->pajak($this->session->userdata('tahun_aktif'))->row()->pph42;
+        $data['tahun_aktif'] = $this->Tahun_model->get_by_id($this->session->userdata('tahun_aktif'))->tahun_nama;
+    //    echo $this->db->last_query();
+
         $data['code_js'] = 'transaksi/codejs';
         $data['page'] = 'transaksi/Transaksi_list';
         $this->load->view('template/backend', $data);

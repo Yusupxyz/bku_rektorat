@@ -69,4 +69,13 @@
 
     });
      
+
+    $('select').on('change', function() {
+        // var nb_id=$('select[name=trx_id_nomor_bukti]').val();
+        if (this.value==""){
+            window.location.href = "<?php echo base_url().'transaksi'?>";
+        }else{
+            window.location.href = "<?php echo base_url().'transaksi?nb_id='?>"+this.value;
+        }
+});
 </script>
