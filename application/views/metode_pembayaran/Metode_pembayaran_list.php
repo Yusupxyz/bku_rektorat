@@ -58,7 +58,7 @@
 		<td  style="width: 10px;padding-left: 8px;"><input type="checkbox" name="id" value="<?= $metode_pembayaran->mp_id;?>" />&nbsp;</td>
                 
 			<td width="80px"><?php echo ++$start ?></td>
-			<td><?php echo $metode_pembayaran->md_nama ?></td>
+			<td><?php echo $metode_pembayaran->mp_nama ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
 				echo anchor(site_url('metode_pembayaran/read/'.$metode_pembayaran->mp_id),'<i class="fa fa-search"></i>', 'class="btn btn-xs btn-primary"  data-toggle="tooltip" title="Detail"'); 

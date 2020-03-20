@@ -18,8 +18,8 @@
             <input type="hidden" class="form-control" name="mp_id" id="mp_id" placeholder="Mp Id" value="<?php echo $mp_id; ?>" />
         </div>
 	    <div class="form-group">
-            <label for="int">Metode Pembayaran<?php echo form_error('md_nama') ?></label>
-            <input type="text" class="form-control" name="md_nama" id="md_nama" placeholder="Md Nama" value="<?php echo $md_nama; ?>" />
+            <label for="int">Metode Pembayaran<?php echo form_error('mp_nama') ?></label>
+            <input type="text" class="form-control" name="mp_nama" id="mp_nama" placeholder="Md Nama" value="<?php echo $mp_nama; ?>" />
         </div>
 	    <button type="submit" class="btn btn-primary"><?php echo $button ?></button> 
 	    <a href="<?php echo site_url('metode_pembayaran') ?>" class="btn btn-default">Cancel</a>

@@ -33,7 +33,7 @@ class Metode_pembayaran_model extends CI_Model
     function total_rows($q = NULL) {
         $this->db->like('mp_id', $q);
 	$this->db->or_like('mp_id', $q);
-	$this->db->or_like('md_nama', $q);
+	$this->db->or_like('mp_nama', $q);
 	$this->db->from($this->table);
         return $this->db->count_all_results();
     }
@@ -43,7 +43,7 @@ class Metode_pembayaran_model extends CI_Model
         $this->db->order_by($this->id, $this->order);
         $this->db->like('mp_id', $q);
 	$this->db->or_like('mp_id', $q);
-	$this->db->or_like('md_nama', $q);
+	$this->db->or_like('mp_nama', $q);
 	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }

@@ -59,7 +59,7 @@ class Metode_pembayaran extends CI_Controller
         if ($row) {
             $data = array(
 		'mp_id' => $row->mp_id,
-		'md_nama' => $row->md_nama,
+		'mp_nama' => $row->mp_nama,
 	    );
         $data['title'] = 'Metode Pembayaran';
         $data['subtitle'] = '';
@@ -81,7 +81,7 @@ class Metode_pembayaran extends CI_Controller
             'button' => 'Create',
             'action' => site_url('metode_pembayaran/create_action'),
 	    'mp_id' => set_value('mp_id'),
-	    'md_nama' => set_value('md_nama'),
+	    'mp_nama' => set_value('mp_nama'),
 	);
         $data['title'] = 'Metode Pembayaran';
         $data['subtitle'] = '';
@@ -102,7 +102,7 @@ class Metode_pembayaran extends CI_Controller
         } else {
             $data = array(
 		'mp_id' => $this->input->post('mp_id',TRUE),
-		'md_nama' => $this->input->post('md_nama',TRUE),
+		'mp_nama' => $this->input->post('mp_nama',TRUE),
 	    );
 if(! $this->Metode_pembayaran_model->is_exist($this->input->post('mp_id'))){
                 $this->Metode_pembayaran_model->insert($data);
@@ -123,7 +123,7 @@ if(! $this->Metode_pembayaran_model->is_exist($this->input->post('mp_id'))){
                 'button' => 'Update',
                 'action' => site_url('metode_pembayaran/update_action'),
 		'mp_id' => set_value('mp_id', $row->mp_id),
-		'md_nama' => set_value('md_nama', $row->md_nama),
+		'mp_nama' => set_value('mp_nama', $row->mp_nama),
 	    );
             $data['title'] = 'Metode Pembayaran';
         $data['subtitle'] = '';
@@ -148,7 +148,7 @@ if(! $this->Metode_pembayaran_model->is_exist($this->input->post('mp_id'))){
         } else {
             $data = array(
 		'mp_id' => $this->input->post('mp_id',TRUE),
-		'md_nama' => $this->input->post('md_nama',TRUE),
+		'mp_nama' => $this->input->post('mp_nama',TRUE),
 	    );
 
             $this->Metode_pembayaran_model->update($this->input->post('mp_id', TRUE), $data);
@@ -184,7 +184,7 @@ if(! $this->Metode_pembayaran_model->is_exist($this->input->post('mp_id'))){
     public function _rules() 
     {
 	$this->form_validation->set_rules('mp_id', 'mp id', 'trim|required');
-	$this->form_validation->set_rules('md_nama', 'md nama', 'trim|required');
+	$this->form_validation->set_rules('mp_nama', 'md nama', 'trim|required');
 
 	$this->form_validation->set_rules('mp_id', 'mp_id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
