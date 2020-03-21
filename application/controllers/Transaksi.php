@@ -43,8 +43,8 @@ class Transaksi extends CI_Controller
             $nb_id = '';   
             $tgl  ='-';      
         }
-
-        $transaksi = $this->Transaksi_model->get_limit_data($config['per_page'], $start, $q,$nb_id);
+        $tahun=$this->Tahun_model->get_by_id($this->session->userdata('tahun_aktif'))->tahun_nama;
+        $transaksi = $this->Transaksi_model->get_limit_data($config['per_page'], $start, $q,$nb_id,$tahun);
         $this->load->library('pagination');
         $this->pagination->initialize($config);
 
@@ -71,7 +71,7 @@ class Transaksi extends CI_Controller
         $data['pph22'] = $this->Transaksi_model->pajak($this->session->userdata('tahun_aktif'))->row()->pph22;
         $data['pph23'] = $this->Transaksi_model->pajak($this->session->userdata('tahun_aktif'))->row()->pph23;
         $data['pph42'] = $this->Transaksi_model->pajak($this->session->userdata('tahun_aktif'))->row()->pph42;
-        $data['tahun_aktif'] = $this->Tahun_model->get_by_id($this->session->userdata('tahun_aktif'))->tahun_nama;
+        $data['tahun_aktif'] = $tahun;
     //    echo $this->db->last_query();
 
         $data['code_js'] = 'transaksi/codejs';

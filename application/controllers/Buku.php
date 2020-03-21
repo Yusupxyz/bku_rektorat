@@ -41,8 +41,8 @@ class Buku extends CI_Controller
         }else{
             $nb_id = '';   
         }
-
-        $transaksi = $this->Transaksi_model->get_limit_data($config['per_page'], $start, $q,$nb_id);
+        $tahun=$this->Tahun_model->get_by_id($this->session->userdata('tahun_aktif'))->tahun_nama;
+        $transaksi = $this->Transaksi_model->get_limit_data($config['per_page'], $start, $q,$nb_id,$tahun);
         $this->load->library('pagination');
         $this->pagination->initialize($config);
 
@@ -61,7 +61,7 @@ class Buku extends CI_Controller
         $data['attribute'] = 'class="form-control" required';
         $data['value_buku'] = '';
         $data['value_bulan'] = '';
-        $data['tahun_aktif'] = $this->Tahun_model->get_by_id($this->session->userdata('tahun_aktif'))->tahun_nama;
+        $data['tahun_aktif'] = $tahun;
         $data['buku'] = array(
 			''     => '--Pilih Laporan--',
 			'bku'     => 'Buku Kas Umum',
