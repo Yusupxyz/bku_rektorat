@@ -40,7 +40,7 @@
                 <div class="form-group form-inline">
                     <label for="int">Pilih Bulan :</label>
                     <?php
-                        echo form_dropdown('bulan', $bulan, $value_bulan, $attribute);
+                        echo form_dropdown('bulan', $dd_bulan, $value_bulan, $attribute2);
                     ?>
                 </div>
             </div>
@@ -49,24 +49,27 @@
             <div class="col-md-12 text-center">
                 <h5>PNBP NON-MODAL UNIVERSITAS PALANGKA RAYA</h5>
                 <H5><b><?= 'BUKU' ?></b></H5>
-                <h5>BULAN...</h5>
+                <h5>BULAN <?= strtoupper($bulan) ?></h5>
             </div>
             <div class="col-md-12">
-                <h5>KEMENTERIAN/LEMBAGA</h5>
-                <h5>UNIT ORGANISASI</h5>
-                <h5>SATUAN KERJA</h5>
-                <h5>ALAMAT</h5>
-                <h5>TANGGAL DAN NOMOR DIPA</h5>
-                <h5>TAHUN ANGGARAN</h5>
+            <table style="border:none"?>
+            <?php foreach ($set_lap as $key => $value) { ?>
+                <tr>
+                    <td><?= strtoupper($value->sl_setting)?>&nbsp;&nbsp;</td>
+                    <td>:&nbsp;&nbsp;</td>
+                    <td><?= strtoupper($value->sl_data)?></td>
+                </tr>
+            <?php }?>
+            </table>
             </div>
             <div class="col-md-12 text-right">
-                <h5><b>Saldo Awal :</h5>
-                <h5>Saldo Akhir:</b></h5>
+                <h5><b>Saldo Awal : Rp <?= number_format($sa) ?></h5>
+                <h5>Saldo Akhir : Rp <?= number_format($sak) ?></b></h5>
             </div>
         </div>                     
 
         <form method="post" action="<?= site_url('transaksi/deletebulk');?>" id="formbulk">
-        <table class="table table-bordered" style="margin-bottom: 10px; font-size=1px" style="width:100%">
+        <table class="table table-bordered" style="margin-bottom: 10px; font-size=1px;" style="width:100%">
             <tr>
                 <th>Tanggal</th>
 		    <th>No. Bukti</th>

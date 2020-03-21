@@ -95,23 +95,6 @@ class Saldo_awal extends CI_Controller
         $data['crumb'] = [
             'Dashboard' => '',
         ];
-        $data['bulan'] = array(
-			''     => '--Pilih Bulan--',
-			'1'     => 'Januari',
-			'2'           => 'Februari',
-			'3'         => 'Maret',
-			'4'        => 'April',
-			'5'        => 'Mei',
-			'6'        => 'Juni',
-			'7'        => 'Juli',
-			'8'        => 'Agustus',
-			'9'        => 'September',
-			'10'        => 'Oktober',
-			'11'        => 'Nopember',
-			'12'        => 'Desember',
-        );
-        $data['attribute'] = 'class="form-control" required';
-        $data['value_bulan'] = '';
         $data['page'] = 'saldo_awal/Saldo_awal_form';
         $this->load->view('template/backend', $data);
     }
@@ -176,8 +159,6 @@ if(! $this->Saldo_awal_model->is_exist($this->input->post('sa_id'))){
             $data = array(
 		'sa_id' => $this->input->post('sa_id',TRUE),
 		'sa_jumlah' => $this->input->post('sa_jumlah',TRUE),
-		'sa_id_bulan' => $this->input->post('sa_id_bulan',TRUE),
-		'sa_id_tahun' => $this->input->post('sa_id_tahun',TRUE),
 	    );
 
             $this->Saldo_awal_model->update($this->input->post('sa_id', TRUE), $data);
@@ -214,8 +195,6 @@ if(! $this->Saldo_awal_model->is_exist($this->input->post('sa_id'))){
     {
 	$this->form_validation->set_rules('sa_id', 'sa id', 'trim|required');
 	$this->form_validation->set_rules('sa_jumlah', 'sa jumlah', 'trim|required|numeric');
-	$this->form_validation->set_rules('sa_id_bulan', 'sa id bulan', 'trim|required');
-	$this->form_validation->set_rules('sa_id_tahun', 'sa id tahun', 'trim|required');
 
 	$this->form_validation->set_rules('sa_id', 'sa_id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');

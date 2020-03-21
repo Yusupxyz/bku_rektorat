@@ -28,6 +28,14 @@ class Saldo_awal_model extends CI_Model
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
+
+    // get data by bulan & tahun
+    function get_by_bt($bulan=null,$tahun=null)
+    {
+        $this->db->where('sa_id_bulan', $bulan);
+        $this->db->where('sa_id_tahun', $tahun);
+        return $this->db->get($this->table)->row();
+    }
     
     // get total rows
     function total_rows($q = NULL) {

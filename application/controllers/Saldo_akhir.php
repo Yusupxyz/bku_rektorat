@@ -157,8 +157,6 @@ if(! $this->Saldo_akhir_model->is_exist($this->input->post('sak_id'))){
             $data = array(
 		'sak_id' => $this->input->post('sak_id',TRUE),
 		'sak_jumlah' => $this->input->post('sak_jumlah',TRUE),
-		'sak_id_bulan' => $this->input->post('sak_id_bulan',TRUE),
-		'sak_id_tahun' => $this->input->post('sak_id_tahun',TRUE),
 	    );
 
             $this->Saldo_akhir_model->update($this->input->post('sak_id', TRUE), $data);
@@ -195,8 +193,6 @@ if(! $this->Saldo_akhir_model->is_exist($this->input->post('sak_id'))){
     {
 	$this->form_validation->set_rules('sak_id', 'sak id', 'trim|required');
 	$this->form_validation->set_rules('sak_jumlah', 'sak jumlah', 'trim|required|numeric');
-	$this->form_validation->set_rules('sak_id_bulan', 'sak id bulan', 'trim|required');
-	$this->form_validation->set_rules('sak_id_tahun', 'sak id tahun', 'trim|required');
 
 	$this->form_validation->set_rules('sak_id', 'sak_id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');

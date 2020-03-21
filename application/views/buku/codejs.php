@@ -70,12 +70,21 @@
     });
      
 
-    $('select').on('change', function() {
-        // var nb_id=$('select[name=trx_id_nomor_bukti]').val();
+    $('#buku').on('change', function() {
+        var bulan = $("#bulan option:selected").val();
         if (this.value==""){
-            window.location.href = "<?php echo base_url().'transaksi'?>";
+            window.location.href = "<?php echo base_url().'buku'?>";
         }else{
-            window.location.href = "<?php echo base_url().'transaksi?nb_id='?>"+this.value;
+            window.location.href = "<?php echo base_url().'buku?buku='?>"+this.value+"&bulan="+bulan;
         }
-});
+    });
+
+    $('#bulan').on('change', function() {
+        var buku = $("#buku option:selected").val();
+        if (this.value==""){
+            window.location.href = "<?php echo base_url().'buku'?>";
+        }else{
+            window.location.href = "<?php echo base_url().'buku?buku='?>"+buku+"&bulan="+this.value;
+        }
+    });
 </script>

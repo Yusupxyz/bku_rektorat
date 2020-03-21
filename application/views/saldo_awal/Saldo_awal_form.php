@@ -21,12 +21,6 @@
             <label for="double">Jumlah <?php echo form_error('sa_jumlah') ?></label>
             <input type="number" class="form-control" name="sa_jumlah" id="sa_jumlah" placeholder="Jumlah" value="<?php echo $sa_jumlah; ?>" />
         </div>
-	    <div class="form-group">
-            <label for="int">Bulan <?php echo form_error('sa_id_bulan') ?></label>
-                    <?php
-                        echo form_dropdown('sa_id_bulan', $bulan, $value_bulan, $attribute);
-                    ?>
-        </div>
 	    <button type="submit" class="btn btn-primary"><?php echo $button ?></button> 
 	    <a href="<?php echo site_url('saldo_awal') ?>" class="btn btn-default">Cancel</a>
 	</form>

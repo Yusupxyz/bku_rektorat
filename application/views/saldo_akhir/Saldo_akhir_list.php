@@ -57,7 +57,7 @@
                 
                 
 			<td width="80px"><?php echo ++$start ?></td>
-			<td><?php echo $saldo_akhir->sak_jumlah ?></td>
+			<td><?php echo "Rp ".number_format($saldo_akhir->sak_jumlah) ?></td>
 			<td><?php echo $saldo_akhir->bulan_nama ?></td>
 			<td><?php echo $saldo_akhir->tahun_nama ?></td>
 			<td style="text-align:center" width="200px">
@@ -72,7 +72,7 @@
         </table>
          <div class="row" style="margin-bottom: 10px;">
             <div class="col-md-12">
-                <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i> Hapus Data Terpilih</button> <a href="#" class="btn bg-yellow">Total Record : <?php echo $total_rows ?></a>
+                <a href="#" class="btn bg-yellow">Total Record : <?php echo $total_rows ?></a>
             </div>
         </div>
         </form>

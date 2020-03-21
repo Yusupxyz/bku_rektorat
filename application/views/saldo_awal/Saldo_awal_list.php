@@ -58,7 +58,7 @@
                 
                 
 			<td width="80px"><?php echo ++$start ?></td>
-			<td><?php echo 'Rp '.$saldo_awal->sa_jumlah ?></td>
+			<td><?php echo 'Rp '.number_format($saldo_awal->sa_jumlah) ?></td>
 			<td><?php echo $saldo_awal->bulan_nama ?></td>
 			<td><?php echo $saldo_awal->tahun_nama ?></td>
 			<td style="text-align:center" width="200px">

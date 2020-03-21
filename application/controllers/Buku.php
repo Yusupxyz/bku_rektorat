@@ -17,6 +17,10 @@ class Buku extends CI_Controller
         $this->load->model('Metode_pembayaran_model');
         $this->load->model('Unit_model');
         $this->load->model('Tahun_model');
+        $this->load->model('Bulan_model');
+        $this->load->model('Setting_laporan_model');
+        $this->load->model('Saldo_awal_model');
+        $this->load->model('Saldo_akhir_model');
         $this->load->library('form_validation');
     }
 
@@ -36,13 +40,14 @@ class Buku extends CI_Controller
         $config['per_page'] = 10;
         $config['page_query_string'] = TRUE;
         $config['total_rows'] = $this->Transaksi_model->total_rows($q);
-        if($this->input->get('nb_id')){
-            $nb_id = $this->input->get('nb_id'); 
-        }else{
-            $nb_id = '';   
-        }
         $tahun=$this->Tahun_model->get_by_id($this->session->userdata('tahun_aktif'))->tahun_nama;
-        $transaksi = $this->Transaksi_model->get_limit_data($config['per_page'], $start, $q,$nb_id,$tahun);
+        if($this->input->get('buku')=='bku'){
+            $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->input->get('bulan'),$this->session->userdata('tahun_aktif'));
+        }else{
+            $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,'0',$this->session->userdata('tahun_aktif'));
+        }
+    //    echo $this->db->last_query();
+       
         $this->load->library('pagination');
         $this->pagination->initialize($config);
 
@@ -58,9 +63,10 @@ class Buku extends CI_Controller
         $data['crumb'] = [
             'Transaksi' => '',
         ];
-        $data['attribute'] = 'class="form-control" required';
-        $data['value_buku'] = '';
-        $data['value_bulan'] = '';
+        $data['attribute'] = 'class="form-control" id="buku" required';
+        $data['attribute2'] = 'class="form-control" id="bulan" required';
+        $data['value_buku'] = $this->input->get('buku');
+        $data['value_bulan'] = $this->input->get('bulan');
         $data['tahun_aktif'] = $tahun;
         $data['buku'] = array(
 			''     => '--Pilih Laporan--',
@@ -72,7 +78,7 @@ class Buku extends CI_Controller
 			'bp_lsb'        => 'Buku Pembantu LS Bendahara',
 			'bp_pajak'        => 'Buku Pembantu Pajak',
         );
-        $data['bulan'] = array(
+        $data['dd_bulan'] = array(
 			''     => '--Pilih Bulan--',
 			'1'     => 'Januari',
 			'2'           => 'Februari',
@@ -87,8 +93,19 @@ class Buku extends CI_Controller
 			'11'        => 'Nopember',
 			'12'        => 'Desember',
 		);
-    //    echo $this->db->last_query();
-
+        if($this->input->get('bulan')){
+            $data['bulan'] = $this->Bulan_model->get_by_id($this->input->get('bulan'))->bulan_nama;
+        }else{
+            $data['bulan'] = '';
+        }
+        if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){
+            $data['sa'] = $this->Saldo_awal_model->get_by_bt($this->input->get('bulan'),$this->session->userdata('tahun_aktif'))->sa_jumlah;
+            $data['sak'] = $this->Saldo_akhir_model->get_by_bt($this->input->get('bulan'),$this->session->userdata('tahun_aktif'))->sak_jumlah;
+        }else{
+            $data['sa'] = '0';
+            $data['sak'] = '0';
+        }
+        $data['set_lap'] = $this->Setting_laporan_model->get_all();
         $data['code_js'] = 'buku/codejs';
         $data['page'] = 'buku/Bku_list';
         $this->load->view('template/backend', $data);

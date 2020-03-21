@@ -8,7 +8,7 @@ class Setting_laporan_model extends CI_Model
 
     public $table = 'tbl_setting_laporan';
     public $id = 'sl_id';
-    public $order = 'DESC';
+    public $order = 'ASC';
 
     function __construct()
     {

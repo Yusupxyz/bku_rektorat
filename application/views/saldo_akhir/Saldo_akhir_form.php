@@ -15,20 +15,11 @@
             <div class="box-body">
         <form action="<?php echo $action; ?>" method="post">
 	    <div class="form-group">
-            <label for="int">Sak Id <?php echo form_error('sak_id') ?></label>
-            <input type="text" class="form-control" name="sak_id" id="sak_id" placeholder="Sak Id" value="<?php echo $sak_id; ?>" />
+            <input type="hidden" class="form-control" name="sak_id" id="sak_id" placeholder="Sak Id" value="<?php echo $sak_id; ?>" />
         </div>
 	    <div class="form-group">
             <label for="double">Sak Jumlah <?php echo form_error('sak_jumlah') ?></label>
-            <input type="text" class="form-control" name="sak_jumlah" id="sak_jumlah" placeholder="Sak Jumlah" value="<?php echo $sak_jumlah; ?>" />
-        </div>
-	    <div class="form-group">
-            <label for="int">Sak Id Bulan <?php echo form_error('sak_id_bulan') ?></label>
-            <input type="text" class="form-control" name="sak_id_bulan" id="sak_id_bulan" placeholder="Sak Id Bulan" value="<?php echo $sak_id_bulan; ?>" />
-        </div>
-	    <div class="form-group">
-            <label for="int">Sak Id Tahun <?php echo form_error('sak_id_tahun') ?></label>
-            <input type="text" class="form-control" name="sak_id_tahun" id="sak_id_tahun" placeholder="Sak Id Tahun" value="<?php echo $sak_id_tahun; ?>" />
+            <input type="number" class="form-control" name="sak_jumlah" id="sak_jumlah" placeholder="Sak Jumlah" value="<?php echo $sak_jumlah; ?>" />
         </div>
 	    <button type="submit" class="btn btn-primary"><?php echo $button ?></button> 
 	    <a href="<?php echo site_url('saldo_akhir') ?>" class="btn btn-default">Cancel</a>
