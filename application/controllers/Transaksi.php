@@ -44,7 +44,9 @@ class Transaksi extends CI_Controller
             $tgl  ='-';      
         }
         $tahun=$this->Tahun_model->get_by_id($this->session->userdata('tahun_aktif'))->tahun_nama;
-        $transaksi = $this->Transaksi_model->get_limit_data($config['per_page'], $start, $q,$nb_id,$tahun);
+        $transaksi = $this->Transaksi_model->get_limit_data($config['per_page'], $start, $q,$nb_id,$this->session->userdata('tahun_aktif'));
+            //    echo $this->db->last_query();
+
         $this->load->library('pagination');
         $this->pagination->initialize($config);
 
@@ -62,7 +64,7 @@ class Transaksi extends CI_Controller
         ];
         $data['tgl']=$tgl;
         $data['no_bukti']=$this->Nomor_bukti_model->dd();
-        $data['attribute'] = 'class="form-control" required';
+        $data['attribute'] = 'class="form-control" id="no_bukti" required';
         $data['trx_id_nomor_bukti'] = $nb_id;
         $data['penerimaan'] = $this->Transaksi_model->penerimaan($this->session->userdata('tahun_aktif'))->row()->total;
         $data['pengeluaran'] = $this->Transaksi_model->pengeluaran($this->session->userdata('tahun_aktif'),$nb_id)->row()->total;
@@ -72,7 +74,6 @@ class Transaksi extends CI_Controller
         $data['pph23'] = $this->Transaksi_model->pajak($this->session->userdata('tahun_aktif'))->row()->pph23;
         $data['pph42'] = $this->Transaksi_model->pajak($this->session->userdata('tahun_aktif'))->row()->pph42;
         $data['tahun_aktif'] = $tahun;
-    //    echo $this->db->last_query();
 
         $data['code_js'] = 'transaksi/codejs';
         $data['page'] = 'transaksi/Transaksi_list';

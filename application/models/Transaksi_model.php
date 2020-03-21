@@ -8,7 +8,7 @@ class Transaksi_model extends CI_Model
 
     public $table = 'tbl_transaksi';
     public $id = 'trx_id';
-    public $order = 'DESC';
+    public $order = 'ASC';
 
     function __construct()
     {
@@ -156,6 +156,18 @@ class Transaksi_model extends CI_Model
             return false;
          }
         }
+
+        // sum jumlah kotor pertahun perbulan
+    function penerimaan2($bulan_id,$tahun_id)
+    {
+        $this->db->order_by($this->id, $this->order);
+        $this->db->select('sum(trx_jml_kotor) as "total"');
+        $this->db->from($this->table);
+        $this->db->join('tbl_nomor_bukti', 'nb_id = trx_id_nomor_bukti');
+        $this->db->where('nb_id_tahun', $tahun_id);
+        $this->db->where('MONTH(trx_tanggal)', $bulan_id);
+        return $this->db->get();
+    }
 
     // sum jumlah kotor pertahun
     function penerimaan($tahun_id)

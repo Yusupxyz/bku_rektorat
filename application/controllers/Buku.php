@@ -46,7 +46,6 @@ class Buku extends CI_Controller
         }else{
             $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,'0',$this->session->userdata('tahun_aktif'));
         }
-    //    echo $this->db->last_query();
        
         $this->load->library('pagination');
         $this->pagination->initialize($config);
@@ -58,6 +57,9 @@ class Buku extends CI_Controller
             'total_rows' => $config['total_rows'],
             'start' => $start,
         );
+        $sum_jml_kotor = $this->Transaksi_model->penerimaan2($this->input->get('bulan'),$this->session->userdata('tahun_aktif'))->row()->total;
+    //    echo $this->db->last_query();
+
         $data['title'] = 'Buku';
         $data['subtitle'] = '';
         $data['crumb'] = [
@@ -99,12 +101,22 @@ class Buku extends CI_Controller
             $data['bulan'] = '';
         }
         if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){
-            $data['sa'] = $this->Saldo_awal_model->get_by_bt($this->input->get('bulan'),$this->session->userdata('tahun_aktif'))->sa_jumlah;
-            $data['sak'] = $this->Saldo_akhir_model->get_by_bt($this->input->get('bulan'),$this->session->userdata('tahun_aktif'))->sak_jumlah;
+            $sa = $this->Saldo_awal_model->get_by_bt($this->input->get('bulan'),$this->session->userdata('tahun_aktif'))->sa_jumlah;
         }else{
-            $data['sa'] = '0';
-            $data['sak'] = '0';
+            $sa = '0';
         }
+        
+        $saldo=$sum_jml_kotor+$sa;
+        $saldo_temp=$saldo;
+        foreach ($transaksi as $key => $value) {
+            $saldo_temp=$saldo_temp-$value->trx_jml_kotor;
+            $data['persaldo'][]=$saldo_temp;
+        }
+        // var_dump($data['persaldo']);
+        $data['sak'] = $saldo-$sum_jml_kotor;
+        $data['sa'] = $sa;
+        $data['sum_jml_kotor']=$sum_jml_kotor;
+        $data['saldo'] = $saldo;
         $data['set_lap'] = $this->Setting_laporan_model->get_all();
         $data['code_js'] = 'buku/codejs';
         $data['page'] = 'buku/Bku_list';

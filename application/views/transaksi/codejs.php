@@ -70,7 +70,7 @@
     });
      
 
-    $('select').on('change', function() {
+    $('#no_bukti').on('change', function() {
         // var nb_id=$('select[name=trx_id_nomor_bukti]').val();
         if (this.value==""){
             window.location.href = "<?php echo base_url().'transaksi'?>";
