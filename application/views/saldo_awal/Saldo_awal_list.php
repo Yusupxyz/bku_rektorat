@@ -2,7 +2,7 @@
 <div class="col-xs-12">
     <div class="box">
       <div class="box-header">
-        <h3 class="box-title">Saldo Awal</h3>
+        <h3 class="box-title">Data Saldo Awal</h3>
         <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                     title="Collapse">
@@ -58,14 +58,12 @@
                 
                 
 			<td width="80px"><?php echo ++$start ?></td>
-			<td><?php echo $saldo_awal->sa_jumlah ?></td>
-			<td><?php echo $saldo_awal->sa_id_bulan ?></td>
-			<td><?php echo $saldo_awal->sa_id_tahun ?></td>
+			<td><?php echo 'Rp '.$saldo_awal->sa_jumlah ?></td>
+			<td><?php echo $saldo_awal->bulan_nama ?></td>
+			<td><?php echo $saldo_awal->tahun_nama ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
 				echo anchor(site_url('saldo_awal/update/'.$saldo_awal->sa_id),' <i class="fa fa-edit"></i>', 'class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit"'); 
-				echo ' '; 
-				echo anchor(site_url('saldo_awal/delete/'.$saldo_awal->sa_id),' <i class="fa fa-trash"></i>','class="btn btn-xs btn-danger" onclick="javasciprt: return confirmdelete(\'saldo_awal/delete/'.$saldo_awal->sa_id.'\')"  data-toggle="tooltip" title="Delete" '); 
 				?>
 			</td>
 		</tr>

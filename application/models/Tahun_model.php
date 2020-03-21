@@ -29,6 +29,13 @@ class Tahun_model extends CI_Model
         return $this->db->get($this->table)->row();
     }
 
+    // get id by status
+    function get_id_by_status($status)
+    {
+        $this->db->where('tahun_status', $status);
+        return $this->db->get($this->table)->row();
+    }
+
     // get tahun aktif
     function get_tahun_aktif()
     {

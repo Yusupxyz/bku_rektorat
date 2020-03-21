@@ -12,6 +12,8 @@ class Tahun extends CI_Controller
         $this->layout->auth(); 
         $this->layout->auth_privilege($c_url);
         $this->load->model('Tahun_model');
+        $this->load->model('Saldo_awal_model');
+        $this->load->model('Saldo_akhir_model');
         $this->load->library('form_validation');
     }
 
@@ -113,10 +115,28 @@ class Tahun extends CI_Controller
 if(! $this->Tahun_model->is_exist($this->input->post('tahun_id'))){
             if($this->input->post('tahun_status',TRUE)==1){
                 $this->Tahun_model->update_status('0');
-            }else{
-                $this->Tahun_model->update_status('1');
             }
-                $this->Tahun_model->insert($data);
+            $this->Tahun_model->insert($data);
+            $tahun_id=$this->Tahun_model->get_id_by_status($this->input->post('tahun_status',TRUE))->tahun_id;
+            if($this->input->post('tahun_status',TRUE)==1){
+				$this->session->set_userdata('tahun_aktif',$tahun_id);
+            }
+            for ($i=1; $i < 13; $i++) { 
+                $data = array(
+                    'sa_jumlah' => '0',
+                    'sa_id_bulan' => $i,
+                    'sa_id_tahun' => $tahun_id,
+                    );
+                $this->Saldo_awal_model->insert($data);
+            }
+            for ($i=1; $i < 13; $i++) { 
+                $data = array(
+                    'sak_jumlah' => '0',
+                    'sak_id_bulan' => $i,
+                    'sak_id_tahun' => $tahun_id,
+                    );
+                $this->Saldo_akhir_model->insert($data);
+            }
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('tahun'));
             }else{
@@ -171,6 +191,7 @@ if(! $this->Tahun_model->is_exist($this->input->post('tahun_id'))){
             $this->Tahun_model->update($this->input->post('tahun_id', TRUE), $data);
             if($this->input->post('tahun_status',TRUE)==1){
                 $this->Tahun_model->update_status_lain($this->input->post('tahun_id',TRUE),'0');
+                $this->session->set_userdata('tahun_aktif',$this->input->post('tahun_id',TRUE));
             }else{
                 $this->Tahun_model->update_status_lain($this->input->post('tahun_id',TRUE),'1');
             }
@@ -186,6 +207,8 @@ if(! $this->Tahun_model->is_exist($this->input->post('tahun_id'))){
 
         if ($row) {
             $this->Tahun_model->delete($id);
+            $this->Saldo_awal_model->delete_bytahun($id);
+            $this->Saldo_akhir_model->delete_bytahun($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
             redirect(site_url('tahun'));
         } else {

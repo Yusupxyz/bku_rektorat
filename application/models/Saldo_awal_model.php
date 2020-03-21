@@ -8,7 +8,7 @@ class Saldo_awal_model extends CI_Model
 
     public $table = 'tbl_saldo_awal';
     public $id = 'sa_id';
-    public $order = 'DESC';
+    public $order = 'ASC';
 
     function __construct()
     {
@@ -47,7 +47,9 @@ class Saldo_awal_model extends CI_Model
 	$this->db->or_like('sa_id', $q);
 	$this->db->or_like('sa_jumlah', $q);
 	$this->db->or_like('sa_id_bulan', $q);
-	$this->db->or_like('sa_id_tahun', $q);
+    $this->db->or_like('sa_id_tahun', $q);
+    $this->db->join('tbl_bulan', 'sa_id_bulan=bulan_id','left');
+    $this->db->join('tbl_tahun', 'sa_id_tahun=tahun_id','left');
 	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
@@ -69,6 +71,13 @@ class Saldo_awal_model extends CI_Model
     function delete($id)
     {
         $this->db->where($this->id, $id);
+        $this->db->delete($this->table);
+    }
+
+    // delete data by thn
+    function delete_bytahun($id)
+    {
+        $this->db->where('sa_id_tahun', $id);
         $this->db->delete($this->table);
     }
 

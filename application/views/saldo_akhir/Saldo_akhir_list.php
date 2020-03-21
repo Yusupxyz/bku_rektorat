@@ -2,7 +2,7 @@
 <div class="col-xs-12">
     <div class="box">
       <div class="box-header">
-        <h3 class="box-title">Tbl_saldo_akhir</h3>
+        <h3 class="box-title">Data Saldo Akhir</h3>
         <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                     title="Collapse">
@@ -15,7 +15,6 @@
       <div class="box-body">
         <div class="row" style="margin-bottom: 10px">
             <div class="col-md-4">
-                <?php echo anchor(site_url('saldo_akhir/create'),'<i class="fa fa-plus"></i> Create', 'class="btn bg-purple"'); ?>
             </div>
             <div class="col-md-4 text-center">
                 <div style="margin-top: 8px" id="message">
@@ -45,33 +44,25 @@
         <form method="post" action="<?= site_url('saldo_akhir/deletebulk');?>" id="formbulk">
         <table class="table table-bordered" style="margin-bottom: 10px" style="width:100%">
             <tr>
-                <th style="width: 10px;"><input type="checkbox" name="selectall" /></th>
                 <th>No</th>
-		<th>Sak Id</th>
-		<th>Sak Jumlah</th>
-		<th>Sak Id Bulan</th>
-		<th>Sak Id Tahun</th>
-		<th>Action</th>
+		<th>Jumlah</th>
+		<th>Bulan</th>
+		<th>Tahun</th>
+		<th>Aksi</th>
             </tr><?php
             foreach ($saldo_akhir_data as $saldo_akhir)
             {
                 ?>
                 <tr>
                 
-		<td  style="width: 10px;padding-left: 8px;"><input type="checkbox" name="id" value="<?= $saldo_akhir->sak_id;?>" />&nbsp;</td>
                 
 			<td width="80px"><?php echo ++$start ?></td>
-			<td><?php echo $saldo_akhir->sak_id ?></td>
 			<td><?php echo $saldo_akhir->sak_jumlah ?></td>
-			<td><?php echo $saldo_akhir->sak_id_bulan ?></td>
-			<td><?php echo $saldo_akhir->sak_id_tahun ?></td>
+			<td><?php echo $saldo_akhir->bulan_nama ?></td>
+			<td><?php echo $saldo_akhir->tahun_nama ?></td>
 			<td style="text-align:center" width="200px">
-				<?php 
-				echo anchor(site_url('saldo_akhir/read/'.$saldo_akhir->sak_id),'<i class="fa fa-search"></i>', 'class="btn btn-xs btn-primary"  data-toggle="tooltip" title="Detail"'); 
-				echo ' '; 
-				echo anchor(site_url('saldo_akhir/update/'.$saldo_akhir->sak_id),' <i class="fa fa-edit"></i>', 'class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit"'); 
-				echo ' '; 
-				echo anchor(site_url('saldo_akhir/delete/'.$saldo_akhir->sak_id),' <i class="fa fa-trash"></i>','class="btn btn-xs btn-danger" onclick="javasciprt: return confirmdelete(\'saldo_akhir/delete/'.$saldo_akhir->sak_id.'\')"  data-toggle="tooltip" title="Delete" '); 
+				<?php  
+				echo anchor(site_url('saldo_akhir/update/'.$saldo_akhir->sak_id),' <i class="fa fa-edit"></i>', 'class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit"');  
 				?>
 			</td>
 		</tr>
