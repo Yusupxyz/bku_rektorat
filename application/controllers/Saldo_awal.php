@@ -13,6 +13,7 @@ class Saldo_awal extends CI_Controller
         $this->layout->auth_privilege($c_url);
         $this->load->model('Saldo_awal_model');
         $this->load->library('form_validation');
+        $this->load->model('Tahun_model');
     }
 
     public function index()
@@ -48,6 +49,8 @@ class Saldo_awal extends CI_Controller
         $data['crumb'] = [
             'Saldo Awal' => '',
         ];
+       
+
         $data['code_js'] = 'saldo_awal/codejs';
         $data['page'] = 'saldo_awal/Saldo_awal_list';
         $this->load->view('template/backend', $data);
@@ -92,7 +95,23 @@ class Saldo_awal extends CI_Controller
         $data['crumb'] = [
             'Dashboard' => '',
         ];
-
+        $data['bulan'] = array(
+			''     => '--Pilih Bulan--',
+			'1'     => 'Januari',
+			'2'           => 'Februari',
+			'3'         => 'Maret',
+			'4'        => 'April',
+			'5'        => 'Mei',
+			'6'        => 'Juni',
+			'7'        => 'Juli',
+			'8'        => 'Agustus',
+			'9'        => 'September',
+			'10'        => 'Oktober',
+			'11'        => 'Nopember',
+			'12'        => 'Desember',
+        );
+        $data['attribute'] = 'class="form-control" required';
+        $data['value_bulan'] = '';
         $data['page'] = 'saldo_awal/Saldo_awal_form';
         $this->load->view('template/backend', $data);
     }
