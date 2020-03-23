@@ -36,6 +36,7 @@
                     ?>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="form-group form-inline">
                     <label for="int">Pilih Bulan :</label>
@@ -45,9 +46,19 @@
                 </div>
             </div>
         </div>
+        <div class="row" style="display:none" id="my_div">
+            <div class="col-md-6">
+                <div class="form-group form-inline">
+                    <label for="int">Pilih Unit :</label>
+                    <?php
+                        echo form_dropdown('unit', $dd_unit, $value_unit, $attribute3);
+                    ?>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12 text-center">
-                <h5>PNBP NON-MODAL UNIVERSITAS PALANGKA RAYA</h5>
+                <h5 id='top'>PNBP NON-MODAL UNIVERSITAS PALANGKA RAYA</h5>
                 <H5><b><?= 'BUKU' ?></b></H5>
                 <h5>BULAN <?= strtoupper($bulan) ?></h5>
             </div>

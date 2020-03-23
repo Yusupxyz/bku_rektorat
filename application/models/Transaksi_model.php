@@ -91,25 +91,20 @@ class Transaksi_model extends CI_Model
         $this->db->where('MONTH(trx_tanggal)', $bulan);
         $this->db->where('nb_id_tahun', $tahun);
         $this->db->order_by($this->id, $this->order);
-        if ($q!=NULL){
-            $this->db->like('trx_id', $q);
-            $this->db->or_like('trx_id', $q);
-            $this->db->or_like('trx_id_nomor_bukti', $q);
-            $this->db->or_like('trx_mak', $q);
-            $this->db->or_like('trx_penerima', $q);
-            $this->db->or_like('trx_uraian', $q);
-            $this->db->or_like('trx_jml_kotor', $q);
-            $this->db->or_like('trx_ppn', $q);
-            $this->db->or_like('trx_pph_21', $q);
-            $this->db->or_like('trx_pph_22', $q);
-            $this->db->or_like('trx_pph_23', $q);
-            $this->db->or_like('trx_pph_4_2', $q);
-            $this->db->or_like('trx_jml_bersih', $q);
-            $this->db->or_like('trx_tanggal', $q);
-            $this->db->or_like('trx_id_jenis_pembayaran', $q);
-            $this->db->or_like('trx_id_metode_pembayaran', $q);
-            $this->db->or_like('trx_id_unit', $q);
-        }
+        $this->db->join('tbl_nomor_bukti', 'trx_id_nomor_bukti=nb_id','left');
+        $this->db->join('tbl_jenis_pembayaran', 'trx_id_jenis_pembayaran=jp_id','left');
+        $this->db->join('tbl_metode_pembayaran', 'trx_id_metode_pembayaran=mp_id','left');
+        $this->db->join('unit', 'trx_id_unit=id_unit','left');
+        $this->db->limit($limit, $start);
+        return $this->db->get($this->table)->result();
+    }
+
+     // get data with limit and search
+     function get_limit_data_bku_unit($limit, $start = 0, $q = NULL,$bulan,$tahun,$unit) {
+        $this->db->where('trx_id_unit', $unit);
+        $this->db->where('MONTH(trx_tanggal)', $bulan);
+        $this->db->where('nb_id_tahun', $tahun);
+        $this->db->order_by($this->id, $this->order);
         $this->db->join('tbl_nomor_bukti', 'trx_id_nomor_bukti=nb_id','left');
         $this->db->join('tbl_jenis_pembayaran', 'trx_id_jenis_pembayaran=jp_id','left');
         $this->db->join('tbl_metode_pembayaran', 'trx_id_metode_pembayaran=mp_id','left');

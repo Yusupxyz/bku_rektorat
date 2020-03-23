@@ -43,10 +43,13 @@ class Buku extends CI_Controller
         $tahun=$this->Tahun_model->get_by_id($this->session->userdata('tahun_aktif'))->tahun_nama;
         if($this->input->get('buku')=='bku'){
             $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->input->get('bulan'),$this->session->userdata('tahun_aktif'));
+        }elseif($this->input->get('buku')=='bku_unit'){
+            $transaksi = $this->Transaksi_model->get_limit_data_bku_unit($config['per_page'], $start, $q,$this->input->get('bulan'),$this->session->userdata('tahun_aktif'),$this->input->get('unit'));
         }else{
             $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,'0',$this->session->userdata('tahun_aktif'));
         }
-       
+            //   echo $this->db->last_query();
+
         $this->load->library('pagination');
         $this->pagination->initialize($config);
 
@@ -58,7 +61,6 @@ class Buku extends CI_Controller
             'start' => $start,
         );
         $sum_jml_kotor = $this->Transaksi_model->penerimaan2($this->input->get('bulan'),$this->session->userdata('tahun_aktif'))->row()->total;
-    //    echo $this->db->last_query();
 
         $data['title'] = 'Buku';
         $data['subtitle'] = '';
@@ -67,8 +69,11 @@ class Buku extends CI_Controller
         ];
         $data['attribute'] = 'class="form-control" id="buku" required';
         $data['attribute2'] = 'class="form-control" id="bulan" required';
+        $data['attribute3'] = 'class="form-control" id="unit" required ';
         $data['value_buku'] = $this->input->get('buku');
         $data['value_bulan'] = $this->input->get('bulan');
+        $data['value_unit'] = $this->input->get('unit');
+        $data['dd_unit']=$this->Unit_model->dd();
         $data['tahun_aktif'] = $tahun;
         $data['buku'] = array(
 			''     => '--Pilih Laporan--',
