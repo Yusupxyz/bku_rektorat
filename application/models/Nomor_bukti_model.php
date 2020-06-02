@@ -9,6 +9,7 @@ class Nomor_bukti_model extends CI_Model
     public $table = 'tbl_nomor_bukti';
     public $id = 'nb_id';
     public $order = 'DESC';
+	private $_batchImport;
 
     function __construct()
     {
@@ -112,7 +113,14 @@ class Nomor_bukti_model extends CI_Model
          }
         }
 
+        public function setBatchImport($batchImport) {
+            $this->_batchImport = $batchImport;
+        }
 
+        public function importData() {
+            $data = $this->_batchImport;
+            $this->db->insert_batch($this->table, $data);
+        }
 }
 
 /* End of file Nomor_bukti_model.php */

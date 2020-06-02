@@ -26,7 +26,7 @@
             <div class="col-md-1 text-right">
             </div>
             <div class="col-md-3 text-right">
-		<?php echo anchor(site_url('transaksi/excel'), '<i class="fa fa-file-excel"></i> Excel', 'class="btn btn-success"'); ?><form action="<?php echo site_url('transaksi/index'); ?>" class="form-inline" method="get" style="margin-top:10px">
+            <a href="#myModal" data-toggle="modal" class="btn btn-success"><i class="fa fa-file-excel"></i> Import</a>
                     <div class="input-group">
                         <input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
                         <span class="input-group-btn">
@@ -66,7 +66,6 @@
             </div>
         </div>
 
-        <form method="post" action="<?= site_url('transaksi/deletebulk');?>" id="formbulk">
         <table class="table table-bordered" style="margin-bottom: 10px; font-size=1px" style="width:100%">
             <tr>
                 <!-- <th style="width: 10px;"><input type="checkbox" name="selectall" /></th> -->
@@ -145,7 +144,6 @@
                 <label for="int">Setor Pajak </label>
             </div>
         </div>
-        <form method="post" action="<?= site_url('transaksi/deletebulk');?>" id="formbulk">
         <table class="table table-bordered" style="margin-bottom: 10px" style="width:100%">
             <tr>
             <th>No</th>
@@ -206,3 +204,28 @@
             </div>
         </div>
 	<?php endforeach;?>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Import Excel</h4>
+        </div>
+        <form action="<?php echo site_url('transaksi/import'); ?>" method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+            <label>Ambil file (.xls/.xlsx/.csv) </label>
+            <input type="file" class="form-control" name="file" accept=".xlsx, .xls, .csv" />
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Import</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>

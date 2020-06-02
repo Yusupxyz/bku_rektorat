@@ -18,6 +18,7 @@ class Transaksi extends CI_Controller
         $this->load->model('Unit_model');
         $this->load->model('Tahun_model');
         $this->load->library('form_validation');
+        $this->id_tahun=$this->Tahun_model->get_id_by_status(1)->tahun_id;
     }
 
     public function index()
@@ -321,82 +322,69 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_id'))){
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
-    public function excel()
-    {
-        $this->load->helper('exportexcel');
-        $namaFile = "tbl_transaksi.xls";
-        $judul = "tbl_transaksi";
-        $tablehead = 0;
-        $tablebody = 1;
-        $nourut = 1;
-        //penulisan header
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
-        header("Content-Type: application/force-download");
-        header("Content-Type: application/octet-stream");
-        header("Content-Type: application/download");
-        header("Content-Disposition: attachment;filename=" . $namaFile . "");
-        header("Content-Transfer-Encoding: binary ");
+   
 
-        xlsBOF();
+  public function import(){
+    if(!empty($_FILES['file']['name'])) { 
+        // get file extension
+        $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
-        $kolomhead = 0;
-        xlsWriteLabel($tablehead, $kolomhead++, "No");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Id");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Id Nomor Bukti");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Mak");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Penerima");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Uraian");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Jml Kotor");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Ppn");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 21");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 22");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 23");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 4 2");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Jml Bersih");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Tanggal");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Id Jenis Pembayaran");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Id Metode Pembayaran");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Id Unit");
-
-	foreach ($this->Transaksi_model->get_all() as $data) {
-            $kolombody = 0;
-
-            //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
-            xlsWriteNumber($tablebody, $kolombody++, $nourut);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_id);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_id_nomor_bukti);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->trx_mak);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->trx_penerima);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->trx_uraian);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_jml_kotor);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_ppn);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_21);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_22);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_23);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_4_2);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_jml_bersih);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->trx_tanggal);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_id_jenis_pembayaran);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_id_metode_pembayaran);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_id_unit);
-
-	    $tablebody++;
-            $nourut++;
+        if($extension == 'csv'){
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        } elseif($extension == 'xlsx') {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        } else {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
         }
+        // file path
+        $spreadsheet = $reader->load($_FILES['file']['tmp_name']);
+        $dataNoTrx = $spreadsheet->getSheetByName('No Trx')->toArray(null, true, true, true);
+        // $dataNoTrx=array_splice($dataNoTrx,1);
+        // var_dump($dataNoTrx);
+    
+        // array Count
+        $arrayCount = count($dataNoTrx);
+        $flag = 0;
+        $createArray = array('Nomor Bukti', 'Tanggal', 'Uraian');
+        $makeArray = array('NomorBukti' => 'NomorBukti', 'Tanggal' => 'Tanggal', 'Uraian' => 'Uraian');
+        $SheetDataKey = array();
+        foreach ($dataNoTrx as $dataInSheet) {
+            foreach ($dataInSheet as $key => $value) {
+                if (in_array(trim($value), $createArray)) {
+                    $value = preg_replace('/\s+/', '', $value);
+                    $SheetDataKey[trim($value)] = $key;
+                } 
+            }
+        }
+        $dataDiff = array_diff_key($makeArray, $SheetDataKey);
+        if (empty($dataDiff)) {
+            $flag = 1;
+        }
+        // match excel sheet column
+        if ($flag == 1) {
+            for ($i = 2; $i <= $arrayCount; $i++) {
+                $addresses = array();
+                $no = $SheetDataKey['NomorBukti'];
+                $tgl = $SheetDataKey['Tanggal'];
+                $uraian = $SheetDataKey['Uraian'];
 
-        xlsEOF();
-        exit();
-    }
-
-  public function printdoc(){
-        $data = array(
-            'transaksi_data' => $this->Transaksi_model->get_all(),
-            'start' => 0
-        );
-        $this->load->view('transaksi/transaksi_print', $data);
-    }
+                $no = filter_var(trim($dataNoTrx[$i][$no]), FILTER_SANITIZE_STRING);
+                $tgl = filter_var(trim($dataNoTrx[$i][$tgl]), FILTER_SANITIZE_STRING);
+                $uraian = filter_var(trim($dataNoTrx[$i][$uraian]), FILTER_SANITIZE_STRING);
+                $fetchData[] = array('nb_no' => $no, 'nb_tanggal' => $tgl, 'uraian' => $uraian, 'nb_id_tahun' => $this->id_tahun);
+            }   
+            $data['dataInfo'] = $fetchData;
+            $this->Nomor_bukti_model->setBatchImport($fetchData);
+            echo $this->Nomor_bukti_model->importData();
+            if(!$this->Nomor_bukti_model->importData()){
+                echo "Tinggal sheet 2";
+            }
+        } else {
+            echo "Maaf importlah file sesuai format yang diberikan, jumlah kolom tidak sesuai";
+        }
+        redirect('transaksi');
+    }    
+  }
 
 }
 
