@@ -199,6 +199,15 @@ class Transaksi_model extends CI_Model
         $this->db->where('nb_id_tahun', $tahun_id);
         return $this->db->get();
     }
+
+    public function setBatchImport($batchImport) {
+        $this->_batchImport = $batchImport;
+    }
+
+    public function importData() {
+        $data = $this->_batchImport;
+        $this->db->insert_batch($this->table, $data);
+    }
 }
 
 /* End of file Transaksi_model.php */

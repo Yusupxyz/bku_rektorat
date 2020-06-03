@@ -219,6 +219,7 @@
         <div class="modal-body">
             <label>Ambil file (.xls/.xlsx/.csv) </label>
             <input type="file" class="form-control" name="file" accept=".xlsx, .xls, .csv" />
+            <h6><i>Template file import excel yang diterima. <a href="<?php echo site_url('assets/template/template.xlsx'); ?>"> Unduh. </a></i></h6>
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-success">Import</button>

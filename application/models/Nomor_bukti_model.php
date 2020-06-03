@@ -29,6 +29,13 @@ class Nomor_bukti_model extends CI_Model
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
+
+    // get data by no
+    function get_by_no($no)
+    {
+        $this->db->where('nb_no', $no);
+        return $this->db->get($this->table)->row();
+    }
     
     // get total rows
     function total_rows($q = NULL) {

@@ -339,7 +339,6 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_id'))){
         // file path
         $spreadsheet = $reader->load($_FILES['file']['tmp_name']);
         $dataNoTrx = $spreadsheet->getSheetByName('No Trx')->toArray(null, true, true, true);
-        // $dataNoTrx=array_splice($dataNoTrx,1);
         // var_dump($dataNoTrx);
     
         // array Count
@@ -363,7 +362,6 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_id'))){
         // match excel sheet column
         if ($flag == 1) {
             for ($i = 2; $i <= $arrayCount; $i++) {
-                $addresses = array();
                 $no = $SheetDataKey['NomorBukti'];
                 $tgl = $SheetDataKey['Tanggal'];
                 $uraian = $SheetDataKey['Uraian'];
@@ -375,14 +373,115 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_id'))){
             }   
             $data['dataInfo'] = $fetchData;
             $this->Nomor_bukti_model->setBatchImport($fetchData);
-            echo $this->Nomor_bukti_model->importData();
             if(!$this->Nomor_bukti_model->importData()){
-                echo "Tinggal sheet 2";
+                $dataNoTrx = $spreadsheet->getSheetByName('Trx')->toArray(null, true, true, true);
+                // var_dump($dataNoTrx);
+            
+                // array Count
+                $arrayCount = count($dataNoTrx);
+                $flag = 0;
+                $createArray = array('Nomor Bukti', 'Tanggal', 'MAK', 'Penerima', 'Uraian','Jumlah Kotor','PPn','PPh 21','PPh 22','PPh 23','PPh 4(2)','Bank/Tunai','GU/LS','Unit');
+                $makeArray = array('NomorBukti' => 'NomorBukti', 
+                                    'Tanggal' => 'Tanggal', 
+                                    'MAK' => 'MAK',
+                                    'Penerima' => 'Penerima', 
+                                    'Uraian' => 'Uraian', 
+                                    'JumlahKotor' => 'JumlahKotor', 
+                                    'PPn' => 'PPn', 
+                                    'PPh21' => 'PPh21', 
+                                    'PPh22' => 'PPh22', 
+                                    'PPh23' => 'PPh23', 
+                                    'PPh4(2)' => 'PPh4(2)', 
+                                    'Bank/Tunai' => 'Bank/Tunai', 
+                                    'GU/LS' => 'GU/LS', 
+                                    'Unit' => 'Unit' );
+                $SheetDataKey = array();
+                foreach ($dataNoTrx as $dataInSheet) {
+                    foreach ($dataInSheet as $key => $value) {
+                        if (in_array(trim($value), $createArray)) {
+                            $value = preg_replace('/\s+/', '', $value);
+                            $SheetDataKey[trim($value)] = $key;
+                        } 
+                    }
+                }
+                $dataDiff = array_diff_key($makeArray, $SheetDataKey);
+                if (empty($dataDiff)) {
+                    $flag = 1;
+                }
+                // var_dump($dataDiff);
+                // match excel sheet column
+                if ($flag == 1) {
+                    for ($i = 2; $i <= $arrayCount; $i++) {
+                        $no = $SheetDataKey['NomorBukti'];
+                        $tgl = $SheetDataKey['Tanggal'];
+                        $mak = $SheetDataKey['MAK'];
+                        $penerima = $SheetDataKey['Penerima'];
+                        $uraian = $SheetDataKey['Uraian'];
+                        $jml_kotor = $SheetDataKey['JumlahKotor'];
+                        $ppn = $SheetDataKey['PPn'];
+                        $pph21 = $SheetDataKey['PPh21'];
+                        $pph22 = $SheetDataKey['PPh22'];
+                        $pph23 = $SheetDataKey['PPh23'];
+                        $pph42 = $SheetDataKey['PPh4(2)'];
+                        $bt = $SheetDataKey['Bank/Tunai'];
+                        $guls = $SheetDataKey['GU/LS'];
+                        $unit = $SheetDataKey['Unit'];
+
+                        $no = $this->Nomor_bukti_model->get_by_no(filter_var(trim($dataNoTrx[$i][$no]), FILTER_SANITIZE_STRING))->nb_id;
+                        $tgl = filter_var(trim($dataNoTrx[$i][$tgl]), FILTER_SANITIZE_STRING);
+                        $mak = filter_var(trim($dataNoTrx[$i][$mak]), FILTER_SANITIZE_STRING);
+                        $uraian = filter_var(trim($dataNoTrx[$i][$uraian]), FILTER_SANITIZE_STRING);
+                        $jml_kotor = filter_var(trim($dataNoTrx[$i][$jml_kotor]), FILTER_SANITIZE_NUMBER_FLOAT);
+                        $ppn = filter_var(trim($dataNoTrx[$i][$ppn]), FILTER_SANITIZE_STRING);
+                            $ppn = $ppn=='Ya'?($jml_kotor>1500000?round($jml_kotor/11):0):0;
+                        $pph21 = filter_var(trim($dataNoTrx[$i][$pph21]), FILTER_SANITIZE_STRING);
+                            $pph21 = $pph21=='Ya'?0:0;
+                        $pph22 = filter_var(trim($dataNoTrx[$i][$pph22]), FILTER_SANITIZE_STRING);
+                            $pph22 = $pph22=='Ya'?($jml_kotor>=2000000?round($ppn*0.15):0):0;
+                        $pph23 = filter_var(trim($dataNoTrx[$i][$pph23]), FILTER_SANITIZE_STRING);
+                            $pph23 = $pph23=='Ya'?round($jml_kotor*0.02):0;
+                        $pph42 = filter_var(trim($dataNoTrx[$i][$pph42]), FILTER_SANITIZE_STRING);
+                            $pph42 = $pph42=='Ya'?0:0;
+                        $bt = $this->Jenis_pembayaran_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$bt]), FILTER_SANITIZE_STRING))->jp_id;
+                        $guls = $this->Metode_pembayaran_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$guls]), FILTER_SANITIZE_STRING))->mp_id;
+                        $unit = $this->Unit_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$unit]), FILTER_SANITIZE_STRING))->id_unit;
+                        $total_pajak=$ppn+$pph21+$pph22+$pph23+$pph42;
+                        $jml_bersih=$jml_kotor-$total_pajak;
+
+                        $fetchData2[] = array('trx_id_nomor_bukti' => $no, 
+                                        'trx_mak' => $mak, 
+                                        'trx_penerima' => $penerima, 
+                                        'trx_uraian' => $uraian,
+                                        'trx_penerima' => $penerima, 
+                                        'trx_jml_kotor' => $jml_kotor, 
+                                        'trx_ppn' => $ppn, 
+                                        'trx_pph_21' => $pph21,
+                                        'trx_pph_22' => $pph22,
+                                        'trx_pph_23' => $pph23,
+                                        'trx_pph_4_2' => $pph42,
+                                        'trx_jml_bersih' => $jml_bersih,
+                                        'trx_tanggal' => $tgl,
+                                        'trx_id_jenis_pembayaran' => $bt,
+                                        'trx_id_metode_pembayaran' => $guls,
+                                        'trx_id_unit' => $unit );
+                    }   
+                    $data['dataInfo'] = $fetchData2;
+                    // var_dump($fetchData2);
+                    $this->Transaksi_model->setBatchImport($fetchData2);
+                    if(!$this->Transaksi_model->importData()){
+                        $this->session->set_flashdata('message', 'Import Excel Success');
+                        redirect('transaksi');
+                    }
+                    // echo $this->db->last_query();
+                } else {
+                    $this->session->set_flashdata('message_error', 'Maaf importlah file sesuai format yang diberikan, jumlah kolom tidak sesuai');
+                    redirect('transaksi');
+                }
             }
         } else {
-            echo "Maaf importlah file sesuai format yang diberikan, jumlah kolom tidak sesuai";
+            $this->session->set_flashdata('message_error', 'Maaf importlah file sesuai format yang diberikan, jumlah kolom tidak sesuai');
+            redirect('transaksi');
         }
-        redirect('transaksi');
     }    
   }
 
