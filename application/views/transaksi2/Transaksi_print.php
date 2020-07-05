@@ -32,8 +32,9 @@
             <tr>
                 <th>No</th>
 		<th>Trx Id</th>
-		<th>Trx Nomor Bukti</th>
+		<th>Trx Id Nomor Bukti</th>
 		<th>Trx Mak</th>
+		<th>Trx Penerima</th>
 		<th>Trx Uraian</th>
 		<th>Trx Jml Kotor</th>
 		<th>Trx Ppn</th>
@@ -46,9 +47,6 @@
 		<th>Trx Id Jenis Pembayaran</th>
 		<th>Trx Id Metode Pembayaran</th>
 		<th>Trx Id Unit</th>
-		<th>Trx Jenis</th>
-		<th>Trx Penerimaan</th>
-		<th>Trx Pengeluaran</th>
 		
             </tr><?php
             foreach ($transaksi_data as $transaksi)
@@ -57,8 +55,9 @@
                 <tr>
 		      <td><?php echo ++$start ?></td>
 		      <td><?php echo $transaksi->trx_id ?></td>
-		      <td><?php echo $transaksi->trx_nomor_bukti ?></td>
+		      <td><?php echo $transaksi->trx_id_nomor_bukti ?></td>
 		      <td><?php echo $transaksi->trx_mak ?></td>
+		      <td><?php echo $transaksi->trx_penerima ?></td>
 		      <td><?php echo $transaksi->trx_uraian ?></td>
 		      <td><?php echo $transaksi->trx_jml_kotor ?></td>
 		      <td><?php echo $transaksi->trx_ppn ?></td>
@@ -70,10 +69,7 @@
 		      <td><?php echo $transaksi->trx_tanggal ?></td>
 		      <td><?php echo $transaksi->trx_id_jenis_pembayaran ?></td>
 		      <td><?php echo $transaksi->trx_id_metode_pembayaran ?></td>
-		      <td><?php echo $transaksi->trx_id_unit ?></td>
-		      <td><?php echo $transaksi->trx_jenis ?></td>
-		      <td><?php echo $transaksi->trx_penerimaan ?></td>
-		      <td><?php echo $transaksi->trx_pengeluaran ?></td>	
+		      <td><?php echo $transaksi->trx_id_unit ?></td>	
                 </tr>
                 <?php
             }

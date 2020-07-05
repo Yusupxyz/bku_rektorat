@@ -66,7 +66,7 @@ class Unit_model extends CI_Model
         // bikin array
         // please select berikut ini merupakan tambahan saja agar saat pertama
         // diload akan ditampilkan text please select.
-        $dd[''] = '-- Pilih Unit --';
+        $dd[''] = '-- Pilih Penerima --';
         if ($result->num_rows() > 0) {
             foreach ($result->result() as $row) {
             // tentukan value (sebelah kiri) dan labelnya (sebelah kanan)

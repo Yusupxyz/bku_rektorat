@@ -15,8 +15,9 @@
             <div class="box-body">
         <table class="table">
 	    <tr><td>Trx Id</td><td><?php echo $trx_id; ?></td></tr>
-	    <tr><td>Trx Nomor Bukti</td><td><?php echo $trx_nomor_bukti; ?></td></tr>
+	    <tr><td>Trx Id Nomor Bukti</td><td><?php echo $trx_id_nomor_bukti; ?></td></tr>
 	    <tr><td>Trx Mak</td><td><?php echo $trx_mak; ?></td></tr>
+	    <tr><td>Trx Penerima</td><td><?php echo $trx_penerima; ?></td></tr>
 	    <tr><td>Trx Uraian</td><td><?php echo $trx_uraian; ?></td></tr>
 	    <tr><td>Trx Jml Kotor</td><td><?php echo $trx_jml_kotor; ?></td></tr>
 	    <tr><td>Trx Ppn</td><td><?php echo $trx_ppn; ?></td></tr>
@@ -29,9 +30,6 @@
 	    <tr><td>Trx Id Jenis Pembayaran</td><td><?php echo $trx_id_jenis_pembayaran; ?></td></tr>
 	    <tr><td>Trx Id Metode Pembayaran</td><td><?php echo $trx_id_metode_pembayaran; ?></td></tr>
 	    <tr><td>Trx Id Unit</td><td><?php echo $trx_id_unit; ?></td></tr>
-	    <tr><td>Trx Jenis</td><td><?php echo $trx_jenis; ?></td></tr>
-	    <tr><td>Trx Penerimaan</td><td><?php echo $trx_penerimaan; ?></td></tr>
-	    <tr><td>Trx Pengeluaran</td><td><?php echo $trx_pengeluaran; ?></td></tr>
 	    <tr><td><a href="<?php echo site_url('transaksi') ?>" class="btn bg-purple">Cancel</a></td></tr>
 	</table>
             </div>
