@@ -14,16 +14,10 @@
             <!-- /.box-header -->
             <div class="box-body">
         <form action="<?php echo $action; ?>" method="post">
+        <input type="hidden" class="form-control" name="id_unit" id="id_unit" placeholder="Id Unit" value="<?php echo $id_unit; ?>" />
 	    <div class="form-group">
-            <input type="hidden" class="form-control" name="id_unit" id="id_unit" placeholder="Id Unit" value="<?php echo $id_unit; ?>" />
-        </div>
-	    <div class="form-group">
-            <label for="varchar">Nama <?php echo form_error('nama') ?></label>
+            <label for="varchar">Nama Unit Penerima<?php echo form_error('nama') ?></label>
             <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama" value="<?php echo $nama; ?>" />
-        </div>
-	    <div class="form-group">
-            <label for="deskripsi">Deskripsi <?php echo form_error('deskripsi') ?></label>
-            <textarea class="form-control" rows="3" name="deskripsi" id="deskripsi" placeholder="Deskripsi"><?php echo $deskripsi; ?></textarea>
         </div>
 	    <button type="submit" class="btn btn-primary"><?php echo $button ?></button> 
 	    <a href="<?php echo site_url('unit') ?>" class="btn btn-default">Cancel</a>

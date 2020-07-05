@@ -16,7 +16,6 @@
         <table class="table">
 	    <tr><td>Id Unit</td><td><?php echo $id_unit; ?></td></tr>
 	    <tr><td>Nama</td><td><?php echo $nama; ?></td></tr>
-	    <tr><td>Deskripsi</td><td><?php echo $deskripsi; ?></td></tr>
 	    <tr><td><a href="<?php echo site_url('unit') ?>" class="btn bg-purple">Cancel</a></td></tr>
 	</table>
             </div>

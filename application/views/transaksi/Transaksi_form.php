@@ -14,6 +14,8 @@
             <!-- /.box-header -->
             <div class="box-body">
         <form action="<?php echo $action; ?>" method="post">
+        <input type="hidden" class="form-control" name="trx_id" id="trx_id" placeholder="Trx Nomor Bukti" value="<?php echo $trx_id; ?>" />
+
         <div class="form-group">
             <label for="enum">Trx Jenis <?php echo form_error('trx_jenis') ?></label>
             <?php
@@ -34,7 +36,7 @@
         </div>
         <div class="form-group">
             <label for="int">Penerima <?php echo form_error('trx_id_unit') ?></label>
-            <input type="text" class="form-control" name="trx_id_unit" id="trx_id_unit" placeholder="Trx Id Unit" value="<?php echo $trx_id_unit; ?>" />
+            <textarea class="form-control" rows="2" name="trx_id_unit" id="trx_id_unit" placeholder="Trx Id Unit"><?php echo $trx_id_unit; ?></textarea>
         </div>
 	    <div class="form-group">
             <label for="varchar">Uraian <?php echo form_error('trx_uraian') ?></label>
@@ -42,35 +44,39 @@
         </div>
 	    <div class="form-group">
             <label for="double">Jumlah Kotor <?php echo form_error('trx_jml_kotor') ?></label>
-            <input type="number" class="form-control" name="trx_jml_kotor" id="trx_jml_kotor" placeholder="Trx Jml Kotor" value="<?php echo $trx_jml_kotor; ?>" />
+            <input type="number" class="form-control" name="trx_jml_kotor" id="trx_jml_kotor" placeholder="Trx Jml Kotor" value="<?php echo $trx_jml_kotor; ?>" min="0" />
         </div>
 	    <div class="form-group">
             <label for="double">PPN <?php echo form_error('trx_ppn') ?></label>
-            <input type="number" class="form-control" name="trx_ppn" id="trx_ppn" placeholder="Trx Ppn" value="<?php echo $trx_ppn; ?>" />
+            <input type="number" class="form-control" name="trx_ppn" id="trx_ppn" placeholder="Trx Ppn" value="<?php echo $trx_ppn; ?>" min="0"/>
         </div>
 	    <div class="form-group">
             <label for="double">PPH 21 <?php echo form_error('trx_pph_21') ?></label>
-            <input type="number" class="form-control" name="trx_pph_21" id="trx_pph_21" placeholder="Trx Pph 21" value="<?php echo $trx_pph_21; ?>" />
+            <input type="number" class="form-control" name="trx_pph_21" id="trx_pph_21" placeholder="Trx Pph 21" value="<?php echo $trx_pph_21; ?>" min="0"/>
         </div>
 	    <div class="form-group">
             <label for="double">PPH 22 <?php echo form_error('trx_pph_22') ?></label>
-            <input type="number" class="form-control" name="trx_pph_22" id="trx_pph_22" placeholder="Trx Pph 22" value="<?php echo $trx_pph_22; ?>" />
+            <input type="number" class="form-control" name="trx_pph_22" id="trx_pph_22" placeholder="Trx Pph 22" value="<?php echo $trx_pph_22; ?>" min="0"/>
         </div>
 	    <div class="form-group">
             <label for="double">Trx Pph 23 <?php echo form_error('trx_pph_23') ?></label>
-            <input type="number" class="form-control" name="trx_pph_23" id="trx_pph_23" placeholder="Trx Pph 23" value="<?php echo $trx_pph_23; ?>" />
+            <input type="number" class="form-control" name="trx_pph_23" id="trx_pph_23" placeholder="Trx Pph 23" value="<?php echo $trx_pph_23; ?>" min="0"/>
         </div>
 	    <div class="form-group">
             <label for="double">PPH 4(2) <?php echo form_error('trx_pph_4_2') ?></label>
-            <input type="number" class="form-control" name="trx_pph_4_2" id="trx_pph_4_2" placeholder="Trx Pph 4 2" value="<?php echo $trx_pph_4_2; ?>" />
+            <input type="number" class="form-control" name="trx_pph_4_2" id="trx_pph_4_2" placeholder="Trx Pph 4 2" value="<?php echo $trx_pph_4_2; ?>" min="0"/>
         </div>
-        <div class="form-group" style="display:none" id="div_penerimaan">
+        <div class="form-group" >
+            <label for="double">Jumlah Bersih <?php echo form_error('trx_jml_bersih') ?></label>
+            <input type="number" class="form-control" name="trx_jml_bersih" id="trx_jml_bersih" placeholder="Trx Jumlah bersih" value="<?php echo $trx_jml_bersih; ?>" readonly/>
+        </div>
+        <div class="form-group" id="div_penerimaan">
             <label for="double">Penerimaan <?php echo form_error('trx_penerimaan') ?></label>
-            <input type="number" class="form-control" name="trx_penerimaan" id="trx_penerimaan" placeholder="Trx Penerimaan" value="<?php echo $trx_penerimaan; ?>" />
+            <input type="number" class="form-control" name="trx_penerimaan" id="trx_penerimaan" placeholder="Trx Penerimaan" value="<?php echo $trx_penerimaan; ?>" min="0" readonly/>
         </div>
-	    <div class="form-group" style="display:none" id="div_pengeluaran">
+	    <div class="form-group" id="div_pengeluaran">
             <label for="double">Pengeluaran <?php echo form_error('trx_pengeluaran') ?></label>
-            <input type="number" class="form-control" name="trx_pengeluaran" id="trx_pengeluaran" placeholder="Trx Pengeluaran" value="<?php echo $trx_pengeluaran; ?>" />
+            <input type="number" class="form-control" name="trx_pengeluaran" id="trx_pengeluaran" placeholder="Trx Pengeluaran" value="<?php echo $trx_pengeluaran; ?>" readonly/>
         </div>
 	    <div class="form-group">
             <label for="int">Jenis Pembayaran <?php echo form_error('trx_id_jenis_pembayaran') ?></label>

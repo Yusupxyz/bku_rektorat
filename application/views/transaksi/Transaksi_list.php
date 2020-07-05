@@ -2,7 +2,7 @@
 <div class="col-xs-12">
     <div class="box">
       <div class="box-header">
-        <h3 class="box-title">Data Transaksi Tahun <?= $tahun_aktif; ?></h3>
+        <h3 class="box-title">Data Transaksi Tahun <?= $tahun_aktif; ?> </h3>
         <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                     title="Collapse">
@@ -16,7 +16,7 @@
         <div class="row" style="margin-bottom: 10px">
             <div class="col-md-4">
                 <?php echo anchor(site_url('transaksi/create'),'<i class="fa fa-plus"></i> Transaksi', 'class="btn bg-purple"'); ?>
-                <?php echo anchor(site_url('transaksi/create'),'<i class="fa fa-plus"></i> Pengeluaran Unit', 'class="btn bg-red"'); ?>
+                <?php echo anchor(site_url('transaksi_unit/create'),'<i class="fa fa-plus"></i> Pengeluaran Unit', 'class="btn bg-red"'); ?>
             </div>
             <div class="col-md-4 text-center">
                 <div style="margin-top: 8px" id="message">
@@ -45,25 +45,36 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group form-inline">
                     <label for="int">Bulan :</label>
                     <?php
-                        echo form_dropdown('trx_id_nomor_bukti', $no_bukti, $trx_id_nomor_bukti, $attribute);
+                        echo form_dropdown('trx_bulan', $bulan, $trx_bulan, $attribute2);
                     ?>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group form-inline">
                     <label for="int">Nomor Bukti :</label>
                     <?php
-                        echo form_dropdown('trx_id_nomor_bukti', $no_bukti, $trx_id_nomor_bukti, $attribute);
+                        echo form_dropdown('trx_nomor_bukti', $no_bukti, $trx_nomor_bukti, $attribute);
                     ?>
                 </div>
             </div>
         </div>
+
+        <div class="col-md-12 text-left">
+        <div class="col-md-12 alert alert-success" role="alert">
+
+                <h5 ><b>Total Pemasukan : Rp <?= number_format($saldo->saldo_awal)?><br>
+                Total Pengeluaran : Rp <?= number_format($saldo->saldo_akhir)?></b></h5>
+                <hr>
+                <h4><b>Saldo Akhir : Rp <?= number_format($saldo->saldo_awal-$saldo->saldo_akhir)?></b></h4>
+            </div>
+        </div>
         <form method="post" action="<?= site_url('transaksi/deletebulk');?>" id="formbulk">
-        <table class="table table-bordered" style="margin-bottom: 10px" style="width:100%">
+        <font size="1">
+        <table class="table table-bordered" style="margin-bottom: 10px" style="width:100%;">
             <tr>
                 <th style="width: 10px;"><input type="checkbox" name="selectall" /></th>
                 <!-- <th>No</th> -->
@@ -82,24 +93,29 @@
 		    <th>Jumlah Bersih</th>
 		    <th>Penerimaan</th>
 		    <th>Pengeluaran</th>
+		    <th>Saldo</th>
 		    <th>Jenis Pembayaran</th>
 		    <th>Metode Pembayaran</th>
 		    <th>Aksi</th>
             </tr><?php
+            $saldo_akhir=0; $i=0;
             foreach ($transaksi_data as $transaksi)
-                $pajak=$transaksi->trx_ppn+$transaksi->trx_pph_21+$transaksi->trx_pph_22+$transaksi->trx_pph_23+$transaksi->trx_pph_4_2;
 
-            {
+            { 
+                $pajak=$transaksi->trx_ppn+$transaksi->trx_pph_21+$transaksi->trx_pph_22+$transaksi->trx_pph_23+$transaksi->trx_pph_4_2;
+                $saldo_awal=$transaksi->trx_penerimaan+$saldo_akhir;
+                $saldo_akhir=$saldo_awal-$transaksi->trx_pengeluaran;
+
                 ?>
-                <tr>
+                <tr style="background-color:#f2efed">
                 
 		<td  style="width: 10px;padding-left: 8px;"><input type="checkbox" name="id" value="<?= $transaksi->trx_id;?>" />&nbsp;</td>
                 
 			<!-- <td width="80px"><?php echo ++$start ?></td> -->
 			<td><?php echo $transaksi->trx_tanggal ?></td>
-			<td><?php echo $transaksi->trx_nomor_bukti ?></td>
+			<td ><?php echo $transaksi->trx_nomor_bukti ?></td>
 			<td><?php echo $transaksi->trx_mak ?></td>
-			<td><?php echo $transaksi->trx_id_unit ?></td>
+            <td><?php echo substr($transaksi->trx_id_unit,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView2<?php echo $transaksi->trx_id;?>">detail</a></td>
 			<td><?php echo substr($transaksi->trx_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView<?php echo $transaksi->trx_id;?>">detail</a></td>
 			<td><?php echo 'Rp '.number_format($transaksi->trx_jml_kotor) ?></td>
             <td><?php echo 'Rp '.number_format($transaksi->trx_ppn) ?></td>
@@ -111,9 +127,10 @@
             <td><?php echo 'Rp '.number_format($transaksi->trx_jml_bersih) ?></td>
             <td><?php echo 'Rp '.number_format($transaksi->trx_penerimaan) ?></td>
             <td><?php echo 'Rp '.number_format($transaksi->trx_pengeluaran) ?></td>
+            <td><?php echo 'Rp '.number_format($saldo_akhir) ?></td>
 			<td><?php echo $transaksi->jp_nama ?></td>
 			<td><?php echo $transaksi->mp_nama ?></td>
-			<td style="text-align:center" width="200px">
+			<td style="text-align:center">
 				<?php 
 				echo anchor(site_url('transaksi/update/'.$transaksi->trx_id),' <i class="fa fa-edit"></i>', 'class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit"'); 
 				echo ' '; 
@@ -121,10 +138,54 @@
 				?>
 			</td>
 		</tr>
+        <?php
+            $saldo_akhir2=0; 
+            foreach ($transaksi_unit[$i++] as $transaksi2)
+
+            { 
+                $pajak=$transaksi2->trxu_ppn+$transaksi2->trxu_pph_21+$transaksi2->trxu_pph_22+$transaksi2->trxu_pph_23+$transaksi2->trxu_pph_4_2;
+                $saldo_awal2=$saldo_awal+$saldo_akhir2;
+                $saldo_akhir2=$saldo_awal2-$transaksi2->trxu_jml_kotor;
+
+                ?>
+                <tr >
+                
+		<td  style="width: 10px;padding-left: 8px;"><input type="checkbox" name="id" value="<?= $transaksi2->trxu_id;?>" />&nbsp;</td>
+                
+			<!-- <td width="80px"><?php echo ++$start ?></td> -->
+			<td><?php echo $transaksi2->trxu_tanggal ?></td>
+			<td ></td>
+			<td><?php echo $transaksi2->trxu_mak ?></td>
+            <td><?php echo substr($transaksi2->trxu_id_unit,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView2<?php echo $transaksi2->trxu_id;?>">detail</a></td>
+			<td><?php echo substr($transaksi2->trxu_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView<?php echo $transaksi2->trxu_id;?>">detail</a></td>
+			<td><?php echo 'Rp '.number_format($transaksi2->trxu_jml_kotor) ?></td>
+            <td><?php echo 'Rp '.number_format($transaksi2->trxu_ppn) ?></td>
+            <td><?php echo 'Rp '.number_format($transaksi2->trxu_pph_21) ?></td>
+            <td><?php echo 'Rp '.number_format($transaksi2->trxu_pph_22) ?></td>
+            <td><?php echo 'Rp '.number_format($transaksi2->trxu_pph_23) ?></td>
+            <td><?php echo 'Rp '.number_format($transaksi2->trxu_pph_4_2) ?></td>
+            <td><?php echo 'Rp '.number_format($pajak) ?></td>
+            <td><?php echo 'Rp '.number_format($transaksi2->trxu_jml_bersih) ?></td>
+            <td></td>
+            <td></td>
+            <td><?php echo 'Rp '.number_format($saldo_akhir2) ?></td>
+			<td><?php echo $transaksi2->jp_nama ?></td>
+			<td><?php echo $transaksi2->mp_nama ?></td>
+			<td style="text-align:center">
+				<?php 
+				echo anchor(site_url('transaksi_unit/update/'.$transaksi2->trxu_id),' <i class="fa fa-edit"></i>', 'class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit"'); 
+				echo ' '; 
+				echo anchor(site_url('transaksi_unit/delete/'.$transaksi2->trxu_id),' <i class="fa fa-trash"></i>','class="btn btn-xs btn-danger" onclick="javasciprt: return confirmdelete(\'transaksi_unit/delete/'.$transaksi2->trxu_id.'\')"  data-toggle="tooltip" title="Delete" '); 
+				?>
+			</td>
+		</tr>
                 <?php
             }
             ?>
-        </table>
+                <?php
+            }
+            ?>
+        </table></font>
          <div class="row" style="margin-bottom: 10px;">
             <div class="col-md-12">
                 <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i> Hapus Data Terpilih</button> <a href="#" class="btn bg-yellow">Total Record : <?php echo $total_rows ?></a>
@@ -143,7 +204,7 @@
   </div>
 </div>
 
-<?php foreach ($transaksi_data as $transaksi) :
+<?php $i=0; foreach ($transaksi_data as $transaksi) :
               $transaksi_id=$transaksi->trx_id;
               $transaksi_uraian=$transaksi->trx_uraian;
             ?>
@@ -165,4 +226,80 @@
                 </div>
             </div>
         </div>
+        <?php foreach ($transaksi_unit[$i++] as $transaksi2) :
+              $transaksi_id=$transaksi2->trxu_id;
+              $transaksi_uraian=$transaksi2->trxu_uraian;
+            ?>
+	<!--Modal View-->
+        <div class="modal fade" id="ModalView<?php echo $transaksi_id;?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="fa fa-close"></span></span></button>
+                        <h4 class="modal-title" id="myModalLabel">Tampil Uraian</h4>
+                    </div>
+                    <div class="modal-body">       
+							       <p><?= $transaksi_uraian?></p> 
+                               
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 	<?php endforeach;?>
+	<?php endforeach;?>
+
+    <?php $j=0;  foreach ($transaksi_data as $transaksi) :
+              $transaksi_id=$transaksi->trx_id;
+              $trx_id_unit=$transaksi->trx_id_unit;
+            ?>
+	<!--Modal View-->
+        <div class="modal fade" id="ModalView2<?php echo $transaksi_id;?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="fa fa-close"></span></span></button>
+                        <h4 class="modal-title" id="myModalLabel">Tampil penerima</h4>
+                    </div>
+                    <div class="modal-body">       
+							       <p><?= $trx_id_unit?></p> 
+                               
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php foreach ($transaksi_unit[$j++] as $transaksi2) :
+              $transaksi_id=$transaksi2->trxu_id;
+              $trxu_id_unit=$transaksi2->trxu_id_unit;
+            ?>
+	<!--Modal View-->
+        <div class="modal fade" id="ModalView2<?php echo $transaksi_id;?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="fa fa-close"></span></span></button>
+                        <h4 class="modal-title" id="myModalLabel">Tampil penerima</h4>
+                    </div>
+                    <div class="modal-body">       
+							       <p><?= $trxu_id_unit?></p> 
+                               
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+	<?php endforeach;?>
+
+	<?php endforeach;?>
+
+    
+
+

@@ -33,7 +33,6 @@
                 <th>No</th>
 		<th>Id Unit</th>
 		<th>Nama</th>
-		<th>Deskripsi</th>
 		
             </tr><?php
             foreach ($unit_data as $unit)
@@ -42,8 +41,7 @@
                 <tr>
 		      <td><?php echo ++$start ?></td>
 		      <td><?php echo $unit->id_unit ?></td>
-		      <td><?php echo $unit->nama ?></td>
-		      <td><?php echo $unit->deskripsi ?></td>	
+		      <td><?php echo $unit->nama ?></td>	
                 </tr>
                 <?php
             }
