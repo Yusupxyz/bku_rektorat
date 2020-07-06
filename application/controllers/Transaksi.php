@@ -14,11 +14,11 @@ class Transaksi extends CI_Controller
         $this->load->model('Transaksi_model');
         $this->load->model('Jenis_pembayaran_model');
         $this->load->model('Metode_pembayaran_model');
-        $this->load->model('Unit_model');
         $this->load->model('Tahun_model');
         $this->load->model('Bulan_model');
         $this->load->model('Transaksi_unit_model');
         $this->load->library('form_validation');
+        $this->id_tahun=$this->Tahun_model->get_id_by_status(1)->tahun_id;
     }
 
     public function index()
@@ -128,6 +128,7 @@ class Transaksi extends CI_Controller
         $data = array(
             'button' => 'Create',
             'action' => site_url('transaksi/create_action'),
+            'trx_id' => set_value('trx_id'),
 	    'trx_nomor_bukti' => set_value('trx_nomor_bukti'),
 	    'trx_mak' => set_value('trx_mak'),
 	    'trx_uraian' => set_value('trx_uraian'),
@@ -351,55 +352,205 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
 
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Id");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Nomor Bukti");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Mak");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Uraian");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Jml Kotor");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Ppn");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 21");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 22");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 23");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 4 2");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Jml Bersih");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Tanggal");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Id Jenis Pembayaran");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Id Metode Pembayaran");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Id Unit");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Jenis");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Penerimaan");
-	xlsWriteLabel($tablehead, $kolomhead++, "Trx Pengeluaran");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Id");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Nomor Bukti");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Mak");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Uraian");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Jml Kotor");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Ppn");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 21");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 22");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 23");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 4 2");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Jml Bersih");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Tanggal");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Id Jenis Pembayaran");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Id Metode Pembayaran");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Id Unit");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Jenis");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Penerimaan");
+        xlsWriteLabel($tablehead, $kolomhead++, "Trx Pengeluaran");
 
-	foreach ($this->Transaksi_model->get_all() as $data) {
+	    foreach ($this->Transaksi_model->get_all() as $data) {
             $kolombody = 0;
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_id);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->trx_nomor_bukti);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->trx_mak);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->trx_uraian);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_jml_kotor);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_ppn);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_21);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_22);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_23);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_4_2);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_jml_bersih);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->trx_tanggal);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_id_jenis_pembayaran);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_id_metode_pembayaran);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_id_unit);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->trx_jenis);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_penerimaan);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->trx_pengeluaran);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_id);
+            xlsWriteLabel($tablebody, $kolombody++, $data->trx_nomor_bukti);
+            xlsWriteLabel($tablebody, $kolombody++, $data->trx_mak);
+            xlsWriteLabel($tablebody, $kolombody++, $data->trx_uraian);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_jml_kotor);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_ppn);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_21);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_22);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_23);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_4_2);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_jml_bersih);
+            xlsWriteLabel($tablebody, $kolombody++, $data->trx_tanggal);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_id_jenis_pembayaran);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_id_metode_pembayaran);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_id_unit);
+            xlsWriteLabel($tablebody, $kolombody++, $data->trx_jenis);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_penerimaan);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_pengeluaran);
 
-	    $tablebody++;
+            $tablebody++;
             $nourut++;
         }
 
         xlsEOF();
         exit();
+    }
+
+    public function import(){
+    if(!empty($_FILES['file']['name'])) { 
+        // get file extension
+        $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+
+        if($extension == 'csv'){
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        } elseif($extension == 'xlsx') {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        } else {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        }
+        // file path
+        $spreadsheet = $reader->load($_FILES['file']['tmp_name']);
+        $dataNoTrx = $spreadsheet->getSheetByName('Kontrol Transaksi')->toArray(null, true, true, true);
+        // var_dump($dataNoTrx);
+    
+        // array Count
+        $arrayCount = count($dataNoTrx);
+        $flag = 0;
+        $createArray = array('Jenis','Tanggal', 'Nomor Bukti', 'MAK', 'Penerima', 'Uraian','Jumlah Kotor','PPn','PPh 21','PPh 22','PPh 23','PPh 4(2)','Jumlah Bersih','Penerimaan','Pengeluaran','Bank/Tunai','GU/LS');
+        $makeArray = array('Jenis' => 'Jenis', 
+                            'Tanggal' => 'Tanggal', 
+                            'NomorBukti' => 'NomorBukti', 
+                            'MAK' => 'MAK',
+                            'Penerima' => 'Penerima', 
+                            'Uraian' => 'Uraian', 
+                            'JumlahKotor' => 'JumlahKotor', 
+                            'PPn' => 'PPn', 
+                            'PPh21' => 'PPh21', 
+                            'PPh22' => 'PPh22', 
+                            'PPh23' => 'PPh23', 
+                            'PPh4(2)' => 'PPh4(2)', 
+                            'JumlahBersih' => 'JumlahBersih', 
+                            'Penerimaan' => 'Penerimaan', 
+                            'Pengeluaran' => 'Pengeluaran', 
+                            'Bank/Tunai' => 'Bank/Tunai', 
+                            'GU/LS' => 'GU/LS' );
+        $SheetDataKey = array();
+        foreach ($dataNoTrx as $dataInSheet) {
+            foreach ($dataInSheet as $key => $value) {
+                if (in_array(trim($value), $createArray)) {
+                   $value = preg_replace('/\s+/', '', $value);
+                    $SheetDataKey[trim($value)] = $key;
+                } 
+            }
+        }
+        $dataDiff = array_diff_key($makeArray, $SheetDataKey);
+        // var_dump($dataDiff);
+
+        if (empty($dataDiff)) {
+            $flag = 1;
+        }
+        // match excel sheet column
+        if ($flag == 1) {
+            for ($i = 3; $i <= $arrayCount; $i++) {
+                $jenis = $SheetDataKey['Jenis'];
+                $no = $SheetDataKey['NomorBukti'];
+                $tgl = $SheetDataKey['Tanggal'];
+                $mak = $SheetDataKey['MAK'];
+                $penerima = $SheetDataKey['Penerima'];
+                $uraian = $SheetDataKey['Uraian'];
+                $jml_kotor = $SheetDataKey['JumlahKotor'];
+                $ppn = $SheetDataKey['PPn'];
+                $pph21 = $SheetDataKey['PPh21'];
+                $pph22 = $SheetDataKey['PPh22'];
+                $pph23 = $SheetDataKey['PPh23'];
+                $pph42 = $SheetDataKey['PPh4(2)'];
+                $jml_bersih = $SheetDataKey['JumlahBersih'];
+                $penerimaan = $SheetDataKey['Penerimaan'];
+                $pengeluaran = $SheetDataKey['Pengeluaran'];
+                $bt = $SheetDataKey['Bank/Tunai'];
+                $guls = $SheetDataKey['GU/LS'];
+
+                $jenis_data = filter_var(trim($dataNoTrx[$i][$jenis]), FILTER_SANITIZE_STRING);
+                $no = filter_var(trim($dataNoTrx[$i][$no]), FILTER_SANITIZE_STRING);
+                $tgl = filter_var(trim($dataNoTrx[$i][$tgl]), FILTER_SANITIZE_STRING);
+                $mak = filter_var(trim($dataNoTrx[$i][$mak]), FILTER_SANITIZE_STRING);
+                $penerima = filter_var(trim($dataNoTrx[$i][$penerima]), FILTER_SANITIZE_STRING);
+                $uraian = filter_var(trim($dataNoTrx[$i][$uraian]), FILTER_SANITIZE_STRING);
+                $jml_kotor = filter_var(trim($dataNoTrx[$i][$jml_kotor]), FILTER_SANITIZE_NUMBER_FLOAT);
+                $ppn = filter_var(trim($dataNoTrx[$i][$ppn]), FILTER_SANITIZE_NUMBER_FLOAT);
+                $pph21 = filter_var(trim($dataNoTrx[$i][$pph21]), FILTER_SANITIZE_NUMBER_FLOAT);
+                $pph22 = filter_var(trim($dataNoTrx[$i][$pph22]), FILTER_SANITIZE_NUMBER_FLOAT);
+                $pph23 = filter_var(trim($dataNoTrx[$i][$pph23]), FILTER_SANITIZE_NUMBER_FLOAT);
+                $pph42 = filter_var(trim($dataNoTrx[$i][$pph42]), FILTER_SANITIZE_NUMBER_FLOAT);
+                $jml_bersih = filter_var(trim($dataNoTrx[$i][$jml_bersih]), FILTER_SANITIZE_NUMBER_FLOAT);
+                $penerimaan = filter_var(trim($dataNoTrx[$i][$penerimaan]), FILTER_SANITIZE_NUMBER_FLOAT);
+                $pengeluaran = filter_var(trim($dataNoTrx[$i][$pengeluaran]), FILTER_SANITIZE_NUMBER_FLOAT);
+                $bt = $this->Jenis_pembayaran_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$bt]), FILTER_SANITIZE_STRING))->jp_id;
+                $guls = $this->Metode_pembayaran_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$guls]), FILTER_SANITIZE_STRING))->mp_id;
+                $jenis=$penerimaan==''?'0':'1';
+                if($jenis_data=='Utama'){
+                    $fetchData[] = array('trx_nomor_bukti' => $no, 
+                                    'trx_mak' => $mak, 
+                                    'trx_uraian' => $uraian,
+                                    'trx_id_unit' => $penerima, 
+                                    'trx_jml_kotor' => $jml_kotor, 
+                                    'trx_ppn' => $ppn, 
+                                    'trx_pph_21' => $pph21,
+                                    'trx_pph_22' => $pph22,
+                                    'trx_pph_23' => $pph23,
+                                    'trx_pph_4_2' => $pph42,
+                                    'trx_jml_bersih' => $jml_bersih,
+                                    'trx_tanggal' => $tgl,
+                                    'trx_id_jenis_pembayaran' => $bt,
+                                    'trx_id_metode_pembayaran' => $guls,
+                                    'trx_jenis' => $jenis,
+                                    'trx_penerimaan' => $penerimaan,
+                                    'trx_pengeluaran' => $pengeluaran, 
+                                    'trx_id_tahun' => $this->session->userdata('tahun_aktif'));
+                }else{
+                    $no=$this->Transaksi_model->get_by_no($no)->trx_id;
+                    // echo $this->db->last_query();
+                    $fetchData2[] = array('trxu_nomor_bukti' => $no, 
+                                    'trxu_mak' => $mak, 
+                                    'trxu_uraian' => $uraian,
+                                    'trxu_id_unit' => $penerima, 
+                                    'trxu_jml_kotor' => $jml_kotor, 
+                                    'trxu_ppn' => $ppn, 
+                                    'trxu_pph_21' => $pph21,
+                                    'trxu_pph_22' => $pph22,
+                                    'trxu_pph_23' => $pph23,
+                                    'trxu_pph_4_2' => $pph42,
+                                    'trxu_jml_bersih' => $jml_bersih,
+                                    'trxu_tanggal' => $tgl,
+                                    'trxu_id_jenis_pembayaran' => $bt,
+                                    'trxu_id_metode_pembayaran' => $guls);
+                }
+            }   
+            $data['dataInfo'] = $fetchData;
+            // var_dump($fetchData);
+            $this->Transaksi_model->setBatchImport($fetchData);
+            if(!$this->Transaksi_model->importData()){
+                $this->session->set_flashdata('message', 'Import Excel Success');
+                // redirect('transaksi');
+            }
+            $this->Transaksi_unit_model->setBatchImport($fetchData2);
+            if(!$this->Transaksi_unit_model->importData()){
+                $this->session->set_flashdata('message', 'Import Excel Success');
+                // redirect('transaksi');
+            }
+            
+        } else {
+            $this->session->set_flashdata('message_error', 'Maaf importlah file sesuai format yang diberikan, jumlah kolom tidak sesuai');
+            redirect('transaksi');
+        }
+    }    
     }
 
 }

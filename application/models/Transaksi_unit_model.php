@@ -123,7 +123,14 @@ class Transaksi_unit_model extends CI_Model
          }
         }
 
-
+        public function setBatchImport($batchImport) {
+            $this->_batchImport = $batchImport;
+        }
+     
+        public function importData() {
+            $data = $this->_batchImport;
+            $this->db->insert_batch('tbl_transaksi_unit', $data);
+        }
 }
 
 /* End of file Transaksi_unit_model.php */

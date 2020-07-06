@@ -8,7 +8,7 @@ class Transaksi_model extends CI_Model
 
     public $table = 'tbl_transaksi';
     public $id = 'trx_id';
-    public $order = 'DESC';
+    public $order = 'ASC';
 
     function __construct()
     {
@@ -26,6 +26,13 @@ class Transaksi_model extends CI_Model
     function get_by_id($id)
     {
         $this->db->where($this->id, $id);
+        return $this->db->get($this->table)->row();
+    }
+
+    // get data by nb
+    function get_by_no($nb)
+    {
+        $this->db->where('trx_nomor_bukti', $nb);
         return $this->db->get($this->table)->row();
     }
     
@@ -159,6 +166,15 @@ class Transaksi_model extends CI_Model
             }
         }
         return $dd;
+    }
+
+    public function setBatchImport($batchImport) {
+        $this->_batchImport = $batchImport;
+    }
+ 
+    public function importData() {
+        $data = $this->_batchImport;
+        $this->db->insert_batch('tbl_transaksi', $data);
     }
 
 }

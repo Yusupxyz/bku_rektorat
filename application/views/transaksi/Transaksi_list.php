@@ -26,7 +26,9 @@
             <div class="col-md-1 text-right">
             </div>
             <div class="col-md-3 text-right">
-		<?php echo anchor(site_url('transaksi/excel'), '<i class="fa fa-file-excel"></i> Excel', 'class="btn btn-success"'); ?><form action="<?php echo site_url('transaksi/index'); ?>" class="form-inline" method="get" style="margin-top:10px">
+            <a href="#myModal" data-toggle="modal" class="btn btn-success"><i class="fa fa-file-excel"></i> Import</a>
+
+		<!-- <?php echo anchor(site_url('transaksi/excel'), '<i class="fa fa-file-excel"></i> Excel', 'class="btn btn-success"'); ?><form action="<?php echo site_url('transaksi/index'); ?>" class="form-inline" method="get" style="margin-top:10px"> -->
                     <div class="input-group">
                         <input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
                         <span class="input-group-btn">
@@ -168,7 +170,8 @@
             <td><?php echo 'Rp '.number_format($transaksi2->trxu_jml_bersih) ?></td>
             <td></td>
             <td></td>
-            <td><?php echo 'Rp '.number_format($saldo_akhir2) ?></td>
+            <td></td>
+            <!-- <td><?php echo 'Rp '.number_format($saldo_akhir2) ?></td> -->
 			<td><?php echo $transaksi2->jp_nama ?></td>
 			<td><?php echo $transaksi2->mp_nama ?></td>
 			<td style="text-align:center">
@@ -301,5 +304,29 @@
 	<?php endforeach;?>
 
     
-
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Import Excel</h4>
+        </div>
+        <form action="<?php echo site_url('transaksi/import'); ?>" method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+            <label>Ambil file (.xls/.xlsx/.csv) </label>
+            <input type="file" class="form-control" name="file" accept=".xlsx, .xls, .csv" />
+            <h6><i>Template file import excel yang diterima. <a href="<?php echo site_url('assets/template/template.xlsx'); ?>"> Unduh. </a></i></h6>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Import</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
 

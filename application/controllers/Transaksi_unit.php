@@ -15,7 +15,6 @@ class Transaksi_unit extends CI_Controller
         $this->load->model('Transaksi_model');
         $this->load->model('Jenis_pembayaran_model');
         $this->load->model('Metode_pembayaran_model');
-        $this->load->model('Unit_model');
         $this->load->model('Tahun_model');
         $this->load->library('form_validation');
     }
@@ -117,7 +116,6 @@ class Transaksi_unit extends CI_Controller
         $data['nb']=$this->Transaksi_model->dd();
         $data['jp']=$this->Jenis_pembayaran_model->dd();
         $data['mp']=$this->Metode_pembayaran_model->dd();
-        $data['unit']=$this->Unit_model->dd();
         $data['attribute'] = 'class="form-control" required ';
         $data['attribute2'] = 'class="form-control selectpicker" data-live-search="true" required ';
         
@@ -189,7 +187,6 @@ class Transaksi_unit extends CI_Controller
         $data['nb']=$this->Transaksi_model->dd();
         $data['jp']=$this->Jenis_pembayaran_model->dd();
         $data['mp']=$this->Metode_pembayaran_model->dd();
-        $data['unit']=$this->Unit_model->dd();
         $data['attribute'] = 'class="form-control" required ';
         $data['attribute2'] = 'class="form-control selectpicker" data-live-search="true" required ';
             $data['title'] = 'Transaksi Unit';

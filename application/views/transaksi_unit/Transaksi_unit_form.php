@@ -32,9 +32,7 @@
         </div>
         <div class="form-group">
             <label for="varchar">Penerima <?php echo form_error('trxu_id_unit') ?></label>
-            <?php
-                echo form_dropdown('trxu_id_unit', $unit, $trxu_id_unit, $attribute);
-            ?>
+             <input type="text" class="form-control" name="trxu_id_unit" id="trxu_id_unit" placeholder="Trxu Penerima" value="<?php echo $trxu_id_unit; ?>" />
         </div>
 	    <div class="form-group">
             <label for="varchar">Uraian <?php echo form_error('trxu_uraian') ?></label>
