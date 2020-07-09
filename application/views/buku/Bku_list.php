@@ -74,8 +74,8 @@
             </table>
             </div>
             <div class="col-md-12 text-right">
-                <h5><b>Saldo Awal : Rp <?= number_format($sa) ?></h5>
-                <h5>Saldo Akhir : Rp <?= number_format($sak) ?></b></h5>
+                <h5><b>Saldo Awal : Rp <?= number_format($saldo->saldo_awal) ?></h5>
+                <h5>Saldo Akhir : Rp <?= number_format($saldo->saldo_akhir) ?></b></h5>
             </div>
         </div>                     
 
@@ -113,9 +113,9 @@
                 
                 
 			<td><?php echo $transaksi->trx_tanggal ?></td>
-			<td><?php echo $transaksi->nb_no ?></td>
+			<td><?php echo $transaksi->trx_nomor_bukti ?></td>
 			<td><?php echo $transaksi->trx_mak ?></td>
-			<td><?php echo $transaksi->trx_penerima ?></td>
+			<td><?php echo $transaksi->trx_id_unit ?></td>
 			<td><?php echo substr($transaksi->trx_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView<?php echo $transaksi->trx_id;?>">detail</a></td>
 			<td style="text-align:right;"></td>
             <td style="text-align:right;"><?php echo 'Rp '.number_format($transaksi->trx_jml_kotor) ?></td>

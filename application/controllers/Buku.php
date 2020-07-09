@@ -12,10 +12,8 @@ class Buku extends CI_Controller
         $this->layout->auth(); 
         $this->layout->auth_privilege($c_url);
         $this->load->model('Transaksi_model');
-        $this->load->model('Nomor_bukti_model');
         $this->load->model('Jenis_pembayaran_model');
         $this->load->model('Metode_pembayaran_model');
-        $this->load->model('Unit_model');
         $this->load->model('Tahun_model');
         $this->load->model('Bulan_model');
         $this->load->model('Setting_laporan_model');
@@ -46,7 +44,7 @@ class Buku extends CI_Controller
         }elseif($this->input->get('buku')=='bku_unit'){
             $transaksi = $this->Transaksi_model->get_limit_data_bku_unit($config['per_page'], $start, $q,$this->input->get('bulan'),$this->session->userdata('tahun_aktif'),$this->input->get('unit'));
         }else{
-            $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,'0',$this->session->userdata('tahun_aktif'));
+            $transaksi = $this->Transaksi_model->get_limit_data($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),'','');
         }
             //   echo $this->db->last_query();
 
@@ -60,7 +58,7 @@ class Buku extends CI_Controller
             'total_rows' => $config['total_rows'],
             'start' => $start,
         );
-        $sum_jml_kotor = $this->Transaksi_model->penerimaan2($this->input->get('bulan'),$this->session->userdata('tahun_aktif'))->row()->total;
+        // $sum_jml_kotor = $this->Transaksi_model->penerimaan2($this->input->get('bulan'),$this->session->userdata('tahun_aktif'))->row()->total;
 
         $data['title'] = 'Buku';
         $data['subtitle'] = '';
@@ -73,7 +71,6 @@ class Buku extends CI_Controller
         $data['value_buku'] = $this->input->get('buku');
         $data['value_bulan'] = $this->input->get('bulan');
         $data['value_unit'] = $this->input->get('unit');
-        $data['dd_unit']=$this->Unit_model->dd();
         $data['tahun_aktif'] = $tahun;
         $data['buku'] = array(
 			''     => '--Pilih Laporan--',
@@ -87,8 +84,6 @@ class Buku extends CI_Controller
         );
         $data['dd_bulan'] = array(
 			''     => '--Pilih Bulan--',
-			'1'     => 'Januari',
-			'2'           => 'Februari',
 			'3'         => 'Maret',
 			'4'        => 'April',
 			'5'        => 'Mei',
@@ -110,18 +105,15 @@ class Buku extends CI_Controller
         }else{
             $sa = '0';
         }
-        
-        $saldo=$sum_jml_kotor+$sa;
-        $saldo_temp=$saldo;
+        $saldo = $this->Transaksi_model->get_saldo($this->session->userdata('tahun_aktif'),$bulan,$nb);
         foreach ($transaksi as $key => $value) {
             $saldo_temp=$saldo_temp-$value->trx_jml_kotor;
             $data['persaldo'][]=$saldo_temp;
         }
         // var_dump($data['persaldo']);
-        $data['sak'] = $saldo-$sum_jml_kotor;
+        $data['saldo'] = $saldo;
         $data['sa'] = $sa;
         $data['sum_jml_kotor']=$sum_jml_kotor;
-        $data['saldo'] = $saldo;
         $data['set_lap'] = $this->Setting_laporan_model->get_all();
         $data['code_js'] = 'buku/codejs';
         $data['page'] = 'buku/Bku_list';
@@ -186,7 +178,6 @@ class Buku extends CI_Controller
 	    'trx_id_metode_pembayaran' => set_value('trx_id_metode_pembayaran'),
 	    'trx_id_unit' => set_value('trx_id_unit'),
     );
-        $data['no_bukti']=$this->Nomor_bukti_model->dd();
         $data['jp']=$this->Jenis_pembayaran_model->dd();
         $data['mp']=$this->Metode_pembayaran_model->dd();
         $data['unit']=$this->Unit_model->dd();
