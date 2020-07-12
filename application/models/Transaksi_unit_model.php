@@ -131,6 +131,25 @@ class Transaksi_unit_model extends CI_Model
             $data = $this->_batchImport;
             $this->db->insert_batch('tbl_transaksi_unit', $data);
         }
+
+        function dd()
+    {
+        // ambil data dari db
+        $this->db->order_by($this->id, $this->order);
+        $result = $this->db->get($this->table);
+        // bikin array
+        // please select berikut ini merupakan tambahan saja agar saat pertama
+        // diload akan ditampilkan text please select.
+        $dd[''] = '-- Pilih Unit --';
+        if ($result->num_rows() > 0) {
+            foreach ($result->result() as $row) {
+            // tentukan value (sebelah kiri) dan labelnya (sebelah kanan)
+                $dd[$row->trxu_id] = $row->trxu_id_unit;
+            }
+        }
+        return $dd;
+    }
+
 }
 
 /* End of file Transaksi_unit_model.php */

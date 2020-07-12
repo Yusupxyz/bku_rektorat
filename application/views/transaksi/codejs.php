@@ -52,18 +52,21 @@
         if(this.value=='0'){
             document.getElementById("trx_penerimaan").readOnly = false;
             document.getElementById("trx_pengeluaran").value = "0";
-            var ppn=document.getElementById("trx_ppn").value==""?'0':document.getElementById("trx_ppn").value;
-            var pph21=document.getElementById("trx_pph_21").value==""?'0':document.getElementById("trx_pph_21").value;
-            var pph22=document.getElementById("trx_pph_22").value==""?'0':document.getElementById("trx_pph_22").value;
-            var pph23=document.getElementById("trx_pph_23").value==""?'0':document.getElementById("trx_pph_23").value;
-            var pph42=document.getElementById("trx_pph_4_2").value==""?'0':document.getElementById("trx_pph_4_2").value;
-            var jumlah_kotor=document.getElementById("trx_jml_kotor").value==""?'0':document.getElementById("trx_jml_kotor").value;
-            var pajak=parseInt(ppn)+parseInt(pph21)+parseInt(pph22)+parseInt(pph23)+parseInt(pph42);
-            var bersih=parseInt(jumlah_kotor)-pajak;
-            document.getElementById("trx_jml_bersih").value=bersih;
+            document.getElementById("trx_jml_kotor").readOnly = true;
+            document.getElementById("trx_ppn").readOnly = true;
+            document.getElementById("trx_pph_21").readOnly = true;
+            document.getElementById("trx_pph_22").readOnly = true;
+            document.getElementById("trx_pph_23").readOnly = true;
+            document.getElementById("trx_pph_4_2").readOnly = true;
+            document.getElementById("trx_jml_kotor").value = "0";
+            document.getElementById("trx_ppn").value = "0";
+            document.getElementById("trx_pph_21").value = "0";
+            document.getElementById("trx_pph_22").value = "0";
+            document.getElementById("trx_pph_23").value = "0";
+            document.getElementById("trx_pph_4_2").value = "0";
         }else if(this.value=='1'){ 
             document.getElementById("trx_penerimaan").readOnly = true;
-            document.getElementById("trx_penerimaan").value = "";
+            document.getElementById("trx_penerimaan").value = "0";
             var ppn=document.getElementById("trx_ppn").value==""?'0':document.getElementById("trx_ppn").value;
             var pph21=document.getElementById("trx_pph_21").value==""?'0':document.getElementById("trx_pph_21").value;
             var pph22=document.getElementById("trx_pph_22").value==""?'0':document.getElementById("trx_pph_22").value;
@@ -74,19 +77,29 @@
             var bersih=parseInt(jumlah_kotor)-pajak;
             document.getElementById("trx_jml_bersih").value=bersih;
             document.getElementById("trx_pengeluaran").value=jumlah_kotor;
+            document.getElementById("trx_jml_kotor").readOnly = false;
+            document.getElementById("trx_ppn").readOnly = false;
+            document.getElementById("trx_pph_21").readOnly = false;
+            document.getElementById("trx_pph_22").readOnly = false;
+            document.getElementById("trx_pph_23").readOnly = false;
+            document.getElementById("trx_pph_4_2").readOnly = false;
         }else{
             document.getElementById("trx_penerimaan").readOnly = true;
             document.getElementById("trx_penerimaan").value = "0";
             document.getElementById("trx_pengeluaran").value = "0";
-            var ppn=document.getElementById("trx_ppn").value==""?'0':document.getElementById("trx_ppn").value;
-            var pph21=document.getElementById("trx_pph_21").value==""?'0':document.getElementById("trx_pph_21").value;
-            var pph22=document.getElementById("trx_pph_22").value==""?'0':document.getElementById("trx_pph_22").value;
-            var pph23=document.getElementById("trx_pph_23").value==""?'0':document.getElementById("trx_pph_23").value;
-            var pph42=document.getElementById("trx_pph_4_2").value==""?'0':document.getElementById("trx_pph_4_2").value;
-            var jumlah_kotor=document.getElementById("trx_jml_kotor").value==""?'0':document.getElementById("trx_jml_kotor").value;
-            var pajak=parseInt(ppn)+parseInt(pph21)+parseInt(pph22)+parseInt(pph23)+parseInt(pph42);
-            var bersih=parseInt(jumlah_kotor)-pajak;
-            document.getElementById("trx_jml_bersih").value=bersih;
+            document.getElementById("trx_jml_kotor").readOnly = true;
+            document.getElementById("trx_ppn").readOnly = true;
+            document.getElementById("trx_pph_21").readOnly = true;
+            document.getElementById("trx_pph_22").readOnly = true;
+            document.getElementById("trx_pph_23").readOnly = true;
+            document.getElementById("trx_pph_4_2").readOnly = true;
+            document.getElementById("trx_jml_kotor").value = "0";
+            document.getElementById("trx_ppn").value = "0";
+            document.getElementById("trx_pph_21").value = "0";
+            document.getElementById("trx_pph_22").value = "0";
+            document.getElementById("trx_pph_23").value = "0";
+            document.getElementById("trx_pph_4_2").value = "0";
+            
         }
 
     });

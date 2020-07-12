@@ -12,6 +12,7 @@ class Buku extends CI_Controller
         $this->layout->auth(); 
         $this->layout->auth_privilege($c_url);
         $this->load->model('Transaksi_model');
+        $this->load->model('Transaksi_unit_model');
         $this->load->model('Jenis_pembayaran_model');
         $this->load->model('Metode_pembayaran_model');
         $this->load->model('Tahun_model');
@@ -40,11 +41,11 @@ class Buku extends CI_Controller
         $config['total_rows'] = $this->Transaksi_model->total_rows($q);
         $tahun=$this->Tahun_model->get_by_id($this->session->userdata('tahun_aktif'))->tahun_nama;
         if($this->input->get('buku')=='bku'){
-            $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->input->get('bulan'),$this->session->userdata('tahun_aktif'));
+            $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
         }elseif($this->input->get('buku')=='bku_unit'){
             $transaksi = $this->Transaksi_model->get_limit_data_bku_unit($config['per_page'], $start, $q,$this->input->get('bulan'),$this->session->userdata('tahun_aktif'),$this->input->get('unit'));
         }else{
-            $transaksi = $this->Transaksi_model->get_limit_data($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),'','');
+            $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
         }
             //   echo $this->db->last_query();
 
@@ -58,7 +59,6 @@ class Buku extends CI_Controller
             'total_rows' => $config['total_rows'],
             'start' => $start,
         );
-        // $sum_jml_kotor = $this->Transaksi_model->penerimaan2($this->input->get('bulan'),$this->session->userdata('tahun_aktif'))->row()->total;
 
         $data['title'] = 'Buku';
         $data['subtitle'] = '';
@@ -94,26 +94,29 @@ class Buku extends CI_Controller
 			'10'        => 'Oktober',
 			'11'        => 'Nopember',
 			'12'        => 'Desember',
-		);
+        );
+        $data['dd_unit'] = $this->Transaksi_unit_model->dd();
         if($this->input->get('bulan')){
             $data['bulan'] = $this->Bulan_model->get_by_id($this->input->get('bulan'))->bulan_nama;
         }else{
             $data['bulan'] = '';
         }
         if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){
-            $sa = $this->Saldo_awal_model->get_by_bt($this->input->get('bulan'),$this->session->userdata('tahun_aktif'))->sa_jumlah;
+            $saldo_awal = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->saldo_awal;
         }else{
-            $sa = '0';
+            $saldo_awal = '0';
         }
-        $saldo = $this->Transaksi_model->get_saldo($this->session->userdata('tahun_aktif'),$bulan,$nb);
-        foreach ($transaksi as $key => $value) {
-            $saldo_temp=$saldo_temp-$value->trx_jml_kotor;
-            $data['persaldo'][]=$saldo_temp;
-        }
-        // var_dump($data['persaldo']);
-        $data['saldo'] = $saldo;
-        $data['sa'] = $sa;
+        $saldo_akhir = $this->Transaksi_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->saldo_akhir;
+        $sum_jml_kotor = $this->Transaksi_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->jmlh_kotor;
+        $sum_penerimaan = $this->Transaksi_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->penerimaan;
+        $saldo_total=$saldo_awal+$sum_penerimaan;
+        // echo $this->db->last_query();
+
+        $data['saldo_awal'] = $saldo_awal;
+        $data['saldo_akhir'] = $saldo_akhir;
+        $data['sum_penerimaan']=$sum_penerimaan;
         $data['sum_jml_kotor']=$sum_jml_kotor;
+        $data['saldo_total']=$saldo_total;
         $data['set_lap'] = $this->Setting_laporan_model->get_all();
         $data['code_js'] = 'buku/codejs';
         $data['page'] = 'buku/Bku_list';

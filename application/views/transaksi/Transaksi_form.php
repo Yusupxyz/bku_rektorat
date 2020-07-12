@@ -44,27 +44,27 @@
         </div>
 	    <div class="form-group">
             <label for="double">Jumlah Kotor <?php echo form_error('trx_jml_kotor') ?></label>
-            <input type="number" class="form-control" name="trx_jml_kotor" id="trx_jml_kotor" placeholder="Trx Jml Kotor" value="<?php echo $trx_jml_kotor; ?>" min="0" />
+            <input type="number" class="form-control" name="trx_jml_kotor" id="trx_jml_kotor" placeholder="Trx Jml Kotor" value="<?php echo $trx_jml_kotor; ?>" min="0" readonly/>
         </div>
 	    <div class="form-group">
             <label for="double">PPN <?php echo form_error('trx_ppn') ?></label>
-            <input type="number" class="form-control" name="trx_ppn" id="trx_ppn" placeholder="Trx Ppn" value="<?php echo $trx_ppn; ?>" min="0"/>
+            <input type="number" class="form-control" name="trx_ppn" id="trx_ppn" placeholder="Trx Ppn" value="<?php echo $trx_ppn; ?>" min="0" readonly/>
         </div>
 	    <div class="form-group">
             <label for="double">PPH 21 <?php echo form_error('trx_pph_21') ?></label>
-            <input type="number" class="form-control" name="trx_pph_21" id="trx_pph_21" placeholder="Trx Pph 21" value="<?php echo $trx_pph_21; ?>" min="0"/>
+            <input type="number" class="form-control" name="trx_pph_21" id="trx_pph_21" placeholder="Trx Pph 21" value="<?php echo $trx_pph_21; ?>" min="0" readonly/>
         </div>
 	    <div class="form-group">
             <label for="double">PPH 22 <?php echo form_error('trx_pph_22') ?></label>
-            <input type="number" class="form-control" name="trx_pph_22" id="trx_pph_22" placeholder="Trx Pph 22" value="<?php echo $trx_pph_22; ?>" min="0"/>
+            <input type="number" class="form-control" name="trx_pph_22" id="trx_pph_22" placeholder="Trx Pph 22" value="<?php echo $trx_pph_22; ?>" min="0" readonly/>
         </div>
 	    <div class="form-group">
             <label for="double">Trx Pph 23 <?php echo form_error('trx_pph_23') ?></label>
-            <input type="number" class="form-control" name="trx_pph_23" id="trx_pph_23" placeholder="Trx Pph 23" value="<?php echo $trx_pph_23; ?>" min="0"/>
+            <input type="number" class="form-control" name="trx_pph_23" id="trx_pph_23" placeholder="Trx Pph 23" value="<?php echo $trx_pph_23; ?>" min="0" readonly/>
         </div>
 	    <div class="form-group">
             <label for="double">PPH 4(2) <?php echo form_error('trx_pph_4_2') ?></label>
-            <input type="number" class="form-control" name="trx_pph_4_2" id="trx_pph_4_2" placeholder="Trx Pph 4 2" value="<?php echo $trx_pph_4_2; ?>" min="0"/>
+            <input type="number" class="form-control" name="trx_pph_4_2" id="trx_pph_4_2" placeholder="Trx Pph 4 2" value="<?php echo $trx_pph_4_2; ?>" min="0" readonly/>
         </div>
         <div class="form-group" >
             <label for="double">Jumlah Bersih <?php echo form_error('trx_jml_bersih') ?></label>

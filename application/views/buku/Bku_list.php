@@ -74,8 +74,8 @@
             </table>
             </div>
             <div class="col-md-12 text-right">
-                <h5><b>Saldo Awal : Rp <?= number_format($saldo->saldo_awal) ?></h5>
-                <h5>Saldo Akhir : Rp <?= number_format($saldo->saldo_akhir) ?></b></h5>
+                <h5><b>Saldo Awal : Rp <?= number_format($saldo_awal) ?></h5>
+                <h5>Saldo Akhir : Rp <?= number_format($saldo_akhir) ?></b></h5>
             </div>
         </div>                     
 
@@ -93,21 +93,21 @@
             </tr>
             <tr>
                 <td colspan="5" style="text-align:center;"><b>Saldo Awal</b></td>
-                <td style="text-align:right;"><b><?php echo 'Rp '.number_format($sa);?></b></td>
-                <td style="text-align:right;"><b><?php echo 'Rp ';?></b></td>
-                <td style="text-align:right;"><b><?php echo 'Rp '.number_format($sa);?></b></td>
+                <td style="text-align:right;"><b><?php echo 'Rp '.number_format($saldo_awal);?></b></td>
+                <td style="text-align:right;"><b></b></td>
+                <td style="text-align:right;"><b><?php echo 'Rp '.number_format($saldo_awal);?></b></td>
             </tr>
             <tr>
                 <td colspan="5" style="text-align:center;"><b>Kas</b></td>
-                <td style="text-align:right;"><b><?php echo 'Rp '.number_format($sum_jml_kotor);?></b></td>
-                <td style="text-align:right;"><b><?php echo 'Rp ';?></b></td>
-                <td style="text-align:right;"><b><?php echo 'Rp '.number_format($saldo);?></b></td>
+                <td style="text-align:right;"><b><?php echo 'Rp '.number_format($sum_penerimaan);?></b></td>
+                <td style="text-align:right;"><b></b></td>
+                <td style="text-align:right;"><b><?php echo 'Rp '.number_format($saldo_total);?></b></td>
             </tr>
             
-            <?php $i=0;
+            <?php $i=0; $saldo=$saldo_total;
             foreach ($transaksi_data as $transaksi)
             {
-                $pajak=$transaksi->trx_ppn+$transaksi->trx_pph_21+$transaksi->trx_pph_22+$transaksi->trx_pph_23+$transaksi->trx_pph_4_2;
+                $saldo=$saldo-$transaksi->trx_jml_kotor;
                 ?>
                 <tr>
                 
@@ -119,16 +119,16 @@
 			<td><?php echo substr($transaksi->trx_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView<?php echo $transaksi->trx_id;?>">detail</a></td>
 			<td style="text-align:right;"></td>
             <td style="text-align:right;"><?php echo 'Rp '.number_format($transaksi->trx_jml_kotor) ?></td>
-            <td style="text-align:right;"><?php echo 'Rp '.number_format($persaldo[$i++]) ?></td>
+            <td style="text-align:right;"><?php echo 'Rp '.number_format($saldo) ?></td>
 		</tr>
                 <?php
             }
             ?>
             <tr>
         <td colspan="5" style="text-align:center;"><b>Jumlah</b></td>
-        <td style="text-align:right;"><?php echo 'Rp '.number_format($saldo);?></td>
+        <td style="text-align:right;"><?php echo 'Rp '.number_format($saldo_total);?></td>
         <td style="text-align:right;"><?php echo 'Rp '.number_format($sum_jml_kotor);?></td>
-        <td style="text-align:right;"><?php echo 'Rp '.number_format($sak);?></td>
+        <td style="text-align:right;"><?php echo 'Rp '.number_format($saldo_total-$sum_jml_kotor);?></td>
     </tr>
         </table>
          <div class="row" style="margin-bottom: 10px;">

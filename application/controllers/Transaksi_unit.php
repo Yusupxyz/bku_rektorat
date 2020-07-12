@@ -241,10 +241,10 @@ class Transaksi_unit extends CI_Controller
         if ($row) {
             $this->Transaksi_unit_model->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
-            redirect(site_url('transaksi_unit'));
+            redirect(site_url('transaksi'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('transaksi_unit'));
+            redirect(site_url('transaksi'));
         }
     }
 
