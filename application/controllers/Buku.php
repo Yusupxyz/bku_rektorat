@@ -43,7 +43,17 @@ class Buku extends CI_Controller
         if($this->input->get('buku')=='bku'){
             $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
         }elseif($this->input->get('buku')=='bku_unit'){
-            $transaksi = $this->Transaksi_model->get_limit_data_bku_unit($config['per_page'], $start, $q,$this->input->get('bulan'),$this->session->userdata('tahun_aktif'),$this->input->get('unit'));
+            $transaksi = $this->Transaksi_unit_model->get_limit_data_bku_unit($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),$this->input->get('unit'));
+        }elseif($this->input->get('buku')=='kas_bank'){
+            $transaksi = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'1');
+        }elseif($this->input->get('buku')=='kas_tunai'){
+            $transaksi = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'2');
+        }elseif($this->input->get('buku')=='bp_up'){
+            $transaksi = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'1');
+        }elseif($this->input->get('buku')=='bp_lsb'){
+            $transaksi = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'2');
+        }elseif($this->input->get('buku')=='bp_pajak'){
+            $transaksi = $this->Transaksi_model->get_limit_data_bku_pajak($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
         }else{
             $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
         }
@@ -119,7 +129,11 @@ class Buku extends CI_Controller
         $data['saldo_total']=$saldo_total;
         $data['set_lap'] = $this->Setting_laporan_model->get_all();
         $data['code_js'] = 'buku/codejs';
-        $data['page'] = 'buku/Bku_list';
+        if ($this->input->get('buku')=='bp_pajak'){
+            $data['page'] = 'buku/Bku_pajak';
+        }else{
+            $data['page'] = 'buku/Bku_list';
+        }
         $this->load->view('template/backend', $data);
     }
 

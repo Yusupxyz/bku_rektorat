@@ -28,6 +28,22 @@ class Transaksi_unit_model extends CI_Model
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
+
+     //bku unit
+     function get_limit_data_bku_unit($limit, $start = 0, $q = NULL, $tahun,$bulan,$unit) {
+        $this->db->order_by('trx_tanggal', $this->order);
+
+	$this->db->limit($limit, $start);
+	$this->db->join('tbl_transaksi','tbl_transaksi_unit.trxu_nomor_bukti=tbl_transaksi.trx_id','left');
+    $this->db->where('trx_id_tahun', $tahun);
+    if($unit!=''){
+        $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+    }
+    if($bulan!=''){
+        $this->db->where('month(trx_tanggal)', $bulan);
+    }
+        return $this->db->get($this->table)->result();
+    }
     
     // get total rows
     function total_rows($q = NULL) {
@@ -144,7 +160,7 @@ class Transaksi_unit_model extends CI_Model
         if ($result->num_rows() > 0) {
             foreach ($result->result() as $row) {
             // tentukan value (sebelah kiri) dan labelnya (sebelah kanan)
-                $dd[$row->trxu_id] = $row->trxu_id_unit;
+                $dd[$row->trxu_id_unit] = $row->trxu_id_unit;
             }
         }
         return $dd;

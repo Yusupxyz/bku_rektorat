@@ -110,21 +110,52 @@ class Transaksi_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
-    //bku unit
-    function get_limit_data_bku_unit($limit, $start = 0, $q = NULL, $tahun,$bulan,$unit) {
+    //kas pembantu
+    function get_limit_data_bku_pembantu($limit, $start = 0, $q = NULL, $tahun,$bulan,$jp) {
         $this->db->order_by('trx_tanggal', $this->order);
 
 	$this->db->limit($limit, $start);
-	$this->db->join('tbl_transaksi_unit','tbl_transaksi_unit.trxu_nomor_bukti=tbl_transaksi.trx_id','left');
+	$this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
+	$this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
     $this->db->where('trx_id_tahun', $tahun);
-    if($unit!=''){
-        $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
-    }
+    $this->db->where('trx_id_jenis_pembayaran', $jp);
     if($bulan!=''){
         $this->db->where('month(trx_tanggal)', $bulan);
     }
         return $this->db->get($this->table)->result();
     }
+
+    //kas pembantu2
+    function get_limit_data_bku_pembantu2($limit, $start = 0, $q = NULL, $tahun,$bulan,$mp) {
+        $this->db->order_by('trx_tanggal', $this->order);
+
+	$this->db->limit($limit, $start);
+	$this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
+	$this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
+    $this->db->where('trx_id_tahun', $tahun);
+    $this->db->where('trx_id_metode_pembayaran', $mp);
+    if($bulan!=''){
+        $this->db->where('month(trx_tanggal)', $bulan);
+    }
+        return $this->db->get($this->table)->result();
+    }
+
+    //kas pajak
+    function get_limit_data_bku_pajak($limit, $start = 0, $q = NULL, $tahun,$bulan) {
+        $this->db->order_by('trx_tanggal', $this->order);
+
+	$this->db->limit($limit, $start);
+	$this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
+	$this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
+    $this->db->where('trx_id_tahun', $tahun);
+    $this->db->where('(trx_ppn!="0" OR trx_pph_21!="0" OR trx_pph_22!="0" OR trx_pph_23!="0" OR trx_pph_4_2!="0")');
+    if($bulan!=''){
+        $this->db->where('month(trx_tanggal)', $bulan);
+    }
+        return $this->db->get($this->table)->result();
+    }
+
+   
 
     // get data with limit and search
     function get_saldo($tahun,$bulan,$nb) {
