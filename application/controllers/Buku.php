@@ -54,6 +54,9 @@ class Buku extends CI_Controller
             $transaksi = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'2');
         }elseif($this->input->get('buku')=='bp_pajak'){
             $transaksi = $this->Transaksi_model->get_limit_data_bku_pajak($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
+            $pajak_bulan_lalu = $this->Transaksi_model->get_limit_data_bku_pajak($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),(int)$this->input->get('bulan')-1);
+            $pajak_tahun_ini = $this->Transaksi_model->get_limit_data_bku_pajak_tahun($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'));
+
         }else{
             $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
         }
@@ -64,6 +67,8 @@ class Buku extends CI_Controller
 
         $data = array(
             'transaksi_data' => $transaksi,
+            'pajak_bulan_lalu' => $pajak_bulan_lalu,
+            'pajak_tahun_ini' => $pajak_tahun_ini,
             'q' => $q,
             'pagination' => $this->pagination->create_links(),
             'total_rows' => $config['total_rows'],

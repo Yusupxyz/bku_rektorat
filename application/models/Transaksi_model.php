@@ -155,6 +155,20 @@ class Transaksi_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    //kas pajak
+    function get_limit_data_bku_pajak_tahun($limit, $start = 0, $q = NULL, $tahun) {
+        $this->db->order_by('trx_tanggal', $this->order);
+        $this->db->select('sum(trx_ppn) as ppn, sum(trx_pph_21) as pph21,sum(trx_pph_22) as pph22,sum(trx_pph_23) as pph23,sum(trx_pph_4_2) as pph42');
+
+	$this->db->limit($limit, $start);
+	$this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
+	$this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
+    $this->db->where('trx_id_tahun', $tahun);
+    $this->db->where('(trx_ppn!="0" OR trx_pph_21!="0" OR trx_pph_22!="0" OR trx_pph_23!="0" OR trx_pph_4_2!="0")');
+
+        return $this->db->get($this->table)->row();
+    }
+
    
 
     // get data with limit and search
