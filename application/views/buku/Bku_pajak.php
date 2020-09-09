@@ -100,6 +100,7 @@
             
             
             <?php $i=0; $saldo=$saldo_total; $ppn=0; $pph21=0; $pph22=0; $pph23=0; $pph42=0;
+            // var_dump($pajak_tahun_ini);
             foreach ($transaksi_data as $transaksi)
             {
                 $pajak=$transaksi->trx_ppn+$transaksi->trx_pph_21+$transaksi->trx_pph_22+$transaksi->trx_pph_23+$transaksi->trx_pph_4_2;
