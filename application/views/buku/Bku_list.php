@@ -24,7 +24,7 @@
             <div class="col-md-1 text-right">
             </div>
             <div class="col-md-3 text-right">
-		        <?php echo anchor(site_url('transaksi/excel'), '<i class="fa fa-file-excel"></i> Excel', 'class="btn btn-success"'); ?>
+		        <?php echo anchor(site_url('transaksi/excel'), '<i class="fa fa-file-excel"></i> Download Excel', 'class="btn btn-success"'); ?>
             </div>
         </div>
         <div class="row">

@@ -2,6 +2,11 @@
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
+    // require('./vendor/autoload.php');
+
+    use PhpOffice\PhpSpreadsheet\Spreadsheet;
+    use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 
 class Buku extends CI_Controller
 {
