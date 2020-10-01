@@ -54,6 +54,8 @@ class Buku extends CI_Controller
         }elseif($this->input->get('buku')=='kas_tunai'){
             $transaksi = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'2');
         }elseif($this->input->get('buku')=='bp_up'){
+            $transaksi = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'3');
+        }elseif($this->input->get('buku')=='bp_tbp'){
             $transaksi = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'1');
         }elseif($this->input->get('buku')=='bp_lsb'){
             $transaksi = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'2');
@@ -102,6 +104,7 @@ class Buku extends CI_Controller
 			'bku_unit'           => 'Buku Kas Umum Unit',
 			'kas_bank'         => 'Buku Pembantu Kas (Bank)',
 			'kas_tunai'        => 'Buku Pembantu Kas (Tunai)',
+			'bp_tbp'        => 'Buku Pembantu Transfer Bendahara Pengeluaran',
 			'bp_up'        => 'Buku Pembantu Uang Persedian',
 			'bp_lsb'        => 'Buku Pembantu LS Bendahara',
 			'bp_pajak'        => 'Buku Pembantu Pajak',

@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="form-group form-inline">
                     <label for="int">Pilih Jenis Laporan :</label>
                     <?php

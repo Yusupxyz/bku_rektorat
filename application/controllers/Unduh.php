@@ -69,6 +69,9 @@ class Unduh extends CI_Controller
         $bku_bank = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'1');
         $bp_up = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'1');
         $bp_lsb = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'2');
+        $bku_tbp = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'3');
+        $bp_pajak = $this->Transaksi_model->get_limit_data_bku_pajak($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
+        $pajak_tahun_ini = $this->Transaksi_model->get_limit_data_bku_pajak_tahun($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'));
 
         //----------------------------------------------------------------------------------------------------
         // BP KAS TUNAI
@@ -136,7 +139,7 @@ class Unduh extends CI_Controller
         $sheet->setCellValue('A7', 'SATUAN KERJA');
         $sheet->setCellValue('D7', ': PNBP NON-MODAL UNIVERSITAS PALANGKA RAYA');
         $sheet->setCellValue('A8', 'TANGGAL DAN NOMOR DIPA');
-        $sheet->setCellValue('D8', ': JL. YOS SUDARSO PALANGKA RAYAL');
+        $sheet->setCellValue('D8', ': JL. YOS SUDARSO PALANGKA RAYA');
         $sheet->setCellValue('A9', 'TAHUN ANGGARAN');
         $sheet->setCellValue('D9', ': '.$tahun);
 
@@ -246,7 +249,7 @@ class Unduh extends CI_Controller
         $sheet2->setCellValue('A7', 'SATUAN KERJA');
         $sheet2->setCellValue('D7', ': PNBP NON-MODAL UNIVERSITAS PALANGKA RAYA');
         $sheet2->setCellValue('A8', 'TANGGAL DAN NOMOR DIPA');
-        $sheet2->setCellValue('D8', ': JL. YOS SUDARSO PALANGKA RAYAL');
+        $sheet2->setCellValue('D8', ': JL. YOS SUDARSO PALANGKA RAYA');
         $sheet2->setCellValue('A9', 'TAHUN ANGGARAN');
         $sheet2->setCellValue('D9', ': '.$tahun);
 
@@ -356,7 +359,7 @@ class Unduh extends CI_Controller
         $sheet2->setCellValue('A7', 'SATUAN KERJA');
         $sheet2->setCellValue('D7', ': PNBP NON-MODAL UNIVERSITAS PALANGKA RAYA');
         $sheet2->setCellValue('A8', 'TANGGAL DAN NOMOR DIPA');
-        $sheet2->setCellValue('D8', ': JL. YOS SUDARSO PALANGKA RAYAL');
+        $sheet2->setCellValue('D8', ': JL. YOS SUDARSO PALANGKA RAYA');
         $sheet2->setCellValue('A9', 'TAHUN ANGGARAN');
         $sheet2->setCellValue('D9', ': '.$tahun);
 
@@ -452,6 +455,118 @@ class Unduh extends CI_Controller
         $sheet->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
         //----------------------------------------------------------------------------------------------------
 
+
+        //BP TRANSFER BP
+        $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, 'BP TRANSFER BP');
+        $spreadsheet->addSheet($myWorkSheet);
+        $sheet2 = $spreadsheet->getSheetByName('BP TRANSFER BP');        ;
+        $sheet2->setCellValue('A1', 'PNBP NON-MODAL UNIVERITAS PALANGKA RAYA');
+        $sheet2->setCellValue('A2', 'BUKU PEMBANTU TRANSFER BENDAHARA PENGELUARAN');
+        $sheet2->setCellValue('A3', 'BULAN '.strtoupper($bulan));
+        $sheet2->setCellValue('A5', 'KEMENTERIAN/LEMBAGA');
+        $sheet2->setCellValue('D5', ': KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN');
+        $sheet2->setCellValue('A6', 'UNIT ORGANISASI');
+        $sheet2->setCellValue('D6', ':  SEKRETARIAT JENDERAL');
+        $sheet2->setCellValue('A7', 'SATUAN KERJA');
+        $sheet2->setCellValue('D7', ': PNBP NON-MODAL UNIVERSITAS PALANGKA RAYA');
+        $sheet2->setCellValue('A8', 'TANGGAL DAN NOMOR DIPA');
+        $sheet2->setCellValue('D8', ': JL. YOS SUDARSO PALANGKA RAYA');
+        $sheet2->setCellValue('A9', 'TAHUN ANGGARAN');
+        $sheet2->setCellValue('D9', ': '.$tahun);
+
+        $sheet2->mergeCells('A1:I1');
+        $sheet2->mergeCells('A2:I2');
+        $sheet2->mergeCells('A3:I3');
+        $sheet2->mergeCells('A5:C5');
+        $sheet2->mergeCells('A6:C6');
+        $sheet2->mergeCells('A7:C7');
+        $sheet2->mergeCells('A8:C8');
+        $sheet2->mergeCells('A9:C9');
+
+        $sheet2->getStyle("A1:I3")->applyFromArray($middle);
+        $sheet2->getStyle("A2:I2")->applyFromArray($bold);
+        $sheet2->getStyle("A3")->applyFromArray($underline);
+
+        //ISI
+        $sheet2->setCellValue('H11', 'Saldo Awal');
+        $sheet2->setCellValue('I11', 'Rp '.number_format($saldo_awal));
+        $sheet2->setCellValue('H12', 'Saldo Akhir');
+        $sheet2->setCellValue('I12', 'Rp '.number_format($saldo_akhir));
+
+        $sheet2->getStyle("H11:I12")->applyFromArray($bold);
+        $sheet2->getStyle("H11:I12")->applyFromArray($border);
+
+        //TABEL
+        $sheet2->setCellValue('B14', 'Tanggal');
+        $sheet2->setCellValue('C14', 'Nomor Bukti');
+        $sheet2->setCellValue('D14', 'MAK');
+        $sheet2->setCellValue('E14', 'Penerima');
+        $sheet2->setCellValue('F14', 'Uraian');
+        $sheet2->setCellValue('G14', 'Debet (Rp)');
+        $sheet2->setCellValue('H14', 'Kredit (Rp)');
+        $sheet2->setCellValue('I14', 'Saldo (Rp)');
+
+        $sheet2->getStyle("B14:I14")->applyFromArray($bold);
+        $sheet2->getStyle("B14:I14")->applyFromArray($bcolor);
+
+        $i=15; 
+        $saldo=$saldo_total;
+        foreach ($bku_tbp as $transaksi2)
+        {
+            $saldo=$saldo-$transaksi2->trx_jml_kotor;
+            $sheet2->setCellValue('B'.$i, $transaksi2->trx_tanggal);
+            $sheet2->setCellValue('C'.$i, $transaksi2->trx_nomor_bukti);
+            $sheet2->setCellValue('D'.$i, $transaksi2->trx_mak);
+            $sheet2->setCellValue('E'.$i, $transaksi2->trx_id_unit);
+            $sheet2->setCellValue('F'.$i, $transaksi2->trx_uraian);
+            $sheet2->setCellValue('G'.$i, '');
+            $sheet2->setCellValue('H'.$i, number_format($transaksi2->trx_jml_kotor));
+            $sheet2->setCellValue('I'.$i, number_format($saldo));
+            
+        }
+        $sheet2->getStyle("B15:I".$i++)->applyFromArray($border);
+        $temp=$i;
+        //FOOTER
+        $sheet2->setCellValue('F'.$i, 'JUMLAH BULAN INI');
+        $sheet2->setCellValue('G'.$i, '');
+        $sheet2->setCellValue('H'.$i, '');
+        $sheet2->setCellValue('I'.$i++, '');
+
+        $sheet2->setCellValue('F'.$i, 'JUMLAH BULAN LALU');
+        $sheet2->setCellValue('G'.$i, '');
+        $sheet2->setCellValue('H'.$i, '');
+        $sheet2->setCellValue('I'.$i++, '');
+
+        $sheet2->setCellValue('F'.$i, 'JUMLAH S.D BULAN INI');
+        $sheet2->setCellValue('G'.$i, '');
+        $sheet2->setCellValue('H'.$i, '');
+        $sheet2->setCellValue('I'.$i, '');
+
+        $sheet2->getStyle("B".$temp.":I".$i)->applyFromArray($bold);
+        $sheet2->getStyle("B".$temp.":I".$i++)->applyFromArray($bcolor);
+        $j=$i+2;
+        //FOOTER
+        $sheet2->setCellValue('C'.$j++, 'Mengetahui/Menyetujui, ');
+        $sheet2->setCellValue('C'.$j++, 'Pejabat Pembuat Komitmen');
+        $sheet2->setCellValue('C'.$j, 'PNBP Belanja Non Modal');
+        $j=$j+4;
+        $sheet->setCellValue('C'.$j, $pejabat1->pejabat_nama);
+        $namaj=$j++;
+        $sheet->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
+
+        $k=$i+1;
+        $sheet->setCellValue('F'.$k, 'Palangka Raya, ');
+        $k=$k+2;
+        $sheet->setCellValue('F'.$k, 'BPP PNBP');
+        $k=$k+5;
+        $sheet->setCellValue('F'.$k, $pejabat2->pejabat_nama);
+        $namak=$k++;
+        $sheet->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
+
+        $sheet->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
+        //----------------------------------------------------------------------------------------------------
+
+
         //BP UP
         $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, 'BP UP');
         $spreadsheet->addSheet($myWorkSheet);
@@ -466,7 +581,7 @@ class Unduh extends CI_Controller
         $sheet2->setCellValue('A7', 'SATUAN KERJA');
         $sheet2->setCellValue('D7', ': PNBP NON-MODAL UNIVERSITAS PALANGKA RAYA');
         $sheet2->setCellValue('A8', 'TANGGAL DAN NOMOR DIPA');
-        $sheet2->setCellValue('D8', ': JL. YOS SUDARSO PALANGKA RAYAL');
+        $sheet2->setCellValue('D8', ': JL. YOS SUDARSO PALANGKA RAYA');
         $sheet2->setCellValue('A9', 'TAHUN ANGGARAN');
         $sheet2->setCellValue('D9', ': '.$tahun);
 
@@ -576,7 +691,7 @@ class Unduh extends CI_Controller
         $sheet2->setCellValue('A7', 'SATUAN KERJA');
         $sheet2->setCellValue('D7', ': PNBP NON-MODAL UNIVERSITAS PALANGKA RAYA');
         $sheet2->setCellValue('A8', 'TANGGAL DAN NOMOR DIPA');
-        $sheet2->setCellValue('D8', ': JL. YOS SUDARSO PALANGKA RAYAL');
+        $sheet2->setCellValue('D8', ': JL. YOS SUDARSO PALANGKA RAYA');
         $sheet2->setCellValue('A9', 'TAHUN ANGGARAN');
         $sheet2->setCellValue('D9', ': '.$tahun);
 
@@ -671,6 +786,149 @@ class Unduh extends CI_Controller
 
         $sheet->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
         //----------------------------------------------------------------------------------------------------
+
+        //BP PAJAK
+        $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, 'BP PAJAK');
+        $spreadsheet->addSheet($myWorkSheet);
+        $sheet2 = $spreadsheet->getSheetByName('BP PAJAK');        ;
+        $sheet2->setCellValue('A1', 'PNBP Belanja Modal Universitas Palangka Raya');
+        $sheet2->setCellValue('A2', 'Buku Pembantu Pajak');
+        $sheet2->setCellValue('A3', 'Bulan '.strtoupper($bulan).' '.$tahun);
+        $sheet2->setCellValue('A5', 'KN/Lembaga');
+        $sheet2->setCellValue('C5', ':  Kementerian Pendidikan dan Kebudayaan');
+        $sheet2->setCellValue('A6', 'Unit Organisasi');
+        $sheet2->setCellValue('C6', ':  Sekretariat Jenderal');
+        $sheet2->setCellValue('A7', 'Satker/SKS');
+        $sheet2->setCellValue('C7', ': PNBP Universitas Palangka Raya');
+        $sheet2->setCellValue('A8', 'Lokasi');
+        $sheet2->setCellValue('C8', ':  Kota Palangka Raya');
+        $sheet2->setCellValue('A9', 'Tempat');
+        $sheet2->setCellValue('C8', ':  Palangka Raya');
+        $sheet2->setCellValue('A10', 'Tanggal & Nomor DIPA');
+        $sheet2->setCellValue('C10', ':');
+        $sheet2->setCellValue('A11', 'Tahun Anggaran');
+        $sheet2->setCellValue('C11', ': '.$tahun);
+        $sheet2->setCellValue('A12', 'KPPN Pembayar');
+        $sheet2->setCellValue('C12', ':  KANWIL XVII Palangka Raya');
+
+        $sheet2->mergeCells('A1:J1');
+        $sheet2->mergeCells('A2:J2');
+        $sheet2->mergeCells('A3:J3');
+        $sheet2->mergeCells('A5:B5');
+        $sheet2->mergeCells('A6:B6');
+        $sheet2->mergeCells('A7:B7');
+        $sheet2->mergeCells('A8:B8');
+        $sheet2->mergeCells('A9:B9');
+        $sheet2->mergeCells('A10:B10');
+        $sheet2->mergeCells('A11:B11');
+        $sheet2->mergeCells('A12:B12');
+
+        $sheet2->getStyle("A1:J3")->applyFromArray($middle);
+        $sheet2->getStyle("A1:J3")->applyFromArray($bold);
+
+        //ISI
+        $sheet2->setCellValue('H12', 'Saldo Awal');
+        $sheet2->setCellValue('I12', 'Rp '.number_format($saldo_awal));
+        $sheet2->setCellValue('H13', 'Saldo Akhir');
+        $sheet2->setCellValue('I13', 'Rp '.number_format($saldo_akhir));
+
+        //TABEL
+        $sheet2->setCellValue('A15', 'Tanggal');
+        $sheet2->setCellValue('B15', 'No Bukti');
+        $sheet2->setCellValue('C15', 'Uraian');
+        $sheet2->setCellValue('D15', 'Debit');
+        $sheet2->setCellValue('I15', 'Kredit');
+        $sheet2->setCellValue('J15', 'Saldo');
+
+        $sheet2->setCellValue('D16', 'PPN');
+        $sheet2->setCellValue('E16', 'PPh 21');
+        $sheet2->setCellValue('F16', 'PPh 22');
+        $sheet2->setCellValue('G16', 'PPh 23');
+        $sheet2->setCellValue('H16', 'PPh 4(2)');
+
+        $sheet2->mergeCells('D15:H15');
+        $sheet2->getStyle("D15:H15")->applyFromArray($middle);
+        $sheet2->getStyle("A15:J16")->applyFromArray($bold);
+        $sheet2->getStyle("A15:J16")->applyFromArray($bcolor);
+
+        $i=17; 
+        $saldo=$saldo_total;
+        $ppn=0; $pph21=0; $pph22=0; $pph23=0; $pph42=0;
+        foreach ($bp_pajak as $transaksi2)
+        {
+            $pajak=$transaksi2->trx_ppn+$transaksi2->trx_pph_21+$transaksi2->trx_pph_22+$transaksi2->trx_pph_23+$transaksi2->trx_pph_4_2;
+            $ppn=$transaksi2->trx_ppn+$ppn;
+            $pph21=$transaksi2->trx_pph_21+$pph21;
+            $pph22=$transaksi2->trx_pph_22+$pph22;
+            $pph23=$transaksi2->trx_pph_23+$pph23;
+            $pph42=$transaksi2->trx_pph_4_2+$pph42;
+            $saldo=$saldo-$transaksi2->trx_jml_kotor;
+            $sheet2->setCellValue('A'.$i, $transaksi2->trx_tanggal);
+            $sheet2->setCellValue('B'.$i, $transaksi2->trx_nomor_bukti);
+            $sheet2->setCellValue('C'.$i, $transaksi2->trx_uraian);
+            $sheet2->setCellValue('D'.$i, $transaksi2->trx_ppn);
+            $sheet2->setCellValue('E'.$i, $transaksi2->trx_pph_21);
+            $sheet2->setCellValue('F'.$i, $transaksi2->trx_pph_22);
+            $sheet2->setCellValue('G'.$i, $transaksi2->trx_pph_23);
+            $sheet2->setCellValue('H'.$i, $transaksi2->trx_pph_4_2);
+            $sheet2->setCellValue('I'.$i, number_format($pajak));
+            $sheet2->setCellValue('J'.$i, number_format($saldo));
+            
+        }
+        $sheet2->getStyle("A17:I".$i++)->applyFromArray($border);
+        $temp=$i;
+        //FOOTER
+        $sheet2->setCellValue('C'.$i, 'JUMLAH BULAN INI');
+        $sheet2->setCellValue('D'.$i, number_format($ppn));
+        $sheet2->setCellValue('E'.$i, number_format($pph21));
+        $sheet2->setCellValue('F'.$i, number_format($pph22));
+        $sheet2->setCellValue('G'.$i, number_format($pph23));
+        $sheet2->setCellValue('H'.$i, number_format($pph42));
+        $sheet2->setCellValue('H'.$i, number_format('0'));
+        $sheet2->setCellValue('J'.$i++, number_format('0'));
+
+        $sheet2->setCellValue('C'.$i, 'JUMLAH BULAN LALU');
+        $sheet2->setCellValue('D'.$i, number_format($ppn));
+        $sheet2->setCellValue('E'.$i, number_format($pph21));
+        $sheet2->setCellValue('F'.$i, number_format($pph22));
+        $sheet2->setCellValue('G'.$i, number_format($pph23));
+        $sheet2->setCellValue('H'.$i, number_format($pph42));
+        $sheet2->setCellValue('H'.$i, number_format('0'));
+        $sheet2->setCellValue('J'.$i++, number_format('0'));
+
+        $sheet2->setCellValue('C'.$i, 'JUMLAH S.D BULAN INI');
+        $sheet2->setCellValue('D'.$i, number_format($pajak_tahun_ini->ppn));
+        $sheet2->setCellValue('E'.$i, number_format($pajak_tahun_ini->pph21));
+        $sheet2->setCellValue('F'.$i, number_format($pajak_tahun_ini->pph22));
+        $sheet2->setCellValue('G'.$i, number_format($pajak_tahun_ini->pph23));
+        $sheet2->setCellValue('H'.$i, number_format($pajak_tahun_ini->pph42));
+        $sheet2->setCellValue('H'.$i, number_format('0'));
+        $sheet2->setCellValue('J'.$i, number_format('0'));
+
+        $sheet2->getStyle("A".$temp.":J".$i)->applyFromArray($bold);
+        $sheet2->getStyle("A".$temp.":J".$i++)->applyFromArray($bcolor);
+        $j=$i+2;
+        //FOOTER
+        $sheet2->setCellValue('C'.$j++, 'Mengetahui/Menyetujui, ');
+        $sheet2->setCellValue('C'.$j++, 'Pejabat Pembuat Komitmen');
+        $sheet2->setCellValue('C'.$j, 'PNBP Belanja Non Modal');
+        $j=$j+4;
+        $sheet2->setCellValue('C'.$j, $pejabat1->pejabat_nama);
+        $namaj=$j++;
+        $sheet2->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
+
+        $k=$i+1;
+        $sheet2->setCellValue('F'.$k, 'Palangka Raya, ');
+        $k=$k+2;
+        $sheet2->setCellValue('F'.$k, 'BPP PNBP');
+        $k=$k+5;
+        $sheet2->setCellValue('F'.$k, $pejabat2->pejabat_nama);
+        $namak=$k++;
+        $sheet2->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
+
+        $sheet2->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
+        //----------------------------------------------------------------------------------------------------
+
 
         $writer = new Xlsx($spreadsheet);
         $filename = 'BKU';
