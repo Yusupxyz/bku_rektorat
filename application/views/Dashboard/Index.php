@@ -7,8 +7,8 @@
             <span class="info-box-icon"><i class="fa fa-money-bill-alt"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Pendapatan</span>
-              <span class="info-box-number">Rp. 1.000.000,-</span>
+              <span class="info-box-text">Saldo</span>
+              <span class="info-box-number">Rp <?= number_format($saldo->saldo_awal-$saldo->saldo_akhir)?></span>
 
               <div class="progress">
                 <div class="progress-bar" style="width: 100%"></div>

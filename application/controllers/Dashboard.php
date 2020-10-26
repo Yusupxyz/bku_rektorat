@@ -7,10 +7,13 @@ class Dashboard extends CI_Controller {
 	{
 		parent::__construct();
 		$this->layout->auth();
+		$this->load->model('Transaksi_model');
 	}
 	
 	public function index()
 	{
+		$data['saldo'] = $this->Transaksi_model->get_saldo($this->session->userdata('tahun_aktif'),'','');
+
 		$data['title'] = 'Dashboard';
 		$data['subtitle'] = '';
         $data['crumb'] = [

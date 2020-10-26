@@ -105,12 +105,40 @@ class Unduh extends CI_Controller
             )
         );
 
+        $italic = array(
+            'font' => array(
+                'italic' => true
+            )
+        );
+
         $border = array(
             'borders' => array(
                 'allBorders' => array(
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
                     'color' => array('argb' => '00000000'),
                 ),
+            )
+        );
+
+        $borderSamping = array(
+            'borders' => array(
+                'left' => array(
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => array('argb' => '00000000'),
+                ),
+                'right' => array(
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => array('argb' => '00000000'),
+                ),
+            )
+        );
+
+        $borderBot = array(
+            'borders' => array(
+                'bottom' => array(
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => array('argb' => '00000000'),
+                )
             )
         );
 
@@ -927,6 +955,490 @@ class Unduh extends CI_Controller
         $sheet2->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
 
         $sheet2->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
+        //----------------------------------------------------------------------------------------------------
+
+        //LPJ
+        $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, 'LPJ');
+        $spreadsheet->addSheet($myWorkSheet);
+        $sheet2 = $spreadsheet->getSheetByName('LPJ');        ;
+        $sheet2->setCellValue('A1', 'LAPORAN PERTANGGUNGJAWABAN BENDAHARA PENGELUARAN PEMBANTU');
+        $sheet2->setCellValue('A2', 'Bulan '.strtoupper($bulan).' '.$tahun);
+        $sheet2->setCellValue('A4', 'KN/Lembaga');
+        $sheet2->setCellValue('D4', ':  Kementerian Pendidikan dan Kebudayaan');
+        $sheet2->setCellValue('H4', 'Tgl. No. SP DIPA');
+        $sheet2->setCellValue('J4', ':');
+        $sheet2->setCellValue('A5', 'Unit Organisasi');
+        $sheet2->setCellValue('D5', ':  Sekretariat Jenderal');
+        $sheet2->setCellValue('A6', 'Satker/SKS');
+        $sheet2->setCellValue('D6', ': PNBP Universitas Palangka Raya');
+        $sheet2->setCellValue('H6', 'Tahun Anggaran');
+        $sheet2->setCellValue('J6', ': '.$tahun);
+        $sheet2->setCellValue('A7', 'Lokasi');
+        $sheet2->setCellValue('D7', ':  Kota Palangka Raya');
+        $sheet2->setCellValue('A8', 'Tempat');
+        $sheet2->setCellValue('D8', ':  Palangka Raya');
+        $sheet2->setCellValue('A9', 'Alamat');
+        $sheet2->setCellValue('D9', ': Kampus UPR Tunjung Nyaho, Jl. Yos Sudarso Palangka Raya');
+
+        $sheet2->mergeCells('A1:M1');
+        $sheet2->mergeCells('A2:M2');
+
+        $sheet2->getStyle("A1:M2")->applyFromArray($middle);
+        $sheet2->getStyle("A1:M2")->applyFromArray($bold);
+
+        //ISI
+        $sheet2->setCellValue('A11', 'I.');
+        $sheet2->setCellValue('B11', 'Keadaan pembukuan Bulan Pelaporan dengan saldo akhir pada Buku Kas Umum sebesar ');
+        $sheet2->setCellValue('B12', 'dan Nomor Bukti terakhir Nomor:');
+
+        //TABEL
+        $sheet2->setCellValue('B13', 'No');
+        $sheet2->setCellValue('C13', 'Jenis Buku Pembantu');
+        $sheet2->setCellValue('F13', 'Saldo Awal');
+        $sheet2->setCellValue('H13', 'Penambahan');
+        $sheet2->setCellValue('J13', 'Pengurangan');
+        $sheet2->setCellValue('L13', 'Saldo Akhir');
+
+        $sheet2->setCellValue('B14', '1');
+        $sheet2->setCellValue('C14', '2');
+        $sheet2->setCellValue('F14', '3');
+        $sheet2->setCellValue('H14', '4');
+        $sheet2->setCellValue('J14', '5');
+        $sheet2->setCellValue('L14', '6');
+
+        $sheet2->mergeCells('C13:E13');
+        $sheet2->mergeCells('F13:G13');
+        $sheet2->mergeCells('H13:I13');
+        $sheet2->mergeCells('J13:K13');
+        $sheet2->mergeCells('L13:M13');
+        $sheet2->mergeCells('C14:E14');
+        $sheet2->mergeCells('F14:G14');
+        $sheet2->mergeCells('H14:I14');
+        $sheet2->mergeCells('J14:K14');
+        $sheet2->mergeCells('L14:M14');
+        $sheet2->getStyle("B13:M14")->applyFromArray($middle);
+        $sheet2->getStyle("B13:M14")->applyFromArray($bold);
+        $sheet2->getStyle("B14:M14")->applyFromArray($italic);
+        $sheet2->getStyle("B14:M14")->applyFromArray($bcolor);
+        $sheet2->getStyle("B13:M15")->applyFromArray($border);
+
+        $sheet2->setCellValue('B15', 'A.');
+        $sheet2->setCellValue('C15', 'BP Kas');
+        $sheet2->setCellValue('F15', 'Rp');
+        $sheet2->setCellValue('G15', '');
+        $sheet2->setCellValue('H15', 'Rp');
+        $sheet2->setCellValue('I15', '');
+        $sheet2->setCellValue('J15', 'Rp');
+        $sheet2->setCellValue('K15', '');
+        $sheet2->setCellValue('L15', 'Rp');
+        $sheet2->setCellValue('M15', '');
+
+        $sheet2->setCellValue('C16', '1. BP Kas Tunai');
+        $sheet2->setCellValue('F16', 'Rp');
+        $sheet2->setCellValue('G16', '');
+        $sheet2->setCellValue('H16', 'Rp');
+        $sheet2->setCellValue('I16', '');
+        $sheet2->setCellValue('J16', 'Rp');
+        $sheet2->setCellValue('K16', '');
+        $sheet2->setCellValue('L16', 'Rp');
+        $sheet2->setCellValue('M16', '');
+
+        $sheet2->setCellValue('C17', '2. BP Kas Bank');
+        $sheet2->setCellValue('F17', 'Rp');
+        $sheet2->setCellValue('G17', '');
+        $sheet2->setCellValue('H17', 'Rp');
+        $sheet2->setCellValue('I17', '');
+        $sheet2->setCellValue('J17', 'Rp');
+        $sheet2->setCellValue('K17', '');
+        $sheet2->setCellValue('L17', 'Rp');
+        $sheet2->setCellValue('M17', '');
+
+        $sheet2->getStyle("B16:B17")->applyFromArray($borderSamping);
+        $sheet2->getStyle("C16:E17")->applyFromArray($borderSamping);
+        $sheet2->getStyle("F16:G17")->applyFromArray($borderSamping);
+        $sheet2->getStyle("H16:I17")->applyFromArray($borderSamping);
+        $sheet2->getStyle("J16:K17")->applyFromArray($borderSamping);
+        $sheet2->getStyle("L16:M17")->applyFromArray($borderSamping);
+
+        $sheet2->setCellValue('B18', 'B.');
+        $sheet2->setCellValue('C18', 'BP Selain Kas');
+        $sheet2->setCellValue('F18', 'Rp');
+        $sheet2->setCellValue('G18', '');
+        $sheet2->setCellValue('H18', 'Rp');
+        $sheet2->setCellValue('I18', '');
+        $sheet2->setCellValue('J18', 'Rp');
+        $sheet2->setCellValue('K18', '');
+        $sheet2->setCellValue('L18', 'Rp');
+        $sheet2->setCellValue('M18', '');
+
+        $sheet2->getStyle("B18:M18")->applyFromArray($bold);
+        $sheet2->getStyle("B18:M18")->applyFromArray($border);
+
+        $sheet2->setCellValue('C19', '1. BP UP *)');
+        $sheet2->setCellValue('C20', '- Belanja MA');
+        $sheet2->setCellValue('F20', 'Rp');
+        $sheet2->setCellValue('G20', '');
+        $sheet2->setCellValue('H20', 'Rp');
+        $sheet2->setCellValue('I20', '');
+        $sheet2->setCellValue('J20', 'Rp');
+        $sheet2->setCellValue('K20', '');
+        $sheet2->setCellValue('L20', 'Rp');
+        $sheet2->setCellValue('M20', '');
+
+        $sheet2->setCellValue('C21', '- Pengembalian Sisa UP');
+        $sheet2->setCellValue('F21', 'Rp');
+        $sheet2->setCellValue('G21', '');
+        $sheet2->setCellValue('H21', 'Rp');
+        $sheet2->setCellValue('I21', '');
+        $sheet2->setCellValue('J21', 'Rp');
+        $sheet2->setCellValue('K21', '');
+        $sheet2->setCellValue('L21', 'Rp');
+        $sheet2->setCellValue('M21', '');
+
+        $sheet2->setCellValue('C22', '2. BP LS-Bendahara');
+        $sheet2->setCellValue('C23', '- Pembayaran atas LS-Bendahara');
+        $sheet2->setCellValue('F23', 'Rp');
+        $sheet2->setCellValue('G23', '');
+        $sheet2->setCellValue('H23', 'Rp');
+        $sheet2->setCellValue('I23', '');
+        $sheet2->setCellValue('J23', 'Rp');
+        $sheet2->setCellValue('K23', '');
+        $sheet2->setCellValue('L23', 'Rp');
+        $sheet2->setCellValue('M23', '');
+
+        $sheet2->setCellValue('C24', '- Setoran atas LS-Bendahara');
+        $sheet2->setCellValue('F24', 'Rp');
+        $sheet2->setCellValue('G24', '');
+        $sheet2->setCellValue('H24', 'Rp');
+        $sheet2->setCellValue('I24', '');
+        $sheet2->setCellValue('J24', 'Rp');
+        $sheet2->setCellValue('K24', '');
+        $sheet2->setCellValue('L24', 'Rp');
+        $sheet2->setCellValue('M24', '');
+
+        $sheet2->setCellValue('C25', '3. BP Pajak');
+        $sheet2->setCellValue('F25', 'Rp');
+        $sheet2->setCellValue('G25', '');
+        $sheet2->setCellValue('H25', 'Rp');
+        $sheet2->setCellValue('I25', '');
+        $sheet2->setCellValue('J25', 'Rp');
+        $sheet2->setCellValue('K25', '');
+        $sheet2->setCellValue('L25', 'Rp');
+        $sheet2->setCellValue('M25', '');
+
+        $sheet2->setCellValue('C26', '4. BP Voucher');
+        $sheet2->setCellValue('F26', 'Rp');
+        $sheet2->setCellValue('G26', '');
+        $sheet2->setCellValue('H26', 'Rp');
+        $sheet2->setCellValue('I26', '');
+        $sheet2->setCellValue('J26', 'Rp');
+        $sheet2->setCellValue('K26', '');
+        $sheet2->setCellValue('L26', 'Rp');
+        $sheet2->setCellValue('M26', '');
+
+        $sheet2->getStyle("B19:B26")->applyFromArray($borderSamping);
+        $sheet2->getStyle("C19:E26")->applyFromArray($borderSamping);
+        $sheet2->getStyle("F19:G26")->applyFromArray($borderSamping);
+        $sheet2->getStyle("H19:I26")->applyFromArray($borderSamping);
+        $sheet2->getStyle("J19:K26")->applyFromArray($borderSamping);
+        $sheet2->getStyle("L19:M26")->applyFromArray($borderSamping);
+        $sheet2->getStyle("B26:M26")->applyFromArray($borderBot);
+
+        $sheet2->setCellValue('B27', '*)');
+        $sheet2->setCellValue('C27', 'Jumlah pengurangan sudah termasuk kuitansi UP yang belum di SPM-kan sebesar Rp ,-');
+        
+        $sheet2->setCellValue('A28', 'II.');
+        $sheet2->setCellValue('B28', 'Keadaan Kas pada akhir Bulan Pelaporan');
+        $sheet2->setCellValue('B29', '1.');
+        $sheet2->setCellValue('C29', 'Uang Tunai di Brankas');
+        $sheet2->setCellValue('F29', 'Rp.');
+        $sheet2->setCellValue('G29', '');
+        $sheet2->setCellValue('B30', '2.');
+        $sheet2->setCellValue('C30', 'Uang di Rekening Bank');
+        $sheet2->setCellValue('F30', 'Rp.');
+        $sheet2->setCellValue('G30', '');
+        $sheet2->setCellValue('H30', '(+)');
+        $sheet2->setCellValue('B31', '3.');
+        $sheet2->setCellValue('C31', 'Jumlah Kas');
+        $sheet2->setCellValue('F31', 'Rp.');
+        $sheet2->setCellValue('G31', '');
+        $sheet2->getStyle("C30:G30")->applyFromArray($underline);
+
+        $sheet2->setCellValue('A32', 'III.');
+        $sheet2->setCellValue('B32', 'Selisih Kas');
+        $sheet2->setCellValue('B33', '1.');
+        $sheet2->setCellValue('C33', 'Saldo Akhir BP Kas (I.A.1 kol 6)');
+        $sheet2->setCellValue('F33', 'Rp.');
+        $sheet2->setCellValue('G33', '');
+        $sheet2->setCellValue('B34', '2.');
+        $sheet2->setCellValue('C34', 'Jumlah Kas (II.3)');
+        $sheet2->setCellValue('F34', 'Rp.');
+        $sheet2->setCellValue('G34', '');
+        $sheet2->setCellValue('H34', '(-)');
+        $sheet2->setCellValue('B35', '3.');
+        $sheet2->setCellValue('C35', 'Jumlah Kas');
+        $sheet2->setCellValue('F35', 'Rp.');
+        $sheet2->setCellValue('G35', '');
+        $sheet2->getStyle("C34:G34")->applyFromArray($underline);
+
+        $sheet2->setCellValue('A36', 'IV.');
+        $sheet2->setCellValue('B36', 'Penjelasan selisih kas (apabila ada) :');
+        $sheet2->setCellValue('B37', '1.');
+        $sheet2->setCellValue('C37', 'Nihil');
+        $sheet2->setCellValue('B38', '2.');
+        $sheet2->setCellValue('C38', '');
+        $sheet2->mergeCells('C37:M37');
+        $sheet2->mergeCells('C38:M38');
+
+        
+        //FOOTER
+        $sheet2->setCellValue('C42', 'Mengetahui/Menyetujui, ');
+        $sheet2->setCellValue('C43', 'Pejabat Pembuat Komitmen');
+        $sheet2->setCellValue('C44', 'PNBP Belanja Non Modal');
+        $sheet2->setCellValue('C48', $pejabat1->pejabat_nama);
+        $sheet2->setCellValue('C49', 'NIP. '.$pejabat1->pejabat_nip);
+
+        $sheet2->setCellValue('G41', 'Palangka Raya, ............. 2020');
+        $sheet2->setCellValue('G43', 'BPP PNBP');
+        $sheet2->setCellValue('G48', $pejabat2->pejabat_nama);
+        $sheet2->setCellValue('G49', 'NIP. '.$pejabat2->pejabat_nip);
+
+        $sheet2->getStyle("C48:G48")->applyFromArray($bold);
+        //----------------------------------------------------------------------------------------------------
+
+        //BERITA ACARA
+        $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, 'BAR');
+        $spreadsheet->addSheet($myWorkSheet);
+        $sheet2 = $spreadsheet->getSheetByName('BAR');        ;
+        $sheet2->setCellValue('A1', 'BERITA ACARA PEMERIKSAAN KAS');
+        $sheet2->setCellValue('A2', 'BENDAHARA PENGELUARAN PEMBANTU');
+        $sheet2->setCellValue('A4', 'Pada hari ini  tanggal  kami selaku Pejabat Pembuat Komitmen telah melakukan pemeriksaan kas BPP dengan saldo akhir pada Buku Kas Umum sebesar NIHIL dan bukti terakhir nomor : 0000/PNBP NON MODAL-UPR/2020.');
+        $sheet2->setCellValue('A7', 'Adapun hasil pemeriksaan kas sebagai berikut:');
+
+        $sheet2->mergeCells('A1:M1');
+        $sheet2->mergeCells('A2:M2');
+
+        $sheet2->getStyle("A1:M2")->applyFromArray($middle);
+        $sheet2->getStyle("A1:M2")->applyFromArray($bold);
+
+        //ISI
+        $sheet2->setCellValue('A11', 'I.');
+        $sheet2->setCellValue('B11', 'Keadaan pembukuan Bulan Pelaporan dengan saldo akhir pada Buku Kas Umum sebesar ');
+        $sheet2->setCellValue('B12', 'dan Nomor Bukti terakhir Nomor:');
+
+        //TABEL
+        $sheet2->setCellValue('B13', 'No');
+        $sheet2->setCellValue('C13', 'Jenis Buku Pembantu');
+        $sheet2->setCellValue('F13', 'Saldo Awal');
+        $sheet2->setCellValue('H13', 'Penambahan');
+        $sheet2->setCellValue('J13', 'Pengurangan');
+        $sheet2->setCellValue('L13', 'Saldo Akhir');
+
+        $sheet2->setCellValue('B14', '1');
+        $sheet2->setCellValue('C14', '2');
+        $sheet2->setCellValue('F14', '3');
+        $sheet2->setCellValue('H14', '4');
+        $sheet2->setCellValue('J14', '5');
+        $sheet2->setCellValue('L14', '6');
+
+        $sheet2->mergeCells('C13:E13');
+        $sheet2->mergeCells('F13:G13');
+        $sheet2->mergeCells('H13:I13');
+        $sheet2->mergeCells('J13:K13');
+        $sheet2->mergeCells('L13:M13');
+        $sheet2->mergeCells('C14:E14');
+        $sheet2->mergeCells('F14:G14');
+        $sheet2->mergeCells('H14:I14');
+        $sheet2->mergeCells('J14:K14');
+        $sheet2->mergeCells('L14:M14');
+        $sheet2->getStyle("B13:M14")->applyFromArray($middle);
+        $sheet2->getStyle("B13:M14")->applyFromArray($bold);
+        $sheet2->getStyle("B14:M14")->applyFromArray($italic);
+        $sheet2->getStyle("B14:M14")->applyFromArray($bcolor);
+        $sheet2->getStyle("B13:M15")->applyFromArray($border);
+
+        $sheet2->setCellValue('B15', 'A.');
+        $sheet2->setCellValue('C15', 'BP Kas');
+        $sheet2->setCellValue('F15', 'Rp');
+        $sheet2->setCellValue('G15', '');
+        $sheet2->setCellValue('H15', 'Rp');
+        $sheet2->setCellValue('I15', '');
+        $sheet2->setCellValue('J15', 'Rp');
+        $sheet2->setCellValue('K15', '');
+        $sheet2->setCellValue('L15', 'Rp');
+        $sheet2->setCellValue('M15', '');
+
+        $sheet2->setCellValue('C16', '1. BP Kas Tunai');
+        $sheet2->setCellValue('F16', 'Rp');
+        $sheet2->setCellValue('G16', '');
+        $sheet2->setCellValue('H16', 'Rp');
+        $sheet2->setCellValue('I16', '');
+        $sheet2->setCellValue('J16', 'Rp');
+        $sheet2->setCellValue('K16', '');
+        $sheet2->setCellValue('L16', 'Rp');
+        $sheet2->setCellValue('M16', '');
+
+        $sheet2->setCellValue('C17', '2. BP Kas Bank');
+        $sheet2->setCellValue('F17', 'Rp');
+        $sheet2->setCellValue('G17', '');
+        $sheet2->setCellValue('H17', 'Rp');
+        $sheet2->setCellValue('I17', '');
+        $sheet2->setCellValue('J17', 'Rp');
+        $sheet2->setCellValue('K17', '');
+        $sheet2->setCellValue('L17', 'Rp');
+        $sheet2->setCellValue('M17', '');
+
+        $sheet2->getStyle("B16:B17")->applyFromArray($borderSamping);
+        $sheet2->getStyle("C16:E17")->applyFromArray($borderSamping);
+        $sheet2->getStyle("F16:G17")->applyFromArray($borderSamping);
+        $sheet2->getStyle("H16:I17")->applyFromArray($borderSamping);
+        $sheet2->getStyle("J16:K17")->applyFromArray($borderSamping);
+        $sheet2->getStyle("L16:M17")->applyFromArray($borderSamping);
+
+        $sheet2->setCellValue('B18', 'B.');
+        $sheet2->setCellValue('C18', 'BP Selain Kas');
+        $sheet2->setCellValue('F18', 'Rp');
+        $sheet2->setCellValue('G18', '');
+        $sheet2->setCellValue('H18', 'Rp');
+        $sheet2->setCellValue('I18', '');
+        $sheet2->setCellValue('J18', 'Rp');
+        $sheet2->setCellValue('K18', '');
+        $sheet2->setCellValue('L18', 'Rp');
+        $sheet2->setCellValue('M18', '');
+
+        $sheet2->getStyle("B18:M18")->applyFromArray($bold);
+        $sheet2->getStyle("B18:M18")->applyFromArray($border);
+
+        $sheet2->setCellValue('C19', '1. BP UP *)');
+        $sheet2->setCellValue('C20', '- Belanja MA');
+        $sheet2->setCellValue('F20', 'Rp');
+        $sheet2->setCellValue('G20', '');
+        $sheet2->setCellValue('H20', 'Rp');
+        $sheet2->setCellValue('I20', '');
+        $sheet2->setCellValue('J20', 'Rp');
+        $sheet2->setCellValue('K20', '');
+        $sheet2->setCellValue('L20', 'Rp');
+        $sheet2->setCellValue('M20', '');
+
+        $sheet2->setCellValue('C21', '- Pengembalian Sisa UP');
+        $sheet2->setCellValue('F21', 'Rp');
+        $sheet2->setCellValue('G21', '');
+        $sheet2->setCellValue('H21', 'Rp');
+        $sheet2->setCellValue('I21', '');
+        $sheet2->setCellValue('J21', 'Rp');
+        $sheet2->setCellValue('K21', '');
+        $sheet2->setCellValue('L21', 'Rp');
+        $sheet2->setCellValue('M21', '');
+
+        $sheet2->setCellValue('C22', '2. BP LS-Bendahara');
+        $sheet2->setCellValue('C23', '- Pembayaran atas LS-Bendahara');
+        $sheet2->setCellValue('F23', 'Rp');
+        $sheet2->setCellValue('G23', '');
+        $sheet2->setCellValue('H23', 'Rp');
+        $sheet2->setCellValue('I23', '');
+        $sheet2->setCellValue('J23', 'Rp');
+        $sheet2->setCellValue('K23', '');
+        $sheet2->setCellValue('L23', 'Rp');
+        $sheet2->setCellValue('M23', '');
+
+        $sheet2->setCellValue('C24', '- Setoran atas LS-Bendahara');
+        $sheet2->setCellValue('F24', 'Rp');
+        $sheet2->setCellValue('G24', '');
+        $sheet2->setCellValue('H24', 'Rp');
+        $sheet2->setCellValue('I24', '');
+        $sheet2->setCellValue('J24', 'Rp');
+        $sheet2->setCellValue('K24', '');
+        $sheet2->setCellValue('L24', 'Rp');
+        $sheet2->setCellValue('M24', '');
+
+        $sheet2->setCellValue('C25', '3. BP Pajak');
+        $sheet2->setCellValue('F25', 'Rp');
+        $sheet2->setCellValue('G25', '');
+        $sheet2->setCellValue('H25', 'Rp');
+        $sheet2->setCellValue('I25', '');
+        $sheet2->setCellValue('J25', 'Rp');
+        $sheet2->setCellValue('K25', '');
+        $sheet2->setCellValue('L25', 'Rp');
+        $sheet2->setCellValue('M25', '');
+
+        $sheet2->setCellValue('C26', '4. BP Voucher');
+        $sheet2->setCellValue('F26', 'Rp');
+        $sheet2->setCellValue('G26', '');
+        $sheet2->setCellValue('H26', 'Rp');
+        $sheet2->setCellValue('I26', '');
+        $sheet2->setCellValue('J26', 'Rp');
+        $sheet2->setCellValue('K26', '');
+        $sheet2->setCellValue('L26', 'Rp');
+        $sheet2->setCellValue('M26', '');
+
+        $sheet2->getStyle("B19:B26")->applyFromArray($borderSamping);
+        $sheet2->getStyle("C19:E26")->applyFromArray($borderSamping);
+        $sheet2->getStyle("F19:G26")->applyFromArray($borderSamping);
+        $sheet2->getStyle("H19:I26")->applyFromArray($borderSamping);
+        $sheet2->getStyle("J19:K26")->applyFromArray($borderSamping);
+        $sheet2->getStyle("L19:M26")->applyFromArray($borderSamping);
+        $sheet2->getStyle("B26:M26")->applyFromArray($borderBot);
+
+        $sheet2->setCellValue('B27', '*)');
+        $sheet2->setCellValue('C27', 'Jumlah pengurangan sudah termasuk kuitansi UP yang belum di SPM-kan sebesar Rp ,-');
+        
+        $sheet2->setCellValue('A28', 'II.');
+        $sheet2->setCellValue('B28', 'Keadaan Kas pada akhir Bulan Pelaporan');
+        $sheet2->setCellValue('B29', '1.');
+        $sheet2->setCellValue('C29', 'Uang Tunai di Brankas');
+        $sheet2->setCellValue('F29', 'Rp.');
+        $sheet2->setCellValue('G29', '');
+        $sheet2->setCellValue('B30', '2.');
+        $sheet2->setCellValue('C30', 'Uang di Rekening Bank');
+        $sheet2->setCellValue('F30', 'Rp.');
+        $sheet2->setCellValue('G30', '');
+        $sheet2->setCellValue('H30', '(+)');
+        $sheet2->setCellValue('B31', '3.');
+        $sheet2->setCellValue('C31', 'Jumlah Kas');
+        $sheet2->setCellValue('F31', 'Rp.');
+        $sheet2->setCellValue('G31', '');
+        $sheet2->getStyle("C30:G30")->applyFromArray($underline);
+
+        $sheet2->setCellValue('A32', 'III.');
+        $sheet2->setCellValue('B32', 'Selisih Kas');
+        $sheet2->setCellValue('B33', '1.');
+        $sheet2->setCellValue('C33', 'Saldo Akhir BP Kas (I.A.1 kol 6)');
+        $sheet2->setCellValue('F33', 'Rp.');
+        $sheet2->setCellValue('G33', '');
+        $sheet2->setCellValue('B34', '2.');
+        $sheet2->setCellValue('C34', 'Jumlah Kas (II.3)');
+        $sheet2->setCellValue('F34', 'Rp.');
+        $sheet2->setCellValue('G34', '');
+        $sheet2->setCellValue('H34', '(-)');
+        $sheet2->setCellValue('B35', '3.');
+        $sheet2->setCellValue('C35', 'Jumlah Kas');
+        $sheet2->setCellValue('F35', 'Rp.');
+        $sheet2->setCellValue('G35', '');
+        $sheet2->getStyle("C34:G34")->applyFromArray($underline);
+
+        $sheet2->setCellValue('A36', 'IV.');
+        $sheet2->setCellValue('B36', 'Penjelasan selisih kas (apabila ada) :');
+        $sheet2->setCellValue('B37', '1.');
+        $sheet2->setCellValue('C37', 'Nihil');
+        $sheet2->setCellValue('B38', '2.');
+        $sheet2->setCellValue('C38', '');
+        $sheet2->mergeCells('C37:M37');
+        $sheet2->mergeCells('C38:M38');
+
+        
+        //FOOTER
+        $sheet2->setCellValue('C42', 'Mengetahui/Menyetujui, ');
+        $sheet2->setCellValue('C43', 'Pejabat Pembuat Komitmen');
+        $sheet2->setCellValue('C44', 'PNBP Belanja Non Modal');
+        $sheet2->setCellValue('C48', $pejabat1->pejabat_nama);
+        $sheet2->setCellValue('C49', 'NIP. '.$pejabat1->pejabat_nip);
+
+        $sheet2->setCellValue('G41', 'Palangka Raya, ............. 2020');
+        $sheet2->setCellValue('G43', 'BPP PNBP');
+        $sheet2->setCellValue('G48', $pejabat2->pejabat_nama);
+        $sheet2->setCellValue('G49', 'NIP. '.$pejabat2->pejabat_nip);
+
+        $sheet2->getStyle("C48:G48")->applyFromArray($bold);
         //----------------------------------------------------------------------------------------------------
 
 
