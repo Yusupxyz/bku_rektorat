@@ -208,6 +208,7 @@ class Unduh extends CI_Controller
 
         $i=15; 
         $saldo=$saldo_total;
+        
         foreach ($bku_umum as $value)
         {
             $saldo=$saldo-$value->trx_jml_kotor;
@@ -218,10 +219,11 @@ class Unduh extends CI_Controller
             $sheet->setCellValue('F'.$i, $value->trx_uraian);
             $sheet->setCellValue('G'.$i, '');
             $sheet->setCellValue('H'.$i, number_format($value->trx_jml_kotor));
-            $sheet->setCellValue('I'.$i, number_format($saldo));
-            
+            $sheet->setCellValue('I'.$i++, number_format($saldo));
         }
-        $sheet->getStyle("B15:I".$i++)->applyFromArray($border);
+        if (count($bku_umum)<1) $i++;
+
+        $sheet->getStyle("B15:I".$i)->applyFromArray($border);
         $temp=$i;
         //FOOTER
         $sheet->setCellValue('F'.$i, 'JUMLAH BULAN INI');
@@ -328,10 +330,12 @@ class Unduh extends CI_Controller
             $sheet2->setCellValue('F'.$i, $transaksi2->trx_uraian);
             $sheet2->setCellValue('G'.$i, '');
             $sheet2->setCellValue('H'.$i, number_format($transaksi2->trx_jml_kotor));
-            $sheet2->setCellValue('I'.$i, number_format($saldo));
+            $sheet2->setCellValue('I'.$i++, number_format($saldo));
             
         }
-        $sheet2->getStyle("B15:I".$i++)->applyFromArray($border);
+        if (count($bku_tunai)<1) $i++;
+
+        $sheet2->getStyle("B15:I".$i)->applyFromArray($border);
         $temp=$i;
         //FOOTER
         $sheet2->setCellValue('F'.$i, 'JUMLAH BULAN INI');
@@ -357,20 +361,20 @@ class Unduh extends CI_Controller
         $sheet2->setCellValue('C'.$j++, 'Pejabat Pembuat Komitmen');
         $sheet2->setCellValue('C'.$j, 'PNBP Belanja Non Modal');
         $j=$j+4;
-        $sheet->setCellValue('C'.$j, $pejabat1->pejabat_nama);
+        $sheet2->setCellValue('C'.$j, $pejabat1->pejabat_nama);
         $namaj=$j++;
-        $sheet->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
+        $sheet2->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
 
         $k=$i+1;
-        $sheet->setCellValue('F'.$k, 'Palangka Raya, ');
+        $sheet2->setCellValue('F'.$k, 'Palangka Raya, ');
         $k=$k+2;
-        $sheet->setCellValue('F'.$k, 'BPP PNBP');
+        $sheet2->setCellValue('F'.$k, 'BPP PNBP');
         $k=$k+5;
-        $sheet->setCellValue('F'.$k, $pejabat2->pejabat_nama);
+        $sheet2->setCellValue('F'.$k, $pejabat2->pejabat_nama);
         $namak=$k++;
-        $sheet->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
+        $sheet2->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
 
-        $sheet->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
+        $sheet2->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
         //----------------------------------------------------------------------------------------------------
 
         //BP KAS BANK
@@ -438,10 +442,12 @@ class Unduh extends CI_Controller
             $sheet2->setCellValue('F'.$i, $transaksi2->trx_uraian);
             $sheet2->setCellValue('G'.$i, '');
             $sheet2->setCellValue('H'.$i, number_format($transaksi2->trx_jml_kotor));
-            $sheet2->setCellValue('I'.$i, number_format($saldo));
+            $sheet2->setCellValue('I'.$i++, number_format($saldo));
             
         }
-        $sheet2->getStyle("B15:I".$i++)->applyFromArray($border);
+        if (count($bku_bank)<1) $i++;
+
+        $sheet2->getStyle("B15:I".$i)->applyFromArray($border);
         $temp=$i;
         //FOOTER
         $sheet2->setCellValue('F'.$i, 'JUMLAH BULAN INI');
@@ -467,20 +473,20 @@ class Unduh extends CI_Controller
         $sheet2->setCellValue('C'.$j++, 'Pejabat Pembuat Komitmen');
         $sheet2->setCellValue('C'.$j, 'PNBP Belanja Non Modal');
         $j=$j+4;
-        $sheet->setCellValue('C'.$j, $pejabat1->pejabat_nama);
+        $sheet2->setCellValue('C'.$j, $pejabat1->pejabat_nama);
         $namaj=$j++;
-        $sheet->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
+        $sheet2->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
 
         $k=$i+1;
-        $sheet->setCellValue('F'.$k, 'Palangka Raya, ');
+        $sheet2->setCellValue('F'.$k, 'Palangka Raya, ');
         $k=$k+2;
-        $sheet->setCellValue('F'.$k, 'BPP PNBP');
+        $sheet2->setCellValue('F'.$k, 'BPP PNBP');
         $k=$k+5;
-        $sheet->setCellValue('F'.$k, $pejabat2->pejabat_nama);
+        $sheet2->setCellValue('F'.$k, $pejabat2->pejabat_nama);
         $namak=$k++;
-        $sheet->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
+        $sheet2->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
 
-        $sheet->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
+        $sheet2->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
         //----------------------------------------------------------------------------------------------------
 
 
@@ -549,10 +555,12 @@ class Unduh extends CI_Controller
             $sheet2->setCellValue('F'.$i, $transaksi2->trx_uraian);
             $sheet2->setCellValue('G'.$i, '');
             $sheet2->setCellValue('H'.$i, number_format($transaksi2->trx_jml_kotor));
-            $sheet2->setCellValue('I'.$i, number_format($saldo));
+            $sheet2->setCellValue('I'.$i++, number_format($saldo));
             
         }
-        $sheet2->getStyle("B15:I".$i++)->applyFromArray($border);
+        if (count($bku_tbp)<1) $i++;
+
+        $sheet2->getStyle("B15:I".$i)->applyFromArray($border);
         $temp=$i;
         //FOOTER
         $sheet2->setCellValue('F'.$i, 'JUMLAH BULAN INI');
@@ -578,20 +586,20 @@ class Unduh extends CI_Controller
         $sheet2->setCellValue('C'.$j++, 'Pejabat Pembuat Komitmen');
         $sheet2->setCellValue('C'.$j, 'PNBP Belanja Non Modal');
         $j=$j+4;
-        $sheet->setCellValue('C'.$j, $pejabat1->pejabat_nama);
+        $sheet2->setCellValue('C'.$j, $pejabat1->pejabat_nama);
         $namaj=$j++;
-        $sheet->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
+        $sheet2->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
 
         $k=$i+1;
-        $sheet->setCellValue('F'.$k, 'Palangka Raya, ');
+        $sheet2->setCellValue('F'.$k, 'Palangka Raya, ');
         $k=$k+2;
-        $sheet->setCellValue('F'.$k, 'BPP PNBP');
+        $sheet2->setCellValue('F'.$k, 'BPP PNBP');
         $k=$k+5;
-        $sheet->setCellValue('F'.$k, $pejabat2->pejabat_nama);
+        $sheet2->setCellValue('F'.$k, $pejabat2->pejabat_nama);
         $namak=$k++;
-        $sheet->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
+        $sheet2->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
 
-        $sheet->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
+        $sheet2->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
         //----------------------------------------------------------------------------------------------------
 
 
@@ -660,10 +668,12 @@ class Unduh extends CI_Controller
             $sheet2->setCellValue('F'.$i, $transaksi2->trx_uraian);
             $sheet2->setCellValue('G'.$i, '');
             $sheet2->setCellValue('H'.$i, number_format($transaksi2->trx_jml_kotor));
-            $sheet2->setCellValue('I'.$i, number_format($saldo));
+            $sheet2->setCellValue('I'.$i++, number_format($saldo));
             
         }
-        $sheet2->getStyle("B15:I".$i++)->applyFromArray($border);
+        if (count($bp_up)<1) $i++;
+
+        $sheet2->getStyle("B15:I".$i)->applyFromArray($border);
         $temp=$i;
         //FOOTER
         $sheet2->setCellValue('F'.$i, 'JUMLAH BULAN INI');
@@ -689,20 +699,20 @@ class Unduh extends CI_Controller
         $sheet2->setCellValue('C'.$j++, 'Pejabat Pembuat Komitmen');
         $sheet2->setCellValue('C'.$j, 'PNBP Belanja Non Modal');
         $j=$j+4;
-        $sheet->setCellValue('C'.$j, $pejabat1->pejabat_nama);
+        $sheet2->setCellValue('C'.$j, $pejabat1->pejabat_nama);
         $namaj=$j++;
-        $sheet->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
+        $sheet2->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
 
         $k=$i+1;
-        $sheet->setCellValue('F'.$k, 'Palangka Raya, ');
+        $sheet2->setCellValue('F'.$k, 'Palangka Raya, ');
         $k=$k+2;
-        $sheet->setCellValue('F'.$k, 'BPP PNBP');
+        $sheet2->setCellValue('F'.$k, 'BPP PNBP');
         $k=$k+5;
-        $sheet->setCellValue('F'.$k, $pejabat2->pejabat_nama);
+        $sheet2->setCellValue('F'.$k, $pejabat2->pejabat_nama);
         $namak=$k++;
-        $sheet->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
+        $sheet2->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
 
-        $sheet->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
+        $sheet2->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
         //----------------------------------------------------------------------------------------------------
 
         //BP LSB
@@ -770,10 +780,12 @@ class Unduh extends CI_Controller
             $sheet2->setCellValue('F'.$i, $transaksi2->trx_uraian);
             $sheet2->setCellValue('G'.$i, '');
             $sheet2->setCellValue('H'.$i, number_format($transaksi2->trx_jml_kotor));
-            $sheet2->setCellValue('I'.$i, number_format($saldo));
+            $sheet2->setCellValue('I'.$i++, number_format($saldo));
             
         }
-        $sheet2->getStyle("B15:I".$i++)->applyFromArray($border);
+        if (count($bp_lsb)<1) $i++;
+
+        $sheet2->getStyle("B15:I".$i)->applyFromArray($border);
         $temp=$i;
         //FOOTER
         $sheet2->setCellValue('F'.$i, 'JUMLAH BULAN INI');
@@ -799,20 +811,20 @@ class Unduh extends CI_Controller
         $sheet2->setCellValue('C'.$j++, 'Pejabat Pembuat Komitmen');
         $sheet2->setCellValue('C'.$j, 'PNBP Belanja Non Modal');
         $j=$j+4;
-        $sheet->setCellValue('C'.$j, $pejabat1->pejabat_nama);
+        $sheet2->setCellValue('C'.$j, $pejabat1->pejabat_nama);
         $namaj=$j++;
-        $sheet->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
+        $sheet2->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
 
         $k=$i+1;
-        $sheet->setCellValue('F'.$k, 'Palangka Raya, ');
+        $sheet2->setCellValue('F'.$k, 'Palangka Raya, ');
         $k=$k+2;
-        $sheet->setCellValue('F'.$k, 'BPP PNBP');
+        $sheet2->setCellValue('F'.$k, 'BPP PNBP');
         $k=$k+5;
-        $sheet->setCellValue('F'.$k, $pejabat2->pejabat_nama);
+        $sheet2->setCellValue('F'.$k, $pejabat2->pejabat_nama);
         $namak=$k++;
-        $sheet->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
+        $sheet2->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
 
-        $sheet->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
+        $sheet2->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
         //----------------------------------------------------------------------------------------------------
 
         //BP PAJAK
@@ -900,10 +912,12 @@ class Unduh extends CI_Controller
             $sheet2->setCellValue('G'.$i, $transaksi2->trx_pph_23);
             $sheet2->setCellValue('H'.$i, $transaksi2->trx_pph_4_2);
             $sheet2->setCellValue('I'.$i, number_format($pajak));
-            $sheet2->setCellValue('J'.$i, number_format($saldo));
+            $sheet2->setCellValue('J'.$i++, number_format($saldo));
             
         }
-        $sheet2->getStyle("A17:I".$i++)->applyFromArray($border);
+        if (count($bp_pajak)<1) $i++;
+
+        $sheet2->getStyle("A17:I".$i)->applyFromArray($border);
         $temp=$i;
         //FOOTER
         $sheet2->setCellValue('C'.$i, 'JUMLAH BULAN INI');

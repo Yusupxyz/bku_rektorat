@@ -23,9 +23,9 @@
             </div>
             <div class="col-md-1 text-right">
             </div>
-            <div class="col-md-3 text-right">
+            <!-- <div class="col-md-3 text-right">
 		        <?php echo anchor(site_url('transaksi/excel'), '<i class="fa fa-file-excel"></i> Download Excel', 'class="btn btn-success"'); ?>
-            </div>
+            </div> -->
         </div>
         <div class="row">
             <div class="col-md-5">
