@@ -49,12 +49,22 @@ class Transaksi extends CI_Controller
             $bulan = '';   
         }
         $transaksi = $this->Transaksi_model->get_limit_data($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$bulan,$nb);
-        // echo $this->db->last_query();
+        $saldo_akhir_data = $this->Transaksi_model->get_saldo_akhirx($config['per_page']+($start-10), 0, $q,$this->session->userdata('tahun_aktif'),$bulan,$nb);
+                // echo $this->db->last_query();
+
+        $saldo_akhir=0; 
+        foreach ($saldo_akhir_data as $saldo)
+        { 
+            $saldo_awal=$saldo->trx_penerimaan+$saldo_akhir;
+            $saldo_akhir=$saldo_awal-$saldo->trx_pengeluaran;
+        }
+
         $transaksi_unit=array();
         foreach ($transaksi as $key) {
             $transaksi_unit[] = $this->Transaksi_unit_model->get_data($key->trx_id);
         }
         $saldo = $this->Transaksi_model->get_saldo($this->session->userdata('tahun_aktif'),$bulan,$nb);
+
         $this->load->library('pagination');
         $this->pagination->initialize($config);
 
@@ -62,6 +72,7 @@ class Transaksi extends CI_Controller
             'transaksi_data' => $transaksi,
             'transaksi_unit' => $transaksi_unit,
             'saldo' => $saldo,
+            'saldo_akhir' => $saldo_akhir,
             'q' => $q,
             'pagination' => $this->pagination->create_links(),
             'total_rows' => $config['total_rows'],

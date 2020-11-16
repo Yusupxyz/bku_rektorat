@@ -34,11 +34,11 @@ class Buku extends CI_Controller
         $start = intval($this->input->get('start'));
         
         if ($q <> '') {
-            $config['base_url'] = base_url() . 'transaksi?q=' . urlencode($q);
-            $config['first_url'] = base_url() . 'transaksi?q=' . urlencode($q);
+            $config['base_url'] = base_url() . 'buku?q=' . urlencode($q);
+            $config['first_url'] = base_url() . 'buku?q=' . urlencode($q);
         } else {
-            $config['base_url'] = base_url() . 'transaksi';
-            $config['first_url'] = base_url() . 'transaksi';
+            $config['base_url'] = base_url() . 'buku';
+            $config['first_url'] = base_url() . 'buku';
         }
 
         $config['per_page'] = 10;
@@ -47,6 +47,7 @@ class Buku extends CI_Controller
         $tahun=$this->Tahun_model->get_by_id($this->session->userdata('tahun_aktif'))->tahun_nama;
         if($this->input->get('buku')=='bku'){
             $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
+        
         }elseif($this->input->get('buku')=='bku_unit'){
             $transaksi = $this->Transaksi_unit_model->get_limit_data_bku_unit($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),$this->input->get('unit'));
         }elseif($this->input->get('buku')=='kas_bank'){
@@ -130,19 +131,35 @@ class Buku extends CI_Controller
         }
         if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){
             $saldo_awal = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->saldo_awal;
+            $saldo_awal_lalu = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->get('bulan')-1)->saldo_awal;
+            $saldo_awal_sd = $this->Transaksi_model->get_saldo_awal_sd($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->saldo_awal;
+    //    echo $this->db->last_query();
         }else{
             $saldo_awal = '0';
         }
         $saldo_akhir = $this->Transaksi_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->saldo_akhir;
-        $sum_jml_kotor = $this->Transaksi_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->jmlh_kotor;
+        $sum_pengeluaran = $this->Transaksi_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->jmlh_kotor;
+        $sum_pengeluaran_lalu = $this->Transaksi_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan')-1)->jmlh_kotor;
+        $sum_pengeluaran_sd = $this->Transaksi_model->get_jk_sd($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->jmlh_kotor;
+
         $sum_penerimaan = $this->Transaksi_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->penerimaan;
+        $sum_penerimaan_lalu = $this->Transaksi_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->get('bulan')-1)->penerimaan;
+        $sum_penerimaan_sd = $this->Transaksi_model->get_penerimaan_sd($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->penerimaan;
+
         $saldo_total=$saldo_awal+$sum_penerimaan;
+        $saldo_total_lalu=$saldo_awal_lalu+$sum_penerimaan_lalu;
+        $saldo_total_sd=$saldo_awal_sd+$sum_penerimaan_sd;
+
         // echo $this->db->last_query();
 
         $data['saldo_awal'] = $saldo_awal;
+        $data['saldo_total_lalu'] = $saldo_total_lalu;
+        $data['saldo_total_sd'] = $saldo_total_sd;
         $data['saldo_akhir'] = $saldo_akhir;
         $data['sum_penerimaan']=$sum_penerimaan;
-        $data['sum_jml_kotor']=$sum_jml_kotor;
+        $data['sum_pengeluaran']=$sum_pengeluaran;
+        $data['sum_pengeluaran_lalu']=$sum_pengeluaran_lalu;
+        $data['sum_pengeluaran_sd']=$sum_pengeluaran_sd;
         $data['saldo_total']=$saldo_total;
         $data['set_lap'] = $this->Setting_laporan_model->get_all();
         $data['code_js'] = 'buku/codejs';
@@ -265,7 +282,7 @@ class Buku extends CI_Controller
 		'trx_id_metode_pembayaran' => $this->input->post('trx_id_metode_pembayaran',TRUE),
 		'trx_id_unit' => $this->input->post('trx_id_unit',TRUE),
         );
-        var_dump($data);
+        // var_dump($data);
 if(! $this->Transaksi_model->is_exist($this->input->post('trx_id'))){
                 $this->Transaksi_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');

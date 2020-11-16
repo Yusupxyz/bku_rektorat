@@ -100,7 +100,7 @@
 		    <th>Metode Pembayaran</th>
 		    <th>Aksi</th>
             </tr><?php
-            $saldo_akhir=0; $i=0;
+            $i=0;
             foreach ($transaksi_data as $transaksi)
 
             { 
