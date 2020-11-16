@@ -100,6 +100,116 @@ class Transaksi_unit_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    // get data with limit and search
+    function get_saldo_akhir($tahun,$bulan,$unit) {
+        $this->db->select('sum(trx_penerimaan) - sum(trx_pengeluaran) as "saldo_akhir"');
+        $this->db->join('tbl_transaksi','tbl_transaksi_unit.trxu_nomor_bukti=tbl_transaksi.trx_id','left');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        if($unit!=''){
+            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+        }
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal)', $bulan);
+        }
+        return $this->db->get($this->table)->row();
+    }
+
+    // get data with limit and search
+    function get_jk($tahun,$bulan,$unit) {
+        if ($bulan<0){
+            $bulan='';
+        }
+        $this->db->select('sum(trx_pengeluaran) as "jmlh_kotor"');
+        $this->db->join('tbl_transaksi','tbl_transaksi_unit.trxu_nomor_bukti=tbl_transaksi.trx_id','left');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        if($unit!=''){
+            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+        }
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal)', $bulan);
+        }
+        return $this->db->get($this->table)->row();
+    }
+
+    // get data with limit and search
+    function get_jk_sd($tahun,$bulan,$unit) {
+        $this->db->select('sum(trx_pengeluaran) as "jmlh_kotor"');
+        $this->db->join('tbl_transaksi','tbl_transaksi_unit.trxu_nomor_bukti=tbl_transaksi.trx_id','left');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        if($unit!=''){
+            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+        }
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal) <= '.$bulan);
+        }
+        return $this->db->get($this->table)->row();
+    }
+
+    // get data with limit and search
+    function get_penerimaan($tahun,$bulan,$unit) {
+        $this->db->select('sum(trx_penerimaan) as "penerimaan"');
+        $this->db->join('tbl_transaksi','tbl_transaksi_unit.trxu_nomor_bukti=tbl_transaksi.trx_id','left');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        if($unit!=''){
+            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+        }
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal)', $bulan);
+        }
+        return $this->db->get($this->table)->row();
+    }
+
+    // get data with limit and search
+    function get_penerimaan_sd($tahun,$bulan,$unit) {
+        $this->db->select('sum(trx_penerimaan) as "penerimaan"');
+        $this->db->join('tbl_transaksi','tbl_transaksi_unit.trxu_nomor_bukti=tbl_transaksi.trx_id','left');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        if($unit!=''){
+            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+        }
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal) <= '.$bulan);
+        }
+        return $this->db->get($this->table)->row();
+    }
+
+     // get data with limit and search
+     function get_saldo_awal($tahun,$bulan,$unit) {
+        $this->db->select('sum(trx_penerimaan) - sum(trx_pengeluaran) as "saldo_awal"');
+        $this->db->join('tbl_transaksi','tbl_transaksi_unit.trxu_nomor_bukti=tbl_transaksi.trx_id','left');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        if($unit!=''){
+            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+        }
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal)', $bulan-1);
+        }
+        return $this->db->get($this->table)->row();
+    }
+
+    // get data with limit and search
+    function get_saldo_awal_sd($tahun,$bulan,$unit) {
+        $this->db->select('sum(trx_penerimaan) - sum(trx_pengeluaran) as "saldo_awal"');
+        $this->db->join('tbl_transaksi','tbl_transaksi_unit.trxu_nomor_bukti=tbl_transaksi.trx_id','left');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        if($unit!=''){
+            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+        }
+        if($bulan!=''){
+            $bulan=$bulan-1;
+            $this->db->where('month(trx_tanggal) <= '.$bulan);
+        }
+        return $this->db->get($this->table)->row();
+    }
+
+
     // insert data
     function insert($data)
     {

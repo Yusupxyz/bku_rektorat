@@ -218,6 +218,9 @@ class Transaksi_model extends CI_Model
 
     // get data with limit and search
     function get_jk($tahun,$bulan) {
+        if ($bulan<0){
+            $bulan='';
+        }
         $this->db->select('sum(trx_pengeluaran) as "jmlh_kotor"');
         $this->db->order_by($this->id, $this->order);
         $this->db->where('trx_id_tahun', $tahun);
