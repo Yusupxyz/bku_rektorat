@@ -158,7 +158,7 @@
 			<td><?php echo $transaksi2->trxu_tanggal ?></td>
 			<td ></td>
 			<td><?php echo $transaksi2->trxu_mak ?></td>
-            <td><?php echo substr($transaksi2->trxu_id_unit,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView2<?php echo $transaksi2->trxu_id;?>">detail</a></td>
+            <td><?php echo substr($transaksi2->trx_id_unit,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView2<?php echo $transaksi2->trxu_id;?>">detail</a></td>
 			<td><?php echo substr($transaksi2->trxu_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView<?php echo $transaksi2->trxu_id;?>">detail</a></td>
 			<td><?php echo 'Rp '.number_format($transaksi2->trxu_jml_kotor) ?></td>
             <td><?php echo 'Rp '.number_format($transaksi2->trxu_ppn) ?></td>

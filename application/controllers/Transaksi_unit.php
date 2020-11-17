@@ -111,7 +111,6 @@ class Transaksi_unit extends CI_Controller
 	    'trxu_tanggal' => set_value('trxu_tanggal'),
 	    'trxu_id_jenis_pembayaran' => set_value('trxu_id_jenis_pembayaran'),
 	    'trxu_id_metode_pembayaran' => set_value('trxu_id_metode_pembayaran'),
-	    'trxu_id_unit' => set_value('trxu_id_unit'),
     );
         $data['nb']=$this->Transaksi_model->dd();
         $data['jp']=$this->Jenis_pembayaran_model->dd();
@@ -151,7 +150,6 @@ class Transaksi_unit extends CI_Controller
 		'trxu_tanggal' => $this->input->post('trxu_tanggal',TRUE),
 		'trxu_id_jenis_pembayaran' => $this->input->post('trxu_id_jenis_pembayaran',TRUE),
 		'trxu_id_metode_pembayaran' => $this->input->post('trxu_id_metode_pembayaran',TRUE),
-		'trxu_id_unit' => $this->input->post('trxu_id_unit',TRUE),
 	    );
                 $this->Transaksi_unit_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
@@ -182,7 +180,6 @@ class Transaksi_unit extends CI_Controller
 		'trxu_tanggal' => set_value('trxu_tanggal', $row->trxu_tanggal),
 		'trxu_id_jenis_pembayaran' => set_value('trxu_id_jenis_pembayaran', $row->trxu_id_jenis_pembayaran),
 		'trxu_id_metode_pembayaran' => set_value('trxu_id_metode_pembayaran', $row->trxu_id_metode_pembayaran),
-		'trxu_id_unit' => set_value('trxu_id_unit', $row->trxu_id_unit),
         );
         $data['nb']=$this->Transaksi_model->dd();
         $data['jp']=$this->Jenis_pembayaran_model->dd();
@@ -225,7 +222,6 @@ class Transaksi_unit extends CI_Controller
 		'trxu_tanggal' => $this->input->post('trxu_tanggal',TRUE),
 		'trxu_id_jenis_pembayaran' => $this->input->post('trxu_id_jenis_pembayaran',TRUE),
 		'trxu_id_metode_pembayaran' => $this->input->post('trxu_id_metode_pembayaran',TRUE),
-		'trxu_id_unit' => $this->input->post('trxu_id_unit',TRUE),
 	    );
 
             $this->Transaksi_unit_model->update($this->input->post('trxu_id', TRUE), $data);
@@ -274,7 +270,6 @@ class Transaksi_unit extends CI_Controller
 	$this->form_validation->set_rules('trxu_tanggal', 'trxu tanggal', 'trim|required');
 	$this->form_validation->set_rules('trxu_id_jenis_pembayaran', 'trxu id jenis pembayaran', 'trim|required');
 	$this->form_validation->set_rules('trxu_id_metode_pembayaran', 'trxu id metode pembayaran', 'trim|required');
-	$this->form_validation->set_rules('trxu_id_unit', 'trxu id unit', 'trim|required');
 
 	// $this->form_validation->set_rules('trxu_id', 'trxu_id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');

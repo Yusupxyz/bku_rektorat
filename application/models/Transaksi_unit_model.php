@@ -93,7 +93,7 @@ class Transaksi_unit_model extends CI_Model
     // get data with limit and search
     function get_data($nb) {
         $this->db->order_by($this->id, $this->order);
-        
+        $this->db->join('tbl_transaksi','tbl_transaksi.trx_id=tbl_transaksi_unit.trxu_nomor_bukti','left');
         $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi_unit.trxu_id_jenis_pembayaran','left');
         $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi_unit.trxu_id_metode_pembayaran','left');
         $this->db->where('trxu_nomor_bukti', $nb);

@@ -30,10 +30,6 @@
             <label for="varchar">MAK <?php echo form_error('trxu_mak') ?></label>
             <input type="text" class="form-control" name="trxu_mak" id="trxu_mak" placeholder="Trxu Mak" value="<?php echo $trxu_mak; ?>" />
         </div>
-        <div class="form-group">
-            <label for="varchar">Penerima <?php echo form_error('trxu_id_unit') ?></label>
-             <input type="text" class="form-control" name="trxu_id_unit" id="trxu_id_unit" placeholder="Trxu Penerima" value="<?php echo $trxu_id_unit; ?>" />
-        </div>
 	    <div class="form-group">
             <label for="varchar">Uraian <?php echo form_error('trxu_uraian') ?></label>
             <textarea class="form-control" rows="5" name="trxu_uraian" id="trxu_uraian" placeholder="Uraian"><?php echo $trxu_uraian; ?></textarea>
@@ -79,7 +75,7 @@
             ?>
         </div>
 	    <button type="submit" class="btn btn-primary"><?php echo $button ?></button> 
-	    <a href="<?php echo site_url('transaksi_unit') ?>" class="btn btn-default">Cancel</a>
+	    <a href="<?php echo site_url('transaksi') ?>" class="btn btn-default">Cancel</a>
 	</form>
          </div>
         </div>
