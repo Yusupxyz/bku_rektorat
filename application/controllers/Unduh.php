@@ -28,8 +28,8 @@ class Unduh extends CI_Controller
         );
         $data['bulan']=$this->Bulan_model->dd();
         $data['attribute'] = 'class="form-control" id="nb" required';
-        if($this->input->get('bulan')){
-            $data['trx_bulan'] = $this->input->get('bulan'); 
+        if($this->input->post('trx_bulan')){
+            $data['trx_bulan'] = $this->input->post('trx_bulan'); 
         }else{
             $data['trx_bulan'] = '';   
         }
@@ -56,23 +56,38 @@ class Unduh extends CI_Controller
         $pejabat1=$this->Pejabat_model->get_by_id('1');
         $pejabat2=$this->Pejabat_model->get_by_id('2');
 
-        if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){
-            $saldo_awal = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->get('trx_bulan'))->saldo_awal;
+        if($this->input->post('trx_bulan') && $this->session->userdata('tahun_aktif')){
+            $saldo_awal = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_awal;
         }else{
             $saldo_awal = '0';
         }
-        $saldo_akhir = $this->Transaksi_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->get('trx_bulan'))->saldo_akhir;
-        $sum_penerimaan = $this->Transaksi_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->penerimaan;
+        $saldo_akhir = $this->Transaksi_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_akhir;
+        $sum_penerimaan = $this->Transaksi_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->penerimaan;
         $saldo_total=$saldo_awal+$sum_penerimaan;
-        $bku_umum = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
-        $bku_tunai = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'2');
-        $bku_bank = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'1');
-        $bp_up = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'1');
-        $bp_lsb = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'2');
-        $bku_tbp = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'3');
-        $bp_pajak = $this->Transaksi_model->get_limit_data_bku_pajak($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
-        $pajak_tahun_ini = $this->Transaksi_model->get_limit_data_bku_pajak_tahun($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'));
+        $bku_umum = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'));
+        $bku_tunai = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),'2');
+        $bku_bank = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),'1');
+        $bp_up = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),'1');
+        $bp_lsb = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),'2');
+        $bku_tbp = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),'3');
+        $bp_pajak = $this->Transaksi_model->get_limit_data_bku_pajak($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'));
+        $pajak_tahun_ini = $this->Transaksi_model->get_limit_data_bku_pajak_bulan($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'));
 
+        $saldo_awal = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_awal;
+        $saldo_awal_lalu = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')-1)->saldo_awal;
+        $saldo_awal_sd = $this->Transaksi_model->get_saldo_awal_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_awal;
+        $saldo_akhir = $this->Transaksi_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_akhir;
+        $sum_pengeluaran = $this->Transaksi_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->jmlh_kotor;
+        $sum_pengeluaran_lalu = $this->Transaksi_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')==''?'':$this->input->post('trx_bulan')-1)->jmlh_kotor;
+            //   echo $this->db->last_query();
+        $sum_pengeluaran_sd = $this->Transaksi_model->get_jk_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->jmlh_kotor;
+        $sum_penerimaan = $this->Transaksi_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->penerimaan;
+        $sum_penerimaan_lalu = $this->Transaksi_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')==''?'':$this->input->post('trx_bulan')-1)->penerimaan;
+        $sum_penerimaan_sd = $this->Transaksi_model->get_penerimaan_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->penerimaan;
+        $saldo_total=$sum_penerimaan;
+        $saldo_total_lalu=$sum_penerimaan_lalu;
+        $saldo_total_sd=$sum_penerimaan_sd;
+        
         //----------------------------------------------------------------------------------------------------
         // BP KAS TUNAI
         $spreadsheet = new Spreadsheet();
@@ -217,8 +232,8 @@ class Unduh extends CI_Controller
             $sheet->setCellValue('D'.$i, $value->trx_mak);
             $sheet->setCellValue('E'.$i, $value->trx_id_unit);
             $sheet->setCellValue('F'.$i, $value->trx_uraian);
-            $sheet->setCellValue('G'.$i, '');
-            $sheet->setCellValue('H'.$i, number_format($value->trx_jml_kotor));
+            $sheet->setCellValue('G'.$i, number_format($value->trx_penerimaan));
+            $sheet->setCellValue('H'.$i, number_format($value->trx_pengeluaran));
             $sheet->setCellValue('I'.$i++, number_format($saldo));
         }
         if (count($bku_umum)<1) $i++;
@@ -227,19 +242,19 @@ class Unduh extends CI_Controller
         $temp=$i;
         //FOOTER
         $sheet->setCellValue('F'.$i, 'JUMLAH BULAN INI');
-        $sheet->setCellValue('G'.$i, '');
-        $sheet->setCellValue('H'.$i, '');
-        $sheet->setCellValue('I'.$i++, '');
+        $sheet->setCellValue('G'.$i, number_format($saldo_total));
+        $sheet->setCellValue('H'.$i, number_format($sum_pengeluaran));
+        $sheet->setCellValue('I'.$i++, number_format($saldo_total-$sum_pengeluaran));
 
         $sheet->setCellValue('F'.$i, 'JUMLAH BULAN LALU');
-        $sheet->setCellValue('G'.$i, '');
-        $sheet->setCellValue('H'.$i, '');
-        $sheet->setCellValue('I'.$i++, '');
+        $sheet->setCellValue('G'.$i, number_format($saldo_total_lalu));
+        $sheet->setCellValue('H'.$i, number_format($sum_pengeluaran_lalu));
+        $sheet->setCellValue('I'.$i++, number_format($saldo_total_lalu-$sum_pengeluaran_lalu));
 
         $sheet->setCellValue('F'.$i, 'JUMLAH S.D BULAN INI');
-        $sheet->setCellValue('G'.$i, '');
-        $sheet->setCellValue('H'.$i, '');
-        $sheet->setCellValue('I'.$i, '');
+        $sheet->setCellValue('G'.$i, number_format($saldo_total_sd));
+        $sheet->setCellValue('H'.$i, number_format($sum_pengeluaran_sd));
+        $sheet->setCellValue('I'.$i, number_format($saldo_total_sd-$sum_pengeluaran_sd));
 
         $sheet->getStyle("B".$temp.":I".$i)->applyFromArray($bold);
         $sheet->getStyle("B".$temp.":I".$i++)->applyFromArray($bcolor);
@@ -339,8 +354,8 @@ class Unduh extends CI_Controller
         $temp=$i;
         //FOOTER
         $sheet2->setCellValue('F'.$i, 'JUMLAH BULAN INI');
-        $sheet2->setCellValue('G'.$i, '');
-        $sheet2->setCellValue('H'.$i, '');
+        $sheet2->setCellValue('G'.$i, 'number_format($saldo_total)');
+        $sheet2->setCellValue('H'.$i, 'number_format($sum_pengeluaran)');
         $sheet2->setCellValue('I'.$i++, '');
 
         $sheet2->setCellValue('F'.$i, 'JUMLAH BULAN LALU');

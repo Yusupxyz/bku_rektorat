@@ -104,10 +104,10 @@
                 <td style="text-align:right;"><b><?php echo 'Rp '.number_format($saldo_total);?></b></td>
             </tr> -->
             
-            <?php $i=0; $saldo=$saldo_total;
+            <?php $i=0; $saldo=0;;
             foreach ($transaksi_data as $transaksi)
             {
-                $saldo=$saldo-$transaksi->trx_jml_kotor;
+                $saldo=$saldo+$transaksi->trx_penerimaan-$transaksi->trx_pengeluaran;
                 ?>
                 <tr>
                 

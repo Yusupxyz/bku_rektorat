@@ -30,7 +30,7 @@ class Buku_pembantu2_model extends CI_Model
     }
 
     // get data with limit and search
-    function get_jk($tahun,$bulan,$jp) {
+    function get_jk($tahun,$bulan,$mp) {
         if ($bulan<0){
             $bulan='';
         }
@@ -47,7 +47,7 @@ class Buku_pembantu2_model extends CI_Model
     }
 
     // get data with limit and search
-    function get_jk_sd($tahun,$bulan,$jp) {
+    function get_jk_sd($tahun,$bulan,$mp) {
         $this->db->select('sum(trx_pengeluaran) as "jmlh_kotor"');
         $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
 	    $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
@@ -61,7 +61,7 @@ class Buku_pembantu2_model extends CI_Model
     }
 
     // get data with limit and search
-    function get_penerimaan($tahun,$bulan,$jp) {
+    function get_penerimaan($tahun,$bulan,$mp) {
         $this->db->select('sum(trx_penerimaan) as "penerimaan"');
         $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
 	    $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
@@ -75,7 +75,7 @@ class Buku_pembantu2_model extends CI_Model
     }
 
     // get data with limit and search
-    function get_penerimaan_sd($tahun,$bulan,$jp) {
+    function get_penerimaan_sd($tahun,$bulan,$mp) {
         $this->db->select('sum(trx_penerimaan) as "penerimaan"');
         $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
 	    $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
@@ -89,7 +89,7 @@ class Buku_pembantu2_model extends CI_Model
     }
 
     // get data with limit and search
-    function get_saldo_awal($tahun,$bulan,$jp) {
+    function get_saldo_awal($tahun,$bulan,$mp) {
         $this->db->select('sum(trx_penerimaan) - sum(trx_pengeluaran) as "saldo_awal"');
         $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
 	    $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
@@ -103,7 +103,7 @@ class Buku_pembantu2_model extends CI_Model
     }
 
     // get data with limit and search
-    function get_saldo_awal_sd($tahun,$bulan,$jp) {
+    function get_saldo_awal_sd($tahun,$bulan,$mp) {
         $this->db->select('sum(trx_penerimaan) - sum(trx_pengeluaran) as "saldo_awal"');
         $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
 	    $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
