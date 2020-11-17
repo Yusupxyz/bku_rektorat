@@ -24,7 +24,7 @@
             <div class="col-md-1 text-right">
             </div>
             <div class="col-md-3 text-right">
-		        <?php echo anchor(site_url('transaksi/excel'), '<i class="fa fa-file-excel"></i> Excel', 'class="btn btn-success"'); ?>
+		        <!-- <?php echo anchor(site_url('transaksi/excel'), '<i class="fa fa-file-excel"></i> Excel', 'class="btn btn-success"'); ?> -->
             </div>
         </div>
         <div class="row">
@@ -59,7 +59,7 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <h5 id='top'>PNBP NON-MODAL UNIVERSITAS PALANGKA RAYA</h5>
-                <H5><b><?= 'BUKU' ?></b></H5>
+                <H5><b><?= $bukutitle ?></b></H5>
                 <h5>BULAN <?= strtoupper($bulan) ?></h5>
             </div>
             <div class="col-md-12">
@@ -85,9 +85,8 @@
                 <th rowspan="2">Tanggal</th>
                 <th rowspan="2">No. Bukti</th>
                 <th rowspan="2">Uraian</th>
-                <th colspan="5" style="text-align:center;">Jumlah</th>
-                <th >Penerimaan</th>
-                <th >Pengeluaran</th>
+                <th colspan="5" style="text-align:center;">Debit</th>
+                <th >Kredit</th>
                 <th >Saldo</th>
             </tr>
             <tr>
@@ -104,11 +103,7 @@
             foreach ($transaksi_data as $transaksi)
             {
                 $pajak=$transaksi->trx_ppn+$transaksi->trx_pph_21+$transaksi->trx_pph_22+$transaksi->trx_pph_23+$transaksi->trx_pph_4_2;
-                $ppn=$transaksi->trx_ppn+$ppn;
-                $pph21=$transaksi->trx_pph_21+$pph21;
-                $pph22=$transaksi->trx_pph_22+$pph22;
-                $pph23=$transaksi->trx_pph_23+$pph23;
-                $pph42=$transaksi->trx_pph_4_2+$pph42;
+              
                 $saldo=$saldo-$transaksi->trx_jml_kotor;
                 ?>
                 <tr>
@@ -123,41 +118,12 @@
             <td style="text-align:right;"><?php echo 'Rp '.number_format($transaksi->trx_pph_23) ?></td>
             <td style="text-align:right;"><?php echo 'Rp '.number_format($transaksi->trx_pph_4_2) ?></td>
             <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak) ?></td>
-            <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak) ?></td>
             <td style="text-align:right;"><?php echo 'Rp '.number_format($saldo) ?></td>
 		</tr>
                 <?php
-            } $ppn_total=$saldo-$ppn;
-            $pph21_total=$ppn_total-$pph21;
-            $pph22_total=$pph21_total-$pph22;
-            $pph23_total=$pph22_total-$pph23;
-            $pph41_total=$pph23_total-$pph42;
+            } 
             ?>
-            <tr><td ></td><td ></td>
-                <td colspan="7" style="text-align:left;">Setor PPn</td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($ppn);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($ppn_total);?></td>
-            </tr>
-            <tr><td ></td><td ></td>
-                <td colspan="7" style="text-align:left;">Setor PPh 21</td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph21);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph21_total);?></td>
-            </tr>
-            <tr><td ></td><td ></td>
-                <td colspan="7" style="text-align:left;">Setor PPh 22</td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph22);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph22_total);?></td>
-            </tr>
-            <tr><td ></td><td ></td>
-                <td colspan="7" style="text-align:left;">Setor PPh 23</td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph23);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph23_total);?></td>
-            </tr>
-            <tr><td ></td><td ></td>
-                <td colspan="7" style="text-align:left;">Setor PPh 4(2)</td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph42);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph41_total);?></td>
-            </tr>
+
             <tr><td ></td><td ></td>
                 <td style="text-align:right;"><b>JUMLAH BULAN INI</b></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($ppn);?></td>

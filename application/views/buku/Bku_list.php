@@ -59,7 +59,7 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <h5 id='top'>PNBP NON-MODAL UNIVERSITAS PALANGKA RAYA</h5>
-                <H5><b><?= 'BUKU' ?></b></H5>
+                <H5><b><?= $bukutitle ?></b></H5>
                 <h5>BULAN <?= strtoupper($bulan) ?></h5>
             </div>
             <div class="col-md-12">
