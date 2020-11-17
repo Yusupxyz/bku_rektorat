@@ -70,8 +70,9 @@ class Buku extends CI_Controller
             $bukutitle = "BUKU PEMBANTU LS BENDAHARA";
         }elseif($this->input->get('buku')=='bp_pajak'){
             $transaksi = $this->Transaksi_model->get_limit_data_bku_pajak($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
-            $pajak_bulan_lalu = $this->Transaksi_model->get_limit_data_bku_pajak($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),(int)$this->input->get('bulan')-1);
-            $pajak_tahun_ini = $this->Transaksi_model->get_limit_data_bku_pajak_tahun($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'));
+            $pajak_bulan_lalu = $this->Transaksi_model->get_limit_data_bku_pajak_lalu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),(int)$this->input->get('bulan'));
+            $pajak_tahun_ini = $this->Transaksi_model->get_limit_data_bku_pajak_bulan($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
+            $pajak_sd = $this->Transaksi_model->get_limit_data_bku_pajak_sd($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
             $bukutitle = "BUKU PEMBANTU PAJAK";
         }else{
             $transaksi = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'));
@@ -96,6 +97,7 @@ class Buku extends CI_Controller
         if ($this->input->get('buku')=='bp_pajak'){
             $data['pajak_tahun_ini'] = $pajak_tahun_ini;
             $data['pajak_bulan_lalu'] = $pajak_bulan_lalu;
+            $data['pajak_sd'] = $pajak_sd;
         }
 
         $data['title'] = 'Buku';

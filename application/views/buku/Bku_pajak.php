@@ -126,31 +126,31 @@
 
             <tr><td ></td><td ></td>
                 <td style="text-align:right;"><b>JUMLAH BULAN INI</b></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($ppn);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph21);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph22);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph23);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph42);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
-            </tr>
-            <tr><td ></td><td ></td>
-                <td style="text-align:right;"><b>JUMLAH BULAN LALU</b></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($ppn);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph21);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph22);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph23);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format($pph42);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
-            </tr>
-            <tr><td ></td><td ></td>
-                <td style="text-align:right;"><b>JUMLAH S.D BULAN INI</b></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_tahun_ini->ppn);?></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_tahun_ini->pph21);?></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_tahun_ini->pph22);?></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_tahun_ini->pph23);?></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_tahun_ini->pph42);?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
+            </tr>
+            <tr><td ></td><td ></td>
+                <td style="text-align:right;"><b>JUMLAH BULAN LALU</b></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_bulan_lalu->ppn);?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_bulan_lalu->pph21);?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_bulan_lalu->pph22);?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_bulan_lalu->pph23);?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_bulan_lalu->pph42);?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
+            </tr>
+            <tr><td ></td><td ></td>
+                <td style="text-align:right;"><b>JUMLAH S.D BULAN INI</b></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_sd->ppn);?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_sd->pph21);?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_sd->pph22);?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_sd->pph23);?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_sd->pph42);?></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
             </tr>

@@ -140,29 +140,60 @@ class Transaksi_model extends CI_Model
     //kas pajak
     function get_limit_data_bku_pajak($limit, $start = 0, $q = NULL, $tahun,$bulan) {
         $this->db->order_by('trx_tanggal', $this->order);
-
-	$this->db->limit($limit, $start);
-	$this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
-	$this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
-    $this->db->where('trx_id_tahun', $tahun);
-    $this->db->where('(trx_ppn!="0" OR trx_pph_21!="0" OR trx_pph_22!="0" OR trx_pph_23!="0" OR trx_pph_4_2!="0")');
-    if($bulan!=''){
-        $this->db->where('month(trx_tanggal)', $bulan);
-    }
+        $this->db->limit($limit, $start);
+        $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
+        $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
+        $this->db->where('trx_id_tahun', $tahun);
+        $this->db->where('(trx_ppn!="0" OR trx_pph_21!="0" OR trx_pph_22!="0" OR trx_pph_23!="0" OR trx_pph_4_2!="0")');
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal)', $bulan);
+        }
         return $this->db->get($this->table)->result();
     }
 
     //kas pajak
-    function get_limit_data_bku_pajak_tahun($limit, $start = 0, $q = NULL, $tahun) {
+    function get_limit_data_bku_pajak_bulan($limit, $start = 0, $q = NULL, $tahun,$bulan) {
         $this->db->order_by('trx_tanggal', $this->order);
         $this->db->select('sum(trx_ppn) as ppn, sum(trx_pph_21) as pph21,sum(trx_pph_22) as pph22,sum(trx_pph_23) as pph23,sum(trx_pph_4_2) as pph42');
+        $this->db->limit($limit, $start);
+        $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
+        $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
+        $this->db->where('trx_id_tahun', $tahun);
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal)', $bulan);
+        }
+        $this->db->where('(trx_ppn!="0" OR trx_pph_21!="0" OR trx_pph_22!="0" OR trx_pph_23!="0" OR trx_pph_4_2!="0")');
+        return $this->db->get($this->table)->row();
+    }
 
-	$this->db->limit($limit, $start);
-	$this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
-	$this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
-    $this->db->where('trx_id_tahun', $tahun);
-    $this->db->where('(trx_ppn!="0" OR trx_pph_21!="0" OR trx_pph_22!="0" OR trx_pph_23!="0" OR trx_pph_4_2!="0")');
+    //kas pajak
+    function get_limit_data_bku_pajak_lalu($limit, $start = 0, $q = NULL, $tahun,$bulan) {
+        $this->db->order_by('trx_tanggal', $this->order);
+        $this->db->select('sum(trx_ppn) as ppn, sum(trx_pph_21) as pph21,sum(trx_pph_22) as pph22,sum(trx_pph_23) as pph23,sum(trx_pph_4_2) as pph42');
+        $this->db->limit($limit, $start);
+        $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
+        $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
+        $this->db->where('trx_id_tahun', $tahun);
+        if($bulan!=''){
+            $bulan=$bulan-1;
+            $this->db->where('month(trx_tanggal)', $bulan);
+        }
+        $this->db->where('(trx_ppn!="0" OR trx_pph_21!="0" OR trx_pph_22!="0" OR trx_pph_23!="0" OR trx_pph_4_2!="0")');
+        return $this->db->get($this->table)->row();
+    }
 
+    //kas pajak
+    function get_limit_data_bku_pajak_sd($limit, $start = 0, $q = NULL, $tahun,$bulan) {
+        $this->db->order_by('trx_tanggal', $this->order);
+        $this->db->select('sum(trx_ppn) as ppn, sum(trx_pph_21) as pph21,sum(trx_pph_22) as pph22,sum(trx_pph_23) as pph23,sum(trx_pph_4_2) as pph42');
+        $this->db->limit($limit, $start);
+        $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
+        $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
+        $this->db->where('trx_id_tahun', $tahun);
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal) <='. $bulan);
+        }
+        $this->db->where('(trx_ppn!="0" OR trx_pph_21!="0" OR trx_pph_22!="0" OR trx_pph_23!="0" OR trx_pph_4_2!="0")');
         return $this->db->get($this->table)->row();
     }
 
