@@ -36,7 +36,12 @@
         </div>
         <div class="form-group">
             <label for="int">Penerima <?php echo form_error('trx_id_unit') ?></label>
-            <textarea class="form-control" rows="2" name="trx_id_unit" id="trx_id_unit" placeholder="Trx Id Unit"><?php echo $trx_id_unit; ?></textarea>
+            <input type="checkbox" name="unit" id="cbunit" onclick="myFunction()" <?= $trx_fk_unit!='0'?'checked':'';?>/>
+            <label>Unit</label>
+            <textarea class="form-control" rows="2" name="trx_id_unit" id="trx_id_unit" placeholder="Trx Id Unit" <?= $trx_id_unit==''?'style="display:none"':'';?>><?php echo $trx_id_unit; ?></textarea>
+        <?php
+                echo form_dropdown('unit', $unit, $trx_fk_unit, $attribute3);
+            ?>
         </div>
 	    <div class="form-group">
             <label for="varchar">Uraian <?php echo form_error('trx_uraian') ?></label>
@@ -73,6 +78,7 @@
         <div class="form-group" id="div_penerimaan">
             <label for="double">Penerimaan <?php echo form_error('trx_penerimaan') ?></label>
             <input type="number" class="form-control" name="trx_penerimaan" id="trx_penerimaan" placeholder="Trx Penerimaan" value="<?php echo $trx_penerimaan; ?>" min="0" readonly/>
+            
         </div>
 	    <div class="form-group" id="div_pengeluaran">
             <label for="double">Pengeluaran <?php echo form_error('trx_pengeluaran') ?></label>

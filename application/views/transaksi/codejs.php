@@ -247,7 +247,20 @@
         }
     });
 
-
+    function myFunction() {
+        var checkBox = document.getElementById("cbunit");
+        var unit = document.getElementById("unit");
+        var tbunit = document.getElementById("trx_id_unit");
+        if (checkBox.checked == true){
+            unit.style.display = "block";
+            tbunit.style.display = "none";
+            document.getElementById('trx_id_unit').value ='';
+        } else {
+            unit.style.display = "none";
+            tbunit.style.display = "block";
+            document.getElementById('unit').value ='';
+        }
+    }
 
      
 </script>

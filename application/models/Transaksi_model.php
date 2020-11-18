@@ -67,6 +67,8 @@ class Transaksi_model extends CI_Model
 	$this->db->limit($limit, $start);
 	$this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
 	$this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
+    $this->db->join('unit','unit.id=tbl_transaksi.trx_fk_unit','left');
+
     $this->db->where('trx_id_tahun', $tahun);
     if($bulan!=''){
         $this->db->where('month(trx_tanggal)', $bulan);

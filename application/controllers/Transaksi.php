@@ -16,6 +16,7 @@ class Transaksi extends CI_Controller
         $this->load->model('Metode_pembayaran_model');
         $this->load->model('Tahun_model');
         $this->load->model('Bulan_model');
+        $this->load->model('Unit_model');
         $this->load->model('Transaksi_unit_model');
         $this->load->library('form_validation');
         $this->id_tahun=$this->Tahun_model->get_id_by_status(1)->tahun_id;
@@ -49,6 +50,7 @@ class Transaksi extends CI_Controller
             $bulan = '';   
         }
         $transaksi = $this->Transaksi_model->get_limit_data($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$bulan,$nb);
+        // var_dump($transaksi);
         $saldo_akhir_data = $this->Transaksi_model->get_saldo_akhirx($config['per_page']+($start-10), 0, $q,$this->session->userdata('tahun_aktif'),$bulan,$nb);
                 // echo $this->db->last_query();
 
@@ -157,9 +159,11 @@ class Transaksi extends CI_Controller
 	    'trx_jenis' => set_value('trx_jenis'),
 	    'trx_penerimaan' => set_value('trx_penerimaan'),
 	    'trx_pengeluaran' => set_value('trx_pengeluaran'),
+	    'trx_fk_unit' => set_value('trx_fk_unit'),
     );
         $data['jp']=$this->Jenis_pembayaran_model->dd();
         $data['mp']=$this->Metode_pembayaran_model->dd();
+        $data['unit']=$this->Unit_model->dd();
         $data['jenis']=array(
             ""=>"--Pilih Jenis Transaksi--",
             "0"=>"Penerimaan",
@@ -167,6 +171,7 @@ class Transaksi extends CI_Controller
         );
         $data['attribute'] = 'class="form-control" required ';
         $data['attribute2'] = 'class="form-control" required id="trx_jenis"';
+        $data['attribute3'] = 'class="form-control" id="unit" style="display:none"';
         $data['title'] = 'Kontrol Transaksi';
         $data['subtitle'] = '';
         $data['crumb'] = [
@@ -186,6 +191,11 @@ class Transaksi extends CI_Controller
             $this->create();
  
         } else {
+            if ($this->input->post('unit',TRUE)==''){
+                $fk_unit='0';
+            }else{
+                $fk_unit=$this->input->post('unit',TRUE);
+            }
             $data = array(
 		'trx_nomor_bukti' => $this->input->post('trx_nomor_bukti',TRUE),
 		'trx_mak' => $this->input->post('trx_mak',TRUE),
@@ -205,6 +215,7 @@ class Transaksi extends CI_Controller
 		'trx_penerimaan' => $this->input->post('trx_penerimaan',TRUE),
 		'trx_pengeluaran' => $this->input->post('trx_pengeluaran',TRUE),
 		'trx_id_tahun' => $this->session->userdata('tahun_aktif'),
+		'trx_fk_unit' => $fk_unit,
         );
         
 if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
@@ -212,6 +223,8 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('transaksi'));
             }else{
+                // echo $this->db->last_query();
+
                 $this->create();
                 $this->session->set_flashdata('message', 'Create Record Faild, nomor bukti is exist');
             }}
@@ -243,15 +256,22 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
 		'trx_jenis' => set_value('trx_jenis', $row->trx_jenis),
 		'trx_penerimaan' => set_value('trx_penerimaan', $row->trx_penerimaan),
 		'trx_pengeluaran' => set_value('trx_pengeluaran', $row->trx_pengeluaran),
+	    'trx_fk_unit' => set_value('trx_fk_unit', $row->trx_fk_unit),
         );
         $data['jp']=$this->Jenis_pembayaran_model->dd();
         $data['mp']=$this->Metode_pembayaran_model->dd();
+        $data['unit']=$this->Unit_model->dd();
         $data['jenis']=array(
             ""=>"--Pilih Jenis Transaksi--",
             "0"=>"Penerimaan",
             "1"=>"Pengeluaraan"
         );
         $data['attribute'] = 'class="form-control" required ';
+        if ($row->trx_fk_unit!='0'){
+            $data['attribute3'] = 'class="form-control" id="unit"';
+        }else{
+            $data['attribute3'] = 'class="form-control" id="unit" style="display:none"';
+        }
         $data['attribute2'] = 'class="form-control" required id="trx_jenis"';
             $data['title'] = 'Transaksi';
         $data['subtitle'] = '';
@@ -275,6 +295,11 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
         if ($this->form_validation->run() == FALSE) {
             $this->update($this->input->post('trx_id', TRUE));
         } else {
+            if ($this->input->post('unit',TRUE)==''){
+                $fk_unit='0';
+            }else{
+                $fk_unit=$this->input->post('unit',TRUE);
+            }
             $data = array(
 		'trx_id' => $this->input->post('trx_id',TRUE),
 		'trx_nomor_bukti' => $this->input->post('trx_nomor_bukti',TRUE),
@@ -294,6 +319,7 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
 		'trx_jenis' => $this->input->post('trx_jenis',TRUE),
 		'trx_penerimaan' => $this->input->post('trx_penerimaan',TRUE),
 		'trx_pengeluaran' => $this->input->post('trx_pengeluaran',TRUE),
+		'trx_fk_unit' => $fk_unit,
 	    );
 
             $this->Transaksi_model->update($this->input->post('trx_id', TRUE), $data);
@@ -335,7 +361,7 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
 	$this->form_validation->set_rules('trx_tanggal', 'trx tanggal', 'trim|required');
 	$this->form_validation->set_rules('trx_id_jenis_pembayaran', 'trx id jenis pembayaran', 'trim|required');
 	$this->form_validation->set_rules('trx_id_metode_pembayaran', 'trx id metode pembayaran', 'trim|required');
-	$this->form_validation->set_rules('trx_id_unit', 'trx id unit', 'trim|required');
+	// $this->form_validation->set_rules('trx_id_unit', 'trx id unit', 'trim|required');
 	$this->form_validation->set_rules('trx_jenis', 'trx jenis', 'trim|required');
 
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');

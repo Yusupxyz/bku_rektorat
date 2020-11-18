@@ -87,7 +87,25 @@ class Unit_model extends CI_Model
          }
         }
 
-
+    // get data dropdown
+    function dd()
+    {
+        // ambil data dari db
+        $this->db->where($this->id.' !="0"');
+        $this->db->order_by($this->id, $this->order);
+        $result = $this->db->get($this->table);
+        // bikin array
+        // please select berikut ini merupakan tambahan saja agar saat pertama
+        // diload akan ditampilkan text please select.
+        $dd[''] = '-- Pilih Unit --';
+        if ($result->num_rows() > 0) {
+            foreach ($result->result() as $row) {
+            // tentukan value (sebelah kiri) dan labelnya (sebelah kanan)
+                $dd[$row->id] = $row->nama;
+            }
+        }
+        return $dd;
+    }
 }
 
 /* End of file Unit_model.php */

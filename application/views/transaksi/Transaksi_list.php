@@ -117,8 +117,12 @@
 			<td><?php echo $transaksi->trx_tanggal ?></td>
 			<td ><?php echo $transaksi->trx_nomor_bukti ?></td>
 			<td><?php echo $transaksi->trx_mak ?></td>
-            <td><?php echo substr($transaksi->trx_id_unit,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView2<?php echo $transaksi->trx_id;?>">detail</a></td>
-			<td><?php echo substr($transaksi->trx_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView<?php echo $transaksi->trx_id;?>">detail</a></td>
+            <?php if ($transaksi->trx_fk_unit=='0'){ ?>
+                <td><?php echo substr($transaksi->trx_id_unit,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView2<?php echo $transaksi->trx_id;?>">detail</a></td>
+            <?php }else{ ?>
+                <td><?php echo substr($transaksi->nama,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView2<?php echo $transaksi->trx_id;?>">detail</a></td>
+            <?php } ?>
+            <td><?php echo substr($transaksi->trx_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView<?php echo $transaksi->trx_id;?>">detail</a></td>
 			<td><?php echo 'Rp '.number_format($transaksi->trx_jml_kotor) ?></td>
             <td><?php echo 'Rp '.number_format($transaksi->trx_ppn) ?></td>
             <td><?php echo 'Rp '.number_format($transaksi->trx_pph_21) ?></td>
@@ -158,7 +162,11 @@
 			<td><?php echo $transaksi2->trxu_tanggal ?></td>
 			<td ></td>
 			<td><?php echo $transaksi2->trxu_mak ?></td>
-            <td><?php echo substr($transaksi2->trx_id_unit,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView2<?php echo $transaksi2->trxu_id;?>">detail</a></td>
+            <?php if ($transaksi->trx_id_unit==''){ ?>
+                <td><?php echo substr($transaksi2->trx_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView2<?php echo $transaksi2->trx_id;?>">detail</a></td>
+            <?php }else{ ?>
+                <td><?php echo substr($transaksi2->nama,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView2<?php echo $transaksi2->trx_id;?>">detail</a></td>
+            <?php } ?>
 			<td><?php echo substr($transaksi2->trxu_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView<?php echo $transaksi2->trxu_id;?>">detail</a></td>
 			<td><?php echo 'Rp '.number_format($transaksi2->trxu_jml_kotor) ?></td>
             <td><?php echo 'Rp '.number_format($transaksi2->trxu_ppn) ?></td>
@@ -256,7 +264,11 @@
 
     <?php $j=0;  foreach ($transaksi_data as $transaksi) :
               $transaksi_id=$transaksi->trx_id;
-              $trx_id_unit=$transaksi->trx_id_unit;
+              if ($transaksi->trx_fk_unit=='0'){
+                $trx_id_unit=$transaksi->trx_id_unit;
+              }else{
+                $trx_id_unit=$transaksi->nama;
+              }
             ?>
 	<!--Modal View-->
         <div class="modal fade" id="ModalView2<?php echo $transaksi_id;?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -279,7 +291,11 @@
 
         <?php foreach ($transaksi_unit[$j++] as $transaksi2) :
               $transaksi_id=$transaksi2->trxu_id;
-              $trxu_id_unit=$transaksi2->trxu_id_unit;
+              if ($transaksi2->trx_id_unit==''){
+                $trxu_id_unit=$transaksi2->trx_id_unit;
+              }else{
+                $trxu_id_unit=$transaksi2->nama;
+              }
             ?>
 	<!--Modal View-->
         <div class="modal fade" id="ModalView2<?php echo $transaksi_id;?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

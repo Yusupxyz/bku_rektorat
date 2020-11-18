@@ -96,6 +96,7 @@ class Transaksi_unit_model extends CI_Model
         $this->db->join('tbl_transaksi','tbl_transaksi.trx_id=tbl_transaksi_unit.trxu_nomor_bukti','left');
         $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi_unit.trxu_id_jenis_pembayaran','left');
         $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi_unit.trxu_id_metode_pembayaran','left');
+        $this->db->join('unit','unit.id=tbl_transaksi.trx_fk_unit','left');
         $this->db->where('trxu_nomor_bukti', $nb);
         return $this->db->get($this->table)->result();
     }
