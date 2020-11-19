@@ -460,7 +460,7 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
         // array Count
         $arrayCount = count($dataNoTrx);
         $flag = 0;
-        $createArray = array('Jenis','Tanggal', 'Nomor Bukti', 'MAK', 'Penerima', 'Uraian','Jumlah Kotor','PPn','PPh 21','PPh 22','PPh 23','PPh 4(2)','Jumlah Bersih','Penerimaan','Pengeluaran','Bank/Tunai','GU/LS');
+        $createArray = array('Jenis','Tanggal', 'Nomor Bukti', 'MAK', 'Penerima', 'Uraian','Jumlah Kotor','PPn','PPh 21','PPh 22','PPh 23','PPh 4(2)','Jumlah Bersih','Penerimaan','Pengeluaran','Bank/Tunai','GU/LS','Nama Unit');
         $makeArray = array('Jenis' => 'Jenis', 
                             'Tanggal' => 'Tanggal', 
                             'NomorBukti' => 'NomorBukti', 
@@ -477,7 +477,8 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
                             'Penerimaan' => 'Penerimaan', 
                             'Pengeluaran' => 'Pengeluaran', 
                             'Bank/Tunai' => 'Bank/Tunai', 
-                            'GU/LS' => 'GU/LS' );
+                            'GU/LS' => 'GU/LS', 
+                            'NamaUnit' => 'NamaUnit' );
         $SheetDataKey = array();
         foreach ($dataNoTrx as $dataInSheet) {
             foreach ($dataInSheet as $key => $value) {
@@ -513,6 +514,7 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
                 $pengeluaran = $SheetDataKey['Pengeluaran'];
                 $bt = $SheetDataKey['Bank/Tunai'];
                 $guls = $SheetDataKey['GU/LS'];
+                $unit = $SheetDataKey['NamaUnit'];
 
                 $jenis_data = filter_var(trim($dataNoTrx[$i][$jenis]), FILTER_SANITIZE_STRING);
                 $no = filter_var(trim($dataNoTrx[$i][$no]), FILTER_SANITIZE_STRING);
@@ -531,6 +533,9 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
                 $pengeluaran = filter_var(trim($dataNoTrx[$i][$pengeluaran]), FILTER_SANITIZE_NUMBER_FLOAT);
                 $bt = $this->Jenis_pembayaran_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$bt]), FILTER_SANITIZE_STRING))->jp_id;
                 $guls = $this->Metode_pembayaran_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$guls]), FILTER_SANITIZE_STRING))->mp_id;
+                $unit = $this->Unit_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$unit]), FILTER_SANITIZE_STRING))->id;
+                // echo $this->db->last_query();
+
                 $jenis=$penerimaan==''?'0':'1';
                 if($jenis_data=='Utama'){
                     $fetchData[] = array('trx_nomor_bukti' => $no, 
@@ -550,14 +555,18 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
                                     'trx_jenis' => $jenis,
                                     'trx_penerimaan' => $penerimaan,
                                     'trx_pengeluaran' => $pengeluaran, 
-                                    'trx_id_tahun' => $this->session->userdata('tahun_aktif'));
+                                    'trx_id_tahun' => $this->session->userdata('tahun_aktif'),
+                                    'trx_fk_unit' => $unit );
+                    $this->Transaksi_model->setBatchImport($fetchData);
+                    if(!$this->Transaksi_model->importData()){
+                        $this->session->set_flashdata('message', 'Import Excel Success');
+                    }
                 }else{
-                    $no=$this->Transaksi_model->get_by_no($no)->trx_id;
-                    // echo $this->db->last_query();
+                 echo   $no=$this->Transaksi_model->get_by_no($no)->trx_id;
+                    echo $this->db->last_query();
                     $fetchData2[] = array('trxu_nomor_bukti' => $no, 
                                     'trxu_mak' => $mak, 
                                     'trxu_uraian' => $uraian,
-                                    'trxu_id_unit' => $penerima, 
                                     'trxu_jml_kotor' => $jml_kotor, 
                                     'trxu_ppn' => $ppn, 
                                     'trxu_pph_21' => $pph21,
@@ -568,21 +577,16 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
                                     'trxu_tanggal' => $tgl,
                                     'trxu_id_jenis_pembayaran' => $bt,
                                     'trxu_id_metode_pembayaran' => $guls);
+                    $this->Transaksi_unit_model->setBatchImport($fetchData2);
+                    if(!$this->Transaksi_unit_model->importData()){
+                        $this->session->set_flashdata('message', 'Import Excel Success');
+                    }
                 }
             }   
             $data['dataInfo'] = $fetchData;
             // var_dump($fetchData);
-            $this->Transaksi_model->setBatchImport($fetchData);
-            if(!$this->Transaksi_model->importData()){
-                $this->session->set_flashdata('message', 'Import Excel Success');
-                // redirect('transaksi');
-            }
-            $this->Transaksi_unit_model->setBatchImport($fetchData2);
-            if(!$this->Transaksi_unit_model->importData()){
-                $this->session->set_flashdata('message', 'Import Excel Success');
-                // redirect('transaksi');
-            }
-            
+            redirect('transaksi');
+
         } else {
             $this->session->set_flashdata('message_error', 'Maaf importlah file sesuai format yang diberikan, jumlah kolom tidak sesuai');
             redirect('transaksi');
