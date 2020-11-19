@@ -36,9 +36,9 @@
         </div>
         <div class="form-group">
             <label for="int">Penerima <?php echo form_error('trx_id_unit') ?></label>
-            <input type="checkbox" name="unit" id="cbunit" onclick="myFunction()" <?= $trx_fk_unit!='0'?'checked':'';?>/>
+            <input type="checkbox" name="unit" id="cbunit" onclick="myFunction()" <?= ($trx_fk_unit!='0' && $trx_fk_unit!='')?'checked':'';?>/>
             <label>Unit</label>
-            <textarea class="form-control" rows="2" name="trx_id_unit" id="trx_id_unit" placeholder="Trx Id Unit" <?= $trx_id_unit==''?'style="display:none"':'';?>><?php echo $trx_id_unit; ?></textarea>
+            <textarea class="form-control" rows="2" name="trx_id_unit" id="trx_id_unit" placeholder="Trx Id Unit" <?= ($trx_id_unit=='' && $trx_fk_unit!='0' && $trx_fk_unit!='')?'style="display:none"':'';?>><?php echo $trx_id_unit; ?></textarea>
         <?php
                 echo form_dropdown('unit', $unit, $trx_fk_unit, $attribute3);
             ?>
@@ -94,6 +94,12 @@
             <label for="int">Metode Pembayaran <?php echo form_error('trx_id_metode_pembayaran') ?></label>
             <?php
                 echo form_dropdown('trx_id_metode_pembayaran', $mp, $trx_id_metode_pembayaran, $attribute);
+            ?>
+        </div>
+        <div class="form-group">
+            <label for="int">Jenis Pajak <?php echo form_error('trx_id_pajak') ?></label>
+            <?php
+                echo form_dropdown('trx_id_pajak', $pajak, $trx_id_pajak, $attribute4);
             ?>
         </div>
 	    <button type="submit" class="btn btn-primary"><?php echo $button ?></button> 

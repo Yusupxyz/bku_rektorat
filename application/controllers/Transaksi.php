@@ -18,6 +18,7 @@ class Transaksi extends CI_Controller
         $this->load->model('Bulan_model');
         $this->load->model('Unit_model');
         $this->load->model('Transaksi_unit_model');
+        $this->load->model('Pajak_model');
         $this->load->library('form_validation');
         $this->id_tahun=$this->Tahun_model->get_id_by_status(1)->tahun_id;
     }
@@ -160,10 +161,12 @@ class Transaksi extends CI_Controller
 	    'trx_penerimaan' => set_value('trx_penerimaan'),
 	    'trx_pengeluaran' => set_value('trx_pengeluaran'),
 	    'trx_fk_unit' => set_value('trx_fk_unit'),
+	    'trx_id_pajak' => set_value('trx_id_pajak'),
     );
         $data['jp']=$this->Jenis_pembayaran_model->dd();
         $data['mp']=$this->Metode_pembayaran_model->dd();
         $data['unit']=$this->Unit_model->dd();
+        $data['pajak']=$this->Pajak_model->dd();
         $data['jenis']=array(
             ""=>"--Pilih Jenis Transaksi--",
             "0"=>"Penerimaan",
@@ -172,6 +175,7 @@ class Transaksi extends CI_Controller
         $data['attribute'] = 'class="form-control" required ';
         $data['attribute2'] = 'class="form-control" required id="trx_jenis"';
         $data['attribute3'] = 'class="form-control" id="unit" style="display:none"';
+        $data['attribute4'] = 'class="form-control" id="id_pajak"';
         $data['title'] = 'Kontrol Transaksi';
         $data['subtitle'] = '';
         $data['crumb'] = [
@@ -196,6 +200,11 @@ class Transaksi extends CI_Controller
             }else{
                 $fk_unit=$this->input->post('unit',TRUE);
             }
+            if ($this->input->post('trx_id_pajak',TRUE)==''){
+                $id_pajak='0';
+            }else{
+                $id_pajak=$this->input->post('trx_id_pajak',TRUE);
+            }
             $data = array(
 		'trx_nomor_bukti' => $this->input->post('trx_nomor_bukti',TRUE),
 		'trx_mak' => $this->input->post('trx_mak',TRUE),
@@ -216,6 +225,7 @@ class Transaksi extends CI_Controller
 		'trx_pengeluaran' => $this->input->post('trx_pengeluaran',TRUE),
 		'trx_id_tahun' => $this->session->userdata('tahun_aktif'),
 		'trx_fk_unit' => $fk_unit,
+		'trx_id_pajak' => $id_pajak
         );
         
 if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
@@ -257,10 +267,12 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
 		'trx_penerimaan' => set_value('trx_penerimaan', $row->trx_penerimaan),
 		'trx_pengeluaran' => set_value('trx_pengeluaran', $row->trx_pengeluaran),
 	    'trx_fk_unit' => set_value('trx_fk_unit', $row->trx_fk_unit),
+	    'trx_id_pajak' => set_value('trx_id_pajak', $row->trx_id_pajak),
         );
         $data['jp']=$this->Jenis_pembayaran_model->dd();
         $data['mp']=$this->Metode_pembayaran_model->dd();
         $data['unit']=$this->Unit_model->dd();
+        $data['pajak']=$this->Pajak_model->dd();
         $data['jenis']=array(
             ""=>"--Pilih Jenis Transaksi--",
             "0"=>"Penerimaan",
@@ -273,6 +285,7 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
             $data['attribute3'] = 'class="form-control" id="unit" style="display:none"';
         }
         $data['attribute2'] = 'class="form-control" required id="trx_jenis"';
+        $data['attribute4'] = 'class="form-control" id="id_pajak"';
             $data['title'] = 'Transaksi';
         $data['subtitle'] = '';
         $data['crumb'] = [
@@ -300,6 +313,11 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
             }else{
                 $fk_unit=$this->input->post('unit',TRUE);
             }
+            if ($this->input->post('trx_id_pajak',TRUE)==''){
+                $id_pajak='0';
+            }else{
+                $id_pajak=$this->input->post('trx_id_pajak',TRUE);
+            }
             $data = array(
 		'trx_id' => $this->input->post('trx_id',TRUE),
 		'trx_nomor_bukti' => $this->input->post('trx_nomor_bukti',TRUE),
@@ -320,6 +338,7 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
 		'trx_penerimaan' => $this->input->post('trx_penerimaan',TRUE),
 		'trx_pengeluaran' => $this->input->post('trx_pengeluaran',TRUE),
 		'trx_fk_unit' => $fk_unit,
+		'trx_id_pajak' => $id_pajak,
 	    );
 
             $this->Transaksi_model->update($this->input->post('trx_id', TRUE), $data);
