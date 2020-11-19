@@ -25,6 +25,7 @@ class Buku extends CI_Controller
         $this->load->model('Tahun_model');
         $this->load->model('Bulan_model');
         $this->load->model('Setting_laporan_model');
+        $this->load->model('Unit_model');
         $this->load->model('Saldo_awal_model');
         $this->load->model('Saldo_akhir_model');
         $this->load->library('form_validation');
@@ -136,7 +137,7 @@ class Buku extends CI_Controller
 			'11'        => 'Nopember',
 			'12'        => 'Desember',
         );
-        $data['dd_unit'] = $this->Transaksi_unit_model->dd();
+        $data['dd_unit'] = $this->Unit_model->dd();
         if($this->input->get('bulan')){
             $data['bulan'] = $this->Bulan_model->get_by_id($this->input->get('bulan'))->bulan_nama;
         }else{
