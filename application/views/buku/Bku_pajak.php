@@ -104,7 +104,7 @@
             {
                 $pajak=$transaksi->trx_ppn+$transaksi->trx_pph_21+$transaksi->trx_pph_22+$transaksi->trx_pph_23+$transaksi->trx_pph_4_2;
               
-                $saldo=$saldo-$transaksi->trx_jml_kotor;
+                $saldo=$saldo+$pajak;
                 ?>
                 <tr>
                 
@@ -117,6 +117,32 @@
             <td style="text-align:right;"><?php echo 'Rp '.number_format($transaksi->trx_pph_22) ?></td>
             <td style="text-align:right;"><?php echo 'Rp '.number_format($transaksi->trx_pph_23) ?></td>
             <td style="text-align:right;"><?php echo 'Rp '.number_format($transaksi->trx_pph_4_2) ?></td>
+            <td style="text-align:right;"></td>
+            <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak) ?></td>
+		</tr>
+                <?php
+            } 
+            ?>
+
+<?php $i=0; $saldo=0; $ppn=0; $pph21=0; $pph22=0; $pph23=0; $pph42=0;
+            // var_dump($pajak_tahun_ini);
+            foreach ($transaksi_setor as $transaksi2)
+            {
+                $pajak=$transaksi2->trx_ppn+$transaksi2->trx_pph_21+$transaksi2->trx_pph_22+$transaksi2->trx_pph_23+$transaksi2->trx_pph_4_2;
+              
+                $saldo=$saldo-$pajak;
+                ?>
+                <tr>
+                
+                
+			<td><?php echo $transaksi->trx_tanggal ?></td>
+			<td><?php echo $transaksi->trx_nomor_bukti ?></td>
+			<td><?php echo substr($transaksi->trx_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView<?php echo $transaksi->trx_id;?>">detail</a></td>
+            <td style="text-align:right;"></td>
+            <td style="text-align:right;"></td>
+            <td style="text-align:right;"></td>
+            <td style="text-align:right;"></td>
+            <td style="text-align:right;"></td>
             <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak) ?></td>
             <td style="text-align:right;"><?php echo 'Rp '.number_format($saldo) ?></td>
 		</tr>
@@ -131,8 +157,8 @@
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_tahun_ini->pph22);?></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_tahun_ini->pph23);?></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_tahun_ini->pph42);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($saldo_setor);?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($saldo_akhir);?></td>
             </tr>
             <tr><td ></td><td ></td>
                 <td style="text-align:right;"><b>JUMLAH BULAN LALU</b></td>
@@ -141,8 +167,8 @@
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_bulan_lalu->pph22);?></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_bulan_lalu->pph23);?></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_bulan_lalu->pph42);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($saldo_setor_bulan_lalu);?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($saldo_akhir_lalu);?></td>
             </tr>
             <tr><td ></td><td ></td>
                 <td style="text-align:right;"><b>JUMLAH S.D BULAN INI</b></td>
@@ -151,8 +177,8 @@
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_sd->pph22);?></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_sd->pph23);?></td>
                 <td style="text-align:right;"><?php echo 'Rp '.number_format($pajak_sd->pph42);?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
-                <td style="text-align:right;"><?php echo 'Rp '.number_format('0');?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($saldo_setor_sd);?></td>
+                <td style="text-align:right;"><?php echo 'Rp '.number_format($saldo_akhir_sd);?></td>
             </tr>
         </table>
          <div class="row" style="margin-bottom: 10px;">

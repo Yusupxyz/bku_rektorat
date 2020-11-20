@@ -140,13 +140,31 @@ class Transaksi_model extends CI_Model
     }
 
     //kas pajak
-    function get_limit_data_bku_pajak($limit, $start = 0, $q = NULL, $tahun,$bulan) {
+    function get_limit_data_bku_pajak_pungut($limit, $start = 0, $q = NULL, $tahun,$bulan) {
         $this->db->order_by('trx_tanggal', $this->order);
         $this->db->limit($limit, $start);
         $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
         $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
         $this->db->where('trx_id_tahun', $tahun);
         $this->db->where('(trx_ppn!="0" OR trx_pph_21!="0" OR trx_pph_22!="0" OR trx_pph_23!="0" OR trx_pph_4_2!="0")');
+        $this->db->where('trx_id_pajak', '2');
+
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal)', $bulan);
+        }
+        return $this->db->get($this->table)->result();
+    }
+
+    //kas pajak
+    function get_limit_data_bku_pajak_setor($limit, $start = 0, $q = NULL, $tahun,$bulan) {
+        $this->db->order_by('trx_tanggal', $this->order);
+        $this->db->limit($limit, $start);
+        $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
+        $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
+        $this->db->where('trx_id_tahun', $tahun);
+        $this->db->where('(trx_ppn!="0" OR trx_pph_21!="0" OR trx_pph_22!="0" OR trx_pph_23!="0" OR trx_pph_4_2!="0")');
+        $this->db->where('trx_id_pajak', '1');
+
         if($bulan!=''){
             $this->db->where('month(trx_tanggal)', $bulan);
         }
@@ -161,6 +179,8 @@ class Transaksi_model extends CI_Model
         $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
         $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
         $this->db->where('trx_id_tahun', $tahun);
+        $this->db->where('trx_id_pajak', '2');
+
         if($bulan!=''){
             $this->db->where('month(trx_tanggal)', $bulan);
         }
@@ -176,6 +196,8 @@ class Transaksi_model extends CI_Model
         $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
         $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
         $this->db->where('trx_id_tahun', $tahun);
+        $this->db->where('trx_id_pajak', '2');
+
         if($bulan!=''){
             $bulan=$bulan-1;
             $this->db->where('month(trx_tanggal)', $bulan);
@@ -192,6 +214,8 @@ class Transaksi_model extends CI_Model
         $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
         $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
         $this->db->where('trx_id_tahun', $tahun);
+        $this->db->where('trx_id_pajak', '2');
+
         if($bulan!=''){
             $this->db->where('month(trx_tanggal) <='. $bulan);
         }
@@ -227,6 +251,20 @@ class Transaksi_model extends CI_Model
     }
 
     // get data with limit and search
+    function get_saldo_awal_pajak($tahun,$bulan) {
+        $this->db->select('(trx_ppn+trx_pph_21+trx_pph_22+trx_pph_23+trx_pph_4_2) as "saldo_awal"');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        $this->db->where('trx_id_pajak', '2');
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal)', $bulan);
+        }
+
+        return $this->db->get($this->table)->row();
+
+    }
+
+    // get data with limit and search
     function get_saldo_awal_sd($tahun,$bulan) {
         $this->db->select('sum(trx_penerimaan) - sum(trx_pengeluaran) as "saldo_awal"');
         $this->db->order_by($this->id, $this->order);
@@ -247,6 +285,86 @@ class Transaksi_model extends CI_Model
             $this->db->where('month(trx_tanggal)', $bulan);
         }
         return $this->db->get($this->table)->row();
+    }
+
+    // get data with limit and search
+    function get_saldo_pungut($tahun,$bulan) {
+        $this->db->select('sum(trx_ppn)+sum(trx_pph_21)+sum(trx_pph_22)+sum(trx_pph_23)+sum(trx_pph_4_2) as "saldo_pungut"');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        $this->db->where('trx_id_pajak', '2');
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal)', $bulan);
+        }
+            return $this->db->get($this->table)->row()->saldo_pungut;
+       
+    }
+
+    // get data with limit and search
+    function get_saldo_pungut_lalu($tahun,$bulan) {
+        $this->db->select('sum(trx_ppn)+sum(trx_pph_21)+sum(trx_pph_22)+sum(trx_pph_23)+sum(trx_pph_4_2) as "saldo_pungut"');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        $this->db->where('trx_id_pajak', '2');
+        if($bulan!=''){
+            $bulan=$bulan-1;
+            $this->db->where('month(trx_tanggal)', $bulan);
+        }
+            return $this->db->get($this->table)->row()->saldo_pungut;
+       
+    }
+
+    // get data with limit and search
+    function get_saldo_pungut_sd($tahun,$bulan) {
+        $this->db->select('sum(trx_ppn)+sum(trx_pph_21)+sum(trx_pph_22)+sum(trx_pph_23)+sum(trx_pph_4_2) as "saldo_pungut"');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        $this->db->where('trx_id_pajak', '2');
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal) <='. $bulan);
+        }
+            return $this->db->get($this->table)->row()->saldo_pungut;
+       
+    }
+
+    // get data with limit and search
+    function get_saldo_setor($tahun,$bulan) {
+        $this->db->select('sum(trx_ppn)+sum(trx_pph_21)+sum(trx_pph_22)+sum(trx_pph_23)+sum(trx_pph_4_2) as "saldo_setor"');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        $this->db->where('trx_id_pajak', '1');
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal)', $bulan);
+        }
+        return $this->db->get($this->table)->row()->saldo_setor;
+       
+    }
+
+    // get data with limit and search
+    function get_saldo_setor_lalu($tahun,$bulan) {
+        $this->db->select('sum(trx_ppn)+sum(trx_pph_21)+sum(trx_pph_22)+sum(trx_pph_23)+sum(trx_pph_4_2) as "saldo_setor"');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        $this->db->where('trx_id_pajak', '1');
+        if($bulan!=''){
+            $bulan=$bulan-1;
+            $this->db->where('month(trx_tanggal)', $bulan);
+        }
+        return $this->db->get($this->table)->row()->saldo_setor;
+       
+    }
+
+    // get data with limit and search
+    function get_saldo_setor_sd($tahun,$bulan) {
+        $this->db->select('sum(trx_ppn)+sum(trx_pph_21)+sum(trx_pph_22)+sum(trx_pph_23)+sum(trx_pph_4_2) as "saldo_setor"');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('trx_id_tahun', $tahun);
+        $this->db->where('trx_id_pajak', '1');
+        if($bulan!=''){
+            $this->db->where('month(trx_tanggal) <='. $bulan);
+        }
+        return $this->db->get($this->table)->row()->saldo_setor;
+       
     }
 
     // get data with limit and search
