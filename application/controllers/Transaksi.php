@@ -479,7 +479,7 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
         // array Count
         $arrayCount = count($dataNoTrx);
         $flag = 0;
-        $createArray = array('Jenis','Tanggal', 'Nomor Bukti', 'MAK', 'Penerima', 'Uraian','Jumlah Kotor','PPn','PPh 21','PPh 22','PPh 23','PPh 4(2)','Jumlah Bersih','Penerimaan','Pengeluaran','Bank/Tunai','GU/LS','Nama Unit');
+        $createArray = array('Jenis','Tanggal', 'Nomor Bukti', 'MAK', 'Penerima', 'Uraian','Jumlah Kotor','PPn','PPh 21','PPh 22','PPh 23','PPh 4(2)','Jumlah Bersih','Penerimaan','Pengeluaran','Bank/Tunai','GU/LS','Nama Unit','Jenis Pajak');
         $makeArray = array('Jenis' => 'Jenis', 
                             'Tanggal' => 'Tanggal', 
                             'NomorBukti' => 'NomorBukti', 
@@ -497,7 +497,8 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
                             'Pengeluaran' => 'Pengeluaran', 
                             'Bank/Tunai' => 'Bank/Tunai', 
                             'GU/LS' => 'GU/LS', 
-                            'NamaUnit' => 'NamaUnit' );
+                            'NamaUnit' => 'NamaUnit',
+                            'JenisPajak' => 'JenisPajak' );
         $SheetDataKey = array();
         foreach ($dataNoTrx as $dataInSheet) {
             foreach ($dataInSheet as $key => $value) {
@@ -508,7 +509,7 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
             }
         }
         $dataDiff = array_diff_key($makeArray, $SheetDataKey);
-        // var_dump($dataDiff);
+        // var_dump($SheetDataKey);
 
         if (empty($dataDiff)) {
             $flag = 1;
@@ -534,6 +535,7 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
                 $bt = $SheetDataKey['Bank/Tunai'];
                 $guls = $SheetDataKey['GU/LS'];
                 $unit = $SheetDataKey['NamaUnit'];
+                $pajak = $SheetDataKey['JenisPajak'];
 
                 $jenis_data = filter_var(trim($dataNoTrx[$i][$jenis]), FILTER_SANITIZE_STRING);
                 $no = filter_var(trim($dataNoTrx[$i][$no]), FILTER_SANITIZE_STRING);
@@ -553,6 +555,7 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
                 $bt = $this->Jenis_pembayaran_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$bt]), FILTER_SANITIZE_STRING))->jp_id;
                 $guls = $this->Metode_pembayaran_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$guls]), FILTER_SANITIZE_STRING))->mp_id;
                 $unit = $this->Unit_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$unit]), FILTER_SANITIZE_STRING))->id;
+                $pajak = $this->Pajak_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$pajak]), FILTER_SANITIZE_STRING))->id;
                 // echo $this->db->last_query();
 
                 $jenis=$penerimaan==''?'0':'1';
@@ -575,7 +578,8 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
                                     'trx_penerimaan' => $penerimaan,
                                     'trx_pengeluaran' => $pengeluaran, 
                                     'trx_id_tahun' => $this->session->userdata('tahun_aktif'),
-                                    'trx_fk_unit' => $unit );
+                                    'trx_fk_unit' => $unit,
+                                    'trx_id_pajak' => $pajak );
                     $this->Transaksi_model->setBatchImport($fetchData);
                     if(!$this->Transaksi_model->importData()){
                         $this->session->set_flashdata('message', 'Import Excel Success');
@@ -608,7 +612,7 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
 
         } else {
             $this->session->set_flashdata('message_error', 'Maaf importlah file sesuai format yang diberikan, jumlah kolom tidak sesuai');
-            redirect('transaksi');
+            // redirect('transaksi');
         }
     }    
     }

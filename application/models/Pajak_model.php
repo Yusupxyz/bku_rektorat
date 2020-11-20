@@ -87,6 +87,13 @@ class Pajak_model extends CI_Model
          }
         }
 
+    // get data by nama
+    function get_by_nama($nama)
+    {
+        $this->db->where('jenis', $nama);
+        return $this->db->get($this->table)->row();
+    }
+
     // get data dropdown
     function dd()
     {
