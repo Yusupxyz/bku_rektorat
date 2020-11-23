@@ -250,6 +250,7 @@ class Transaksi_model extends CI_Model
         return $this->db->get($this->table)->row();
     }
 
+
     // get data with limit and search
     function get_saldo_awal_pajak($tahun,$bulan) {
         $this->db->select('(trx_ppn+trx_pph_21+trx_pph_22+trx_pph_23+trx_pph_4_2) as "saldo_awal"');
@@ -457,6 +458,7 @@ class Transaksi_model extends CI_Model
     function dd()
     {
         // ambil data dari db
+        $this->db->where('trx_fk_unit!=0');
         $this->db->order_by($this->id, $this->order);
         $result = $this->db->get($this->table);
         // bikin array

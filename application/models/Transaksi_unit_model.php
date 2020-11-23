@@ -37,7 +37,7 @@ class Transaksi_unit_model extends CI_Model
 	$this->db->join('tbl_transaksi','tbl_transaksi_unit.trxu_nomor_bukti=tbl_transaksi.trx_id','left');
     $this->db->where('trx_id_tahun', $tahun);
     if($unit!=''){
-        $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+        $this->db->where('tbl_transaksi.trx_fk_unit', $unit);
     }
     if($bulan!=''){
         $this->db->where('month(trx_tanggal)', $bulan);
@@ -108,7 +108,7 @@ class Transaksi_unit_model extends CI_Model
         $this->db->order_by($this->id, $this->order);
         $this->db->where('trx_id_tahun', $tahun);
         if($unit!=''){
-            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+            $this->db->where('tbl_transaksi.trx_fk_unit', $unit);
         }
         if($bulan!=''){
             $this->db->where('month(trx_tanggal)', $bulan);
@@ -126,7 +126,7 @@ class Transaksi_unit_model extends CI_Model
         $this->db->order_by($this->id, $this->order);
         $this->db->where('trx_id_tahun', $tahun);
         if($unit!=''){
-            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+            $this->db->where('tbl_transaksi.trx_fk_unit', $unit);
         }
         if($bulan!=''){
             $this->db->where('month(trx_tanggal)', $bulan);
@@ -141,7 +141,7 @@ class Transaksi_unit_model extends CI_Model
         $this->db->order_by($this->id, $this->order);
         $this->db->where('trx_id_tahun', $tahun);
         if($unit!=''){
-            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+            $this->db->where('tbl_transaksi.trx_fk_unit', $unit);
         }
         if($bulan!=''){
             $this->db->where('month(trx_tanggal) <= '.$bulan);
@@ -156,7 +156,7 @@ class Transaksi_unit_model extends CI_Model
         $this->db->order_by($this->id, $this->order);
         $this->db->where('trx_id_tahun', $tahun);
         if($unit!=''){
-            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+            $this->db->where('tbl_transaksi.trx_fk_unit', $unit);
         }
         if($bulan!=''){
             $this->db->where('month(trx_tanggal)', $bulan);
@@ -171,7 +171,7 @@ class Transaksi_unit_model extends CI_Model
         $this->db->order_by($this->id, $this->order);
         $this->db->where('trx_id_tahun', $tahun);
         if($unit!=''){
-            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+            $this->db->where('tbl_transaksi.trx_fk_unit', $unit);
         }
         if($bulan!=''){
             $this->db->where('month(trx_tanggal) <= '.$bulan);
@@ -186,7 +186,7 @@ class Transaksi_unit_model extends CI_Model
         $this->db->order_by($this->id, $this->order);
         $this->db->where('trx_id_tahun', $tahun);
         if($unit!=''){
-            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+            $this->db->where('tbl_transaksi.trx_fk_unit', $unit);
         }
         if($bulan!=''){
             $this->db->where('month(trx_tanggal)', $bulan-1);
@@ -201,7 +201,7 @@ class Transaksi_unit_model extends CI_Model
         $this->db->order_by($this->id, $this->order);
         $this->db->where('trx_id_tahun', $tahun);
         if($unit!=''){
-            $this->db->where('tbl_transaksi_unit.trxu_id_unit', $unit);
+            $this->db->where('tbl_transaksi.trx_fk_unit', $unit);
         }
         if($bulan!=''){
             $bulan=$bulan-1;

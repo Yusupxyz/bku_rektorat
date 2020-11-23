@@ -91,18 +91,6 @@
 		    <th>Kredit</th>
 		    <th>Saldo (Rp)</th>
             </tr>
-            <!-- <tr>
-                <td colspan="5" style="text-align:center;"><b>Saldo Awal</b></td>
-                <td style="text-align:right;"><b><?php echo 'Rp '.number_format($saldo_awal);?></b></td>
-                <td style="text-align:right;"><b></b></td>
-                <td style="text-align:right;"><b><?php echo 'Rp '.number_format($saldo_awal);?></b></td>
-            </tr>
-            <tr>
-                <td colspan="5" style="text-align:center;"><b>Kas</b></td>
-                <td style="text-align:right;"><b><?php echo 'Rp '.number_format($sum_penerimaan);?></b></td>
-                <td style="text-align:right;"><b></b></td>
-                <td style="text-align:right;"><b><?php echo 'Rp '.number_format($saldo_total);?></b></td>
-            </tr> -->
             
             <?php $i=0; $saldo=0;
             foreach ($transaksi_data as $transaksi)

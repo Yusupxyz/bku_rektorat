@@ -18,6 +18,7 @@ class Unduh extends CI_Controller
         $this->load->model('Unit_model');
         $this->load->model('Tahun_model');
         $this->load->model('Transaksi_model');
+        $this->load->model('Transaksi_unit_model');
         $this->load->model('Pejabat_model');
         $this->load->model('Buku_pembantu_model');
         $this->load->model('Buku_pembantu2_model');
@@ -62,14 +63,14 @@ class Unduh extends CI_Controller
         $pejabat1=$this->Pejabat_model->get_by_id('1');
         $pejabat2=$this->Pejabat_model->get_by_id('2');
 
-        if($this->input->post('trx_bulan') && $this->session->userdata('tahun_aktif')){
-            $saldo_awal = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_awal;
-        }else{
-            $saldo_awal = '0';
-        }
-        $saldo_akhir = $this->Transaksi_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_akhir;
-        $sum_penerimaan = $this->Transaksi_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->penerimaan;
-        $saldo_total=$saldo_awal+$sum_penerimaan;
+        // if($this->input->post('trx_bulan') && $this->session->userdata('tahun_aktif')){
+        //     $saldo_awal = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_awal;
+        // }else{
+        //     $saldo_awal = '0';
+        // }
+        // $saldo_akhir = $this->Transaksi_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_akhir;
+        // $sum_penerimaan = $this->Transaksi_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->penerimaan;
+        // $saldo_total=$saldo_awal+$sum_penerimaan;
         $bku_umum = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'));
         $bku_tunai = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),'2');
         $bku_bank = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),'1');
@@ -99,6 +100,7 @@ class Unduh extends CI_Controller
         $saldo_total_sd=$sum_penerimaan_sd;
 
         //tunai
+        $saldo_awal_tunai = $this->Buku_pembantu_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),2)->saldo_awal;
         $sum_penerimaan_tunai = $this->Buku_pembantu_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),2)->penerimaan;
         $sum_penerimaan_lalu_tunai = $this->Buku_pembantu_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')==''?'':$this->input->post('trx_bulan')-1,2)->penerimaan;
         $sum_penerimaan_sd_tunai = $this->Buku_pembantu_model->get_penerimaan_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),2)->penerimaan;
@@ -107,6 +109,7 @@ class Unduh extends CI_Controller
         $sum_pengeluaran_sd_tunai = $this->Buku_pembantu_model->get_jk_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),2)->jmlh_kotor;
 
         //bank
+        $saldo_awal_bank = $this->Buku_pembantu_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),1)->saldo_awal;
         $sum_pengeluaran_bank = $this->Buku_pembantu_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),1)->jmlh_kotor;
         $sum_pengeluaran_lalu_bank = $this->Buku_pembantu_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')==''?'':$this->input->post('trx_bulan')-1,1)->jmlh_kotor;
         $sum_pengeluaran_sd_bank = $this->Buku_pembantu_model->get_jk_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),1)->jmlh_kotor;
@@ -115,6 +118,7 @@ class Unduh extends CI_Controller
         $sum_penerimaan_sd_bank = $this->Buku_pembantu_model->get_penerimaan_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),1)->penerimaan;
         
         //bptbp
+        $saldo_awal_bptbp = $this->Buku_pembantu_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),3)->saldo_awal;
         $sum_pengeluaran_bptbp = $this->Buku_pembantu_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),3)->jmlh_kotor;
         $sum_pengeluaran_lalu_bptbp = $this->Buku_pembantu_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')==''?'':$this->input->post('trx_bulan')-1,3)->jmlh_kotor;
         $sum_pengeluaran_sd_bptbp = $this->Buku_pembantu_model->get_jk_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),3)->jmlh_kotor;
@@ -123,6 +127,7 @@ class Unduh extends CI_Controller
         $sum_penerimaan_sd_bptbp = $this->Buku_pembantu_model->get_penerimaan_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),3)->penerimaan;
 
         //up
+        $saldo_awal_up = $this->Buku_pembantu2_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),1)->saldo_awal;
         $sum_pengeluaran_up = $this->Buku_pembantu2_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),1)->jmlh_kotor;
         $sum_pengeluaran_lalu_up = $this->Buku_pembantu2_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')==''?'':$this->input->post('trx_bulan')-1,1)->jmlh_kotor;
         $sum_pengeluaran_sd_up = $this->Buku_pembantu2_model->get_jk_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),1)->jmlh_kotor;
@@ -131,6 +136,7 @@ class Unduh extends CI_Controller
         $sum_penerimaan_sd_up = $this->Buku_pembantu2_model->get_penerimaan_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),1)->penerimaan;
 
         //lsb
+        $saldo_awal_lsb = $this->Buku_pembantu2_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),2)->saldo_awal;
         $sum_pengeluaran_lsb = $this->Buku_pembantu2_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),2)->jmlh_kotor;
         $sum_pengeluaran_lalu_lsb = $this->Buku_pembantu2_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')==''?'':$this->input->post('trx_bulan')-1,2)->jmlh_kotor;
         $sum_pengeluaran_sd_lsb = $this->Buku_pembantu2_model->get_jk_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),2)->jmlh_kotor;
@@ -379,7 +385,7 @@ class Unduh extends CI_Controller
 
         //ISI
         $sheet2->setCellValue('H11', 'Saldo Awal');
-        $sheet2->setCellValue('I11', 'Rp '.number_format($saldo_awal));
+        $sheet2->setCellValue('I11', 'Rp '.number_format($saldo_awal_tunai));
         $sheet2->setCellValue('H12', 'Saldo Akhir');
         $sheet2->setCellValue('I12', 'Rp '.number_format($saldo_akhir));
 
@@ -492,7 +498,7 @@ class Unduh extends CI_Controller
 
         //ISI
         $sheet2->setCellValue('H11', 'Saldo Awal');
-        $sheet2->setCellValue('I11', 'Rp '.number_format($saldo_awal));
+        $sheet2->setCellValue('I11', 'Rp '.number_format($saldo_awal_bank));
         $sheet2->setCellValue('H12', 'Saldo Akhir');
         $sheet2->setCellValue('I12', 'Rp '.number_format($saldo_akhir));
 
@@ -605,7 +611,7 @@ class Unduh extends CI_Controller
 
         //ISI
         $sheet2->setCellValue('H11', 'Saldo Awal');
-        $sheet2->setCellValue('I11', 'Rp '.number_format($saldo_awal));
+        $sheet2->setCellValue('I11', 'Rp '.number_format($saldo_awal_bptbp));
         $sheet2->setCellValue('H12', 'Saldo Akhir');
         $sheet2->setCellValue('I12', 'Rp '.number_format($saldo_akhir));
 
@@ -718,7 +724,7 @@ class Unduh extends CI_Controller
 
         //ISI
         $sheet2->setCellValue('H11', 'Saldo Awal');
-        $sheet2->setCellValue('I11', 'Rp '.number_format($saldo_awal));
+        $sheet2->setCellValue('I11', 'Rp '.number_format($saldo_awal_up));
         $sheet2->setCellValue('H12', 'Saldo Akhir');
         $sheet2->setCellValue('I12', 'Rp '.number_format($saldo_akhir));
 
@@ -830,7 +836,7 @@ class Unduh extends CI_Controller
 
         //ISI
         $sheet2->setCellValue('H11', 'Saldo Awal');
-        $sheet2->setCellValue('I11', 'Rp '.number_format($saldo_awal));
+        $sheet2->setCellValue('I11', 'Rp '.number_format($saldo_awal_lsb));
         $sheet2->setCellValue('H12', 'Saldo Akhir');
         $sheet2->setCellValue('I12', 'Rp '.number_format($saldo_akhir));
 
@@ -1542,10 +1548,25 @@ class Unduh extends CI_Controller
          $tahun=$this->Tahun_model->get_by_id($this->session->userdata('tahun_aktif'))->tahun_nama;
          $pejabat1=$this->Pejabat_model->get_by_id('1');
          $pejabat2=$this->Pejabat_model->get_by_id('2');
- 
-         
+         $bku_umum = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'));
+
+         $unit=$this->Unit_model->get_all_except();
+         $saldo_awal = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_awal;
+        $saldo_awal_lalu = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')-1)->saldo_awal;
+        $saldo_awal_sd = $this->Transaksi_model->get_saldo_awal_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_awal;
+        $saldo_akhir = $this->Transaksi_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_akhir;
+        $sum_pengeluaran = $this->Transaksi_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->jmlh_kotor;
+        $sum_pengeluaran_lalu = $this->Transaksi_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')==''?'':$this->input->post('trx_bulan')-1)->jmlh_kotor;
+        $sum_pengeluaran_sd = $this->Transaksi_model->get_jk_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->jmlh_kotor;
+        $sum_penerimaan = $this->Transaksi_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->penerimaan;
+        $sum_penerimaan_lalu = $this->Transaksi_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')==''?'':$this->input->post('trx_bulan')-1)->penerimaan;
+        $sum_penerimaan_sd = $this->Transaksi_model->get_penerimaan_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->penerimaan;
+        $saldo_total=$sum_penerimaan;
+        $saldo_total_lalu=$sum_penerimaan_lalu;
+        $saldo_total_sd=$sum_penerimaan_sd;
          //----------------------------------------------------------------------------------------------------
          // BP KAS UNIT
+
          $spreadsheet = new Spreadsheet();
          $spreadsheet->getActiveSheet()->setTitle("BKU");;
  
@@ -1625,123 +1646,133 @@ class Unduh extends CI_Controller
                  'startColor' => array('argb' => 'd9e1f2')
              )
          );
- 
-         //JUDUL
-         $sheet = $spreadsheet->getActiveSheet();
-         $sheet->setCellValue('A1', 'PNBP NON-MODAL UNIVERITAS PALANGKA RAYA');
-         $sheet->setCellValue('A2', 'BUKU KAS UMUM');
-         $sheet->setCellValue('A3', 'BULAN '.strtoupper($bulan));
-         $sheet->setCellValue('A5', 'KEMENTERIAN/LEMBAGA');
-         $sheet->setCellValue('D5', ': KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN');
-         $sheet->setCellValue('A6', 'UNIT ORGANISASI');
-         $sheet->setCellValue('D6', ':  SEKRETARIAT JENDERAL');
-         $sheet->setCellValue('A7', 'SATUAN KERJA');
-         $sheet->setCellValue('D7', ': PNBP NON-MODAL UNIVERSITAS PALANGKA RAYA');
-         $sheet->setCellValue('A8', 'TANGGAL DAN NOMOR DIPA');
-         $sheet->setCellValue('D8', ': JL. YOS SUDARSO PALANGKA RAYA');
-         $sheet->setCellValue('A9', 'TAHUN ANGGARAN');
-         $sheet->setCellValue('D9', ': '.$tahun);
- 
-         $spreadsheet->getActiveSheet()->mergeCells('A1:I1');
-         $spreadsheet->getActiveSheet()->mergeCells('A2:I2');
-         $spreadsheet->getActiveSheet()->mergeCells('A3:I3');
-         $spreadsheet->getActiveSheet()->mergeCells('A5:C5');
-         $spreadsheet->getActiveSheet()->mergeCells('A6:C6');
-         $spreadsheet->getActiveSheet()->mergeCells('A7:C7');
-         $spreadsheet->getActiveSheet()->mergeCells('A8:C8');
-         $spreadsheet->getActiveSheet()->mergeCells('A9:C9');
- 
-         $sheet->getStyle("A1:I3")->applyFromArray($middle);
-         $sheet->getStyle("A2:I2")->applyFromArray($bold);
-         $sheet->getStyle("A3")->applyFromArray($underline);
- 
-         //ISI
-         $sheet->setCellValue('H11', 'Saldo Awal');
-         $sheet->setCellValue('I11', 'Rp '.number_format($saldo_awal));
-         $sheet->setCellValue('H12', 'Saldo Akhir');
-         $sheet->setCellValue('I12', 'Rp '.number_format($saldo_akhir));
- 
-         $sheet->getStyle("H11:I12")->applyFromArray($bold);
-         $sheet->getStyle("H11:I12")->applyFromArray($border);
- 
-         //TABEL
-         $sheet->setCellValue('B14', 'Tanggal');
-         $sheet->setCellValue('C14', 'Nomor Bukti');
-         $sheet->setCellValue('D14', 'MAK');
-         $sheet->setCellValue('E14', 'Penerima');
-         $sheet->setCellValue('F14', 'Uraian');
-         $sheet->setCellValue('G14', 'Debet (Rp)');
-         $sheet->setCellValue('H14', 'Kredit (Rp)');
-         $sheet->setCellValue('I14', 'Saldo (Rp)');
- 
-         $sheet->getStyle("B14:I14")->applyFromArray($bold);
-         $sheet->getStyle("B14:I14")->applyFromArray($bcolor);
- 
-         $i=15; 
-         $saldo=0;
-         
-         foreach ($bku_umum as $value)
-         {
-             $saldo=$saldo+$value->trx_penerimaan-$value->trx_pengeluaran;
-             $sheet->setCellValue('B'.$i, $value->trx_tanggal);
-             $sheet->setCellValue('C'.$i, $value->trx_nomor_bukti);
-             $sheet->setCellValue('D'.$i, $value->trx_mak);
-             $sheet->setCellValue('E'.$i, $value->trx_id_unit);
-             $sheet->setCellValue('F'.$i, $value->trx_uraian);
-             $sheet->setCellValue('G'.$i, number_format($value->trx_penerimaan));
-             $sheet->setCellValue('H'.$i, number_format($value->trx_pengeluaran));
-             $sheet->setCellValue('I'.$i++, number_format($saldo));
-         }
-         if (count($bku_umum)<1) $i++;
- 
-         $sheet->getStyle("B15:I".$i)->applyFromArray($border);
-         $temp=$i;
-         //FOOTER
-         $sheet->setCellValue('F'.$i, 'JUMLAH BULAN INI');
-         $sheet->setCellValue('G'.$i, number_format($saldo_total));
-         $sheet->setCellValue('H'.$i, number_format($sum_pengeluaran));
-         $sheet->setCellValue('I'.$i++, number_format($saldo_total-$sum_pengeluaran));
- 
-         $sheet->setCellValue('F'.$i, 'JUMLAH BULAN LALU');
-         $sheet->setCellValue('G'.$i, number_format($saldo_total_lalu));
-         $sheet->setCellValue('H'.$i, number_format($sum_pengeluaran_lalu));
-         $sheet->setCellValue('I'.$i++, number_format($saldo_total_lalu-$sum_pengeluaran_lalu));
- 
-         $sheet->setCellValue('F'.$i, 'JUMLAH S.D BULAN INI');
-         $sheet->setCellValue('G'.$i, number_format($saldo_total_sd));
-         $sheet->setCellValue('H'.$i, number_format($sum_pengeluaran_sd));
-         $sheet->setCellValue('I'.$i, number_format($saldo_total_sd-$sum_pengeluaran_sd));
- 
-         $sheet->getStyle("B".$temp.":I".$i)->applyFromArray($bold);
-         $sheet->getStyle("B".$temp.":I".$i++)->applyFromArray($bcolor);
-         $j=$i+2;
-         //FOOTER
-         $sheet->setCellValue('C'.$j++, 'Mengetahui/Menyetujui, ');
-         $sheet->setCellValue('C'.$j++, 'Pejabat Pembuat Komitmen');
-         $sheet->setCellValue('C'.$j, 'PNBP Belanja Non Modal');
-         $j=$j+4;
-         $sheet->setCellValue('C'.$j, $pejabat1->pejabat_nama);
-         $namaj=$j++;
-         $sheet->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
- 
-         $k=$i+1;
-         $sheet->setCellValue('F'.$k, 'Palangka Raya, ');
-         $k=$k+2;
-         $sheet->setCellValue('F'.$k, 'BPP PNBP');
-         $k=$k+5;
-         $sheet->setCellValue('F'.$k, $pejabat2->pejabat_nama);
-         $namak=$k++;
-         $sheet->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
- 
-         $sheet->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
-         //----------------------------------------------------------------------------------------------------
-         
+        //JUDUL
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'PNBP NON-MODAL UNIVERITAS PALANGKA RAYA');
+        $sheet->setCellValue('A2', 'BUKU KAS UMUM');
+        $sheet->setCellValue('A3', 'BULAN '.strtoupper($bulan));
+        $sheet->setCellValue('A5', 'KEMENTERIAN/LEMBAGA');
+        $sheet->setCellValue('D5', ': KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN');
+        $sheet->setCellValue('A6', 'UNIT ORGANISASI');
+        $sheet->setCellValue('D6', ':  SEKRETARIAT JENDERAL');
+        $sheet->setCellValue('A7', 'SATUAN KERJA');
+        $sheet->setCellValue('D7', ': PNBP NON-MODAL UNIVERSITAS PALANGKA RAYA');
+        $sheet->setCellValue('A8', 'TANGGAL DAN NOMOR DIPA');
+        $sheet->setCellValue('D8', ': JL. YOS SUDARSO PALANGKA RAYA');
+        $sheet->setCellValue('A9', 'TAHUN ANGGARAN');
+        $sheet->setCellValue('D9', ': '.$tahun);
+
+        $spreadsheet->getActiveSheet()->mergeCells('A1:I1');
+        $spreadsheet->getActiveSheet()->mergeCells('A2:I2');
+        $spreadsheet->getActiveSheet()->mergeCells('A3:I3');
+        $spreadsheet->getActiveSheet()->mergeCells('A5:C5');
+        $spreadsheet->getActiveSheet()->mergeCells('A6:C6');
+        $spreadsheet->getActiveSheet()->mergeCells('A7:C7');
+        $spreadsheet->getActiveSheet()->mergeCells('A8:C8');
+        $spreadsheet->getActiveSheet()->mergeCells('A9:C9');
+
+        $sheet->getStyle("A1:I3")->applyFromArray($middle);
+        $sheet->getStyle("A2:I2")->applyFromArray($bold);
+        $sheet->getStyle("A3")->applyFromArray($underline);
+
+        //ISI
+        $sheet->setCellValue('H11', 'Saldo Awal');
+        $sheet->setCellValue('I11', 'Rp '.number_format($saldo_awal));
+        $sheet->setCellValue('H12', 'Saldo Akhir');
+        $sheet->setCellValue('I12', 'Rp '.number_format($saldo_akhir));
+
+        $sheet->getStyle("H11:I12")->applyFromArray($bold);
+        $sheet->getStyle("H11:I12")->applyFromArray($border);
+
+        //TABEL
+        $sheet->setCellValue('B14', 'Tanggal');
+        $sheet->setCellValue('C14', 'Nomor Bukti');
+        $sheet->setCellValue('D14', 'MAK');
+        $sheet->setCellValue('E14', 'Penerima');
+        $sheet->setCellValue('F14', 'Uraian');
+        $sheet->setCellValue('G14', 'Debet (Rp)');
+        $sheet->setCellValue('H14', 'Kredit (Rp)');
+        $sheet->setCellValue('I14', 'Saldo (Rp)');
+
+        $sheet->getStyle("B14:I14")->applyFromArray($bold);
+        $sheet->getStyle("B14:I14")->applyFromArray($bcolor);
+
+        $i=15; 
+        $saldo=0;
+        
+        foreach ($bku_umum as $value)
+        {
+            $saldo=$saldo+$value->trx_penerimaan-$value->trx_pengeluaran;
+            $sheet->setCellValue('B'.$i, $value->trx_tanggal);
+            $sheet->setCellValue('C'.$i, $value->trx_nomor_bukti);
+            $sheet->setCellValue('D'.$i, $value->trx_mak);
+            $sheet->setCellValue('E'.$i, $value->trx_id_unit);
+            $sheet->setCellValue('F'.$i, $value->trx_uraian);
+            $sheet->setCellValue('G'.$i, number_format($value->trx_penerimaan));
+            $sheet->setCellValue('H'.$i, number_format($value->trx_pengeluaran));
+            $sheet->setCellValue('I'.$i++, number_format($saldo));
+        }
+        if (count($bku_umum)<1) $i++;
+
+        $sheet->getStyle("B15:I".$i)->applyFromArray($border);
+        $temp=$i;
+        //FOOTER
+        $sheet->setCellValue('F'.$i, 'JUMLAH BULAN INI');
+        $sheet->setCellValue('G'.$i, number_format($saldo_total));
+        $sheet->setCellValue('H'.$i, number_format($sum_pengeluaran));
+        $sheet->setCellValue('I'.$i++, number_format($saldo_total-$sum_pengeluaran));
+
+        $sheet->setCellValue('F'.$i, 'JUMLAH BULAN LALU');
+        $sheet->setCellValue('G'.$i, number_format($saldo_total_lalu));
+        $sheet->setCellValue('H'.$i, number_format($sum_pengeluaran_lalu));
+        $sheet->setCellValue('I'.$i++, number_format($saldo_total_lalu-$sum_pengeluaran_lalu));
+
+        $sheet->setCellValue('F'.$i, 'JUMLAH S.D BULAN INI');
+        $sheet->setCellValue('G'.$i, number_format($saldo_total_sd));
+        $sheet->setCellValue('H'.$i, number_format($sum_pengeluaran_sd));
+        $sheet->setCellValue('I'.$i, number_format($saldo_total_sd-$sum_pengeluaran_sd));
+
+        $sheet->getStyle("B".$temp.":I".$i)->applyFromArray($bold);
+        $sheet->getStyle("B".$temp.":I".$i++)->applyFromArray($bcolor);
+        $j=$i+2;
+        //FOOTER
+        $sheet->setCellValue('C'.$j++, 'Mengetahui/Menyetujui, ');
+        $sheet->setCellValue('C'.$j++, 'Pejabat Pembuat Komitmen');
+        $sheet->setCellValue('C'.$j, 'PNBP Belanja Non Modal');
+        $j=$j+4;
+        $sheet->setCellValue('C'.$j, $pejabat1->pejabat_nama);
+        $namaj=$j++;
+        $sheet->setCellValue('C'.$j, 'NIP. '.$pejabat1->pejabat_nip);
+
+        $k=$i+1;
+        $sheet->setCellValue('F'.$k, 'Palangka Raya, ');
+        $k=$k+2;
+        $sheet->setCellValue('F'.$k, 'BPP PNBP');
+        $k=$k+5;
+        $sheet->setCellValue('F'.$k, $pejabat2->pejabat_nama);
+        $namak=$k++;
+        $sheet->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
+
+        $sheet->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
+        //----------------------------------------------------------------------------------------------------
+        
+        
+    foreach ($unit as $key => $value) {
+        $saldo_akhir = $this->Transaksi_unit_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),$value->id)->saldo_akhir;
+        $sum_pengeluaran = $this->Transaksi_unit_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),$value->id)->jmlh_kotor;
+        $sum_pengeluaran_lalu = $this->Transaksi_unit_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')==''?'':$this->input->post('trx_bulan')-1,$value->id)->jmlh_kotor;
+        $sum_pengeluaran_sd = $this->Transaksi_unit_model->get_jk_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),$value->id)->jmlh_kotor;
+        $sum_penerimaan = $this->Transaksi_unit_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),$value->id)->penerimaan;
+        $sum_penerimaan_lalu = $this->Transaksi_unit_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')==''?'':$this->input->post('trx_bulan')-1,$value->id)->penerimaan;
+        $sum_penerimaan_sd = $this->Transaksi_unit_model->get_penerimaan_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),$value->id)->penerimaan;
+
+
          //BP KAS TUNAI
-         $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, 'BP KAS (TUNAI)');
+         $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, 'BP KAS UNIT'.$value->nama);
          $spreadsheet->addSheet($myWorkSheet);
-         $sheet2 = $spreadsheet->getSheetByName('BP KAS (TUNAI)');        ;
+         $sheet2 = $spreadsheet->getSheetByName('BP KAS UNIT'.$value->nama);        ;
          $sheet2->setCellValue('A1', 'PNBP NON-MODAL UNIVERITAS PALANGKA RAYA');
-         $sheet2->setCellValue('A2', 'BUKU PEMBANTU KAS (TUNAI)');
+         $sheet2->setCellValue('A2', 'BUKU PEMBANTU KAS UNIT'.$value->nama);
          $sheet2->setCellValue('A3', 'BULAN '.strtoupper($bulan));
          $sheet2->setCellValue('A5', 'KEMENTERIAN/LEMBAGA');
          $sheet2->setCellValue('D5', ': KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN');
@@ -1768,10 +1799,12 @@ class Unduh extends CI_Controller
          $sheet2->getStyle("A3")->applyFromArray($underline);
  
          //ISI
+         $saldo_awal_unit = $this->Transaksi_unit_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),$value->id)->saldo_awal;
+         $saldo_akhir = $this->Transaksi_unit_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),$value->id)->saldo_akhir;
          $sheet2->setCellValue('H11', 'Saldo Awal');
-        //  $sheet2->setCellValue('I11', 'Rp '.number_format($saldo_awal));
-        //  $sheet2->setCellValue('H12', 'Saldo Akhir');
-        //  $sheet2->setCellValue('I12', 'Rp '.number_format($saldo_akhir));
+         $sheet2->setCellValue('I11', 'Rp '.number_format($saldo_awal_unit));
+         $sheet2->setCellValue('H12', 'Saldo Akhir');
+         $sheet2->setCellValue('I12', 'Rp '.number_format($saldo_akhir));
  
          $sheet2->getStyle("H11:I12")->applyFromArray($bold);
          $sheet2->getStyle("H11:I12")->applyFromArray($border);
@@ -1791,7 +1824,8 @@ class Unduh extends CI_Controller
  
          $i=15; 
          $saldo=0;
-         foreach ($bku_tunai as $transaksi2)
+         $bku_unit = $this->Transaksi_unit_model->get_limit_data_bku_unit($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),$value->id);
+         foreach ($bku_unit as $transaksi2)
          {
             $saldo=$saldo+$transaksi2->trx_penerimaan-$transaksi2->trx_pengeluaran;
              $sheet2->setCellValue('B'.$i, $transaksi2->trx_tanggal);
@@ -1804,25 +1838,32 @@ class Unduh extends CI_Controller
              $sheet2->setCellValue('I'.$i++, number_format($saldo));
              
          }
-         if (count($bku_tunai)<1) $i++;
+         if (count($bku_unit)<1) $i++;
  
          $sheet2->getStyle("B15:I".$i)->applyFromArray($border);
          $temp=$i;
          //FOOTER
+        $sum_pengeluaran = $this->Transaksi_unit_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),$value->id)->jmlh_kotor;
+        $sum_pengeluaran_lalu = $this->Transaksi_unit_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')==''?'':$this->input->post('trx_bulan')-1,$value->id)->jmlh_kotor;
+        $sum_pengeluaran_sd = $this->Transaksi_unit_model->get_jk_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),$value->id)->jmlh_kotor;
+        $sum_penerimaan = $this->Transaksi_unit_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),$value->id)->penerimaan;
+        $sum_penerimaan_lalu = $this->Transaksi_unit_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan')==''?'':$this->input->post('trx_bulan')-1,$value->id)->penerimaan;
+        $sum_penerimaan_sd = $this->Transaksi_unit_model->get_penerimaan_sd($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),$value->id)->penerimaan;
+
          $sheet2->setCellValue('F'.$i, 'JUMLAH BULAN INI');
-        //  $sheet2->setCellValue('G'.$i, number_format($sum_penerimaan_tunai));
-        //  $sheet2->setCellValue('H'.$i, number_format($sum_pengeluaran_tunai));
-        //  $sheet2->setCellValue('I'.$i++, number_format($sum_penerimaan_tunai-$sum_pengeluaran_tunai));
+         $sheet2->setCellValue('G'.$i, number_format($sum_penerimaan));
+         $sheet2->setCellValue('H'.$i, number_format($sum_pengeluaran));
+         $sheet2->setCellValue('I'.$i++, number_format($sum_penerimaan-$sum_pengeluaran));
  
-        //  $sheet2->setCellValue('F'.$i, 'JUMLAH BULAN LALU');
-        //  $sheet2->setCellValue('G'.$i, number_format($sum_penerimaan_lalu_tunai));
-        //  $sheet2->setCellValue('H'.$i, number_format($sum_pengeluaran_lalu_tunai));
-        //  $sheet2->setCellValue('I'.$i++, number_format($sum_penerimaan_lalu_tunai-$sum_pengeluaran_lalu_tunai));
+         $sheet2->setCellValue('F'.$i, 'JUMLAH BULAN LALU');
+         $sheet2->setCellValue('G'.$i, number_format($sum_penerimaan_lalu));
+         $sheet2->setCellValue('H'.$i, number_format($sum_pengeluaran_lalu));
+         $sheet2->setCellValue('I'.$i++, number_format($sum_penerimaan_lalu-$sum_pengeluaran_lalu));
  
-        //  $sheet2->setCellValue('F'.$i, 'JUMLAH S.D BULAN INI');
-        //  $sheet2->setCellValue('G'.$i, number_format($sum_penerimaan_sd_tunai));
-        //  $sheet2->setCellValue('H'.$i, number_format($sum_pengeluaran_sd_tunai));
-        //  $sheet2->setCellValue('I'.$i, number_format($sum_penerimaan_sd_tunai-$sum_pengeluaran_sd_tunai));
+         $sheet2->setCellValue('F'.$i, 'JUMLAH S.D BULAN INI');
+         $sheet2->setCellValue('G'.$i, number_format($sum_penerimaan_sd));
+         $sheet2->setCellValue('H'.$i, number_format($sum_pengeluaran_sd));
+         $sheet2->setCellValue('I'.$i, number_format($sum_penerimaan_sd-$sum_pengeluaran_sd));
  
  
          $sheet2->getStyle("B".$temp.":I".$i)->applyFromArray($bold);
@@ -1847,16 +1888,17 @@ class Unduh extends CI_Controller
          $sheet2->setCellValue('F'.$k, 'NIP. '.$pejabat2->pejabat_nip);
  
          $sheet2->getStyle("C".$namaj.":F".$namak)->applyFromArray($bold);
+        }
          //---------------------------------------------------------------------------------------------------- 
  
-        //  $writer = new Xlsx($spreadsheet);
-        //  $filename = 'BKU';
+         $writer = new Xlsx($spreadsheet);
+         $filename = 'BKU';
          
-        //  header('Content-Type: application/vnd.ms-excel');
-        //  header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 
-        //  header('Cache-Control: max-age=0');
+         header('Content-Type: application/vnd.ms-excel');
+         header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 
+         header('Cache-Control: max-age=0');
  
-        //  $writer->save('php://output');
+         $writer->save('php://output');
      }
 }
 

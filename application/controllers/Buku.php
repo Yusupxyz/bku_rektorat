@@ -147,27 +147,13 @@ class Buku extends CI_Controller
         }else{
             $data['bulan'] = '';
         }
-        if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){
-            if($this->input->get('buku')!='bp_pajak'){
-                $saldo_awal = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->saldo_awal;
-                $saldo_awal_lalu = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->get('bulan')-1)->saldo_awal;
-                $saldo_awal_sd = $this->Transaksi_model->get_saldo_awal_sd($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->saldo_awal;
-            }else{
-                if ($this->Transaksi_model->get_saldo_awal_pajak($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))){
-                    $saldo_awal = $this->Transaksi_model->get_saldo_awal_pajak($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->saldo_awal;
-                }else{
-                    $saldo_awal = 0;
-                }
-                // echo $this->db->last_query();
-
-            }
-        }else{
-            $saldo_awal = '0';
-            $saldo_awal_lalu = '0';
-            $saldo_awal_sd = '0';
-        }
+        
         if(($this->input->get('buku')=='bku') || ($this->input->get('buku')==null)){
-
+            if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){
+                $saldo_awal = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->saldo_awal;
+            }else{
+                $saldo_awal = '0';
+            }
             $saldo_akhir = $this->Transaksi_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->saldo_akhir;
             $sum_pengeluaran = $this->Transaksi_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->jmlh_kotor;
             $sum_pengeluaran_lalu = $this->Transaksi_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan')==''?'':$this->input->get('bulan')-1)->jmlh_kotor;
@@ -178,10 +164,15 @@ class Buku extends CI_Controller
             $sum_penerimaan_lalu = $this->Transaksi_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->get('bulan')==''?'':$this->input->get('bulan')-1)->penerimaan;
             $sum_penerimaan_sd = $this->Transaksi_model->get_penerimaan_sd($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->penerimaan;
 
-            $saldo_total=$saldo_awal+$sum_penerimaan;
-            $saldo_total_lalu=$saldo_awal_lalu+$sum_penerimaan_lalu;
-            $saldo_total_sd=$saldo_awal_sd+$sum_penerimaan_sd;
+            $saldo_total=$sum_penerimaan;
+            $saldo_total_lalu=$sum_penerimaan_lalu;
+            $saldo_total_sd=$sum_penerimaan_sd;
         }elseif($this->input->get('buku')=='bku_unit'){
+            if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){
+                $saldo_awal = $this->Transaksi_unit_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),$this->input->get('unit'))->saldo_awal;
+            }else{
+                $saldo_awal = '0';
+            }
             $saldo_akhir = $this->Transaksi_unit_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),$this->input->get('unit'))->saldo_akhir;
             $sum_pengeluaran = $this->Transaksi_unit_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),$this->input->get('unit'))->jmlh_kotor;
             $sum_pengeluaran_lalu = $this->Transaksi_unit_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan')==''?'':$this->input->get('bulan')-1,$this->input->get('unit'))->jmlh_kotor;
@@ -196,6 +187,11 @@ class Buku extends CI_Controller
             $saldo_total_lalu=$sum_penerimaan_lalu;
             $saldo_total_sd=$sum_penerimaan_sd;
         }elseif($this->input->get('buku')=='kas_bank'){
+            if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){
+                $saldo_awal = $this->Buku_pembantu_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),1)->saldo_awal;
+            }else{
+                $saldo_awal = '0';
+            }
             $saldo_akhir = $this->Buku_pembantu_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),1)->saldo_akhir;
             $sum_pengeluaran = $this->Buku_pembantu_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),1)->jmlh_kotor;
             $sum_pengeluaran_lalu = $this->Buku_pembantu_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan')==''?'':$this->input->get('bulan')-1,1)->jmlh_kotor;
@@ -210,6 +206,11 @@ class Buku extends CI_Controller
             $saldo_total_lalu=$sum_penerimaan_lalu;
             $saldo_total_sd=$sum_penerimaan_sd;
         }elseif($this->input->get('buku')=='kas_tunai'){
+            if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){
+                $saldo_awal = $this->Buku_pembantu_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),2)->saldo_awal;
+            }else{
+                $saldo_awal = '0';
+            }
             $saldo_akhir = $this->Buku_pembantu_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),2)->saldo_akhir;
             $sum_pengeluaran = $this->Buku_pembantu_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),2)->jmlh_kotor;
             $sum_pengeluaran_lalu = $this->Buku_pembantu_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan')==''?'':$this->input->get('bulan')-1,2)->jmlh_kotor;
@@ -217,7 +218,7 @@ class Buku extends CI_Controller
             $sum_pengeluaran_sd = $this->Buku_pembantu_model->get_jk_sd($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),2)->jmlh_kotor;
 
             $sum_penerimaan = $this->Buku_pembantu_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),2)->penerimaan;
-           echo $this->db->last_query();
+        //    echo $this->db->last_query();
             $sum_penerimaan_lalu = $this->Buku_pembantu_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->get('bulan')==''?'':$this->input->get('bulan')-1,2)->penerimaan;
             $sum_penerimaan_sd = $this->Buku_pembantu_model->get_penerimaan_sd($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),2)->penerimaan;
 
@@ -225,6 +226,11 @@ class Buku extends CI_Controller
             $saldo_total_lalu=$sum_penerimaan_lalu;
             $saldo_total_sd=$sum_penerimaan_sd;
         }elseif($this->input->get('buku')=='bp_up'){
+            if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){
+                $saldo_awal = $this->Buku_pembantu2_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),1)->saldo_awal;
+            }else{
+                $saldo_awal = '0';
+            }
             $saldo_akhir = $this->Buku_pembantu2_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),1)->saldo_akhir;
             $sum_pengeluaran = $this->Buku_pembantu2_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),1)->jmlh_kotor;
             $sum_pengeluaran_lalu = $this->Buku_pembantu2_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan')==''?'':$this->input->get('bulan')-1,1)->jmlh_kotor;
@@ -237,6 +243,11 @@ class Buku extends CI_Controller
             $saldo_total_lalu=$sum_penerimaan_lalu;
             $saldo_total_sd=$sum_penerimaan_sd;
         }elseif($this->input->get('buku')=='bp_tbp'){
+            if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){
+                $saldo_awal = $this->Buku_pembantu_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),3)->saldo_awal;
+            }else{
+                $saldo_awal = '0';
+            }
             $saldo_akhir = $this->Buku_pembantu_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),3)->saldo_akhir;
             $sum_pengeluaran = $this->Buku_pembantu_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),3)->jmlh_kotor;
             $sum_pengeluaran_lalu = $this->Buku_pembantu_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan')==''?'':$this->input->get('bulan')-1,3)->jmlh_kotor;
@@ -251,6 +262,11 @@ class Buku extends CI_Controller
             $saldo_total_lalu=$sum_penerimaan_lalu;
             $saldo_total_sd=$sum_penerimaan_sd;
         }elseif($this->input->get('buku')=='bp_lsb'){
+            if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){
+                $saldo_awal = $this->Buku_pembantu2_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),2)->saldo_awal;
+            }else{
+                $saldo_awal = '0';
+            }
             $saldo_akhir = $this->Buku_pembantu2_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),2)->saldo_akhir;
             $sum_pengeluaran = $this->Buku_pembantu2_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),2)->jmlh_kotor;
             $sum_pengeluaran_lalu = $this->Buku_pembantu2_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan')==''?'':$this->input->get('bulan')-1,2)->jmlh_kotor;
@@ -265,6 +281,13 @@ class Buku extends CI_Controller
             $saldo_total_lalu=$sum_penerimaan_lalu;
             $saldo_total_sd=$sum_penerimaan_sd;
         }elseif($this->input->get('buku')=='bp_pajak'){
+            if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){                      
+                $saldo_awal = $this->Transaksi_model->get_saldo_awal_pajak($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->saldo_awal;
+            }else{
+                $saldo_awal = '0';
+                $saldo_awal_lalu = '0';
+                $saldo_awal_sd = '0';
+            }
             $sum_pengeluaran = $this->Buku_pembantu2_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan'),2)->jmlh_kotor;
             $sum_pengeluaran_lalu = $this->Buku_pembantu2_model->get_jk($this->session->userdata('tahun_aktif'),$this->input->get('bulan')==''?'':$this->input->get('bulan')-1,2)->jmlh_kotor;
 
