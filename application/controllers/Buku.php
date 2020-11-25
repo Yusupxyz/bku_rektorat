@@ -68,7 +68,7 @@ class Buku extends CI_Controller
             $bukutitle = "BUKU PEMBANTU TRANSFER BENDAHARA PENGELUARAN";
         }elseif($this->input->get('buku')=='bp_lsb'){
             $transaksi = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->get('bulan'),'2');
-            echo $this->db->last_query();
+            // echo $this->db->last_query();
 
             $bukutitle = "BUKU PEMBANTU LS BENDAHARA";
         }elseif($this->input->get('buku')=='bp_pajak'){
@@ -281,7 +281,7 @@ class Buku extends CI_Controller
             $saldo_total_lalu=$sum_penerimaan_lalu;
             $saldo_total_sd=$sum_penerimaan_sd;
         }elseif($this->input->get('buku')=='bp_pajak'){
-            if($this->input->get('bulan') && $this->session->userdata('tahun_aktif')){                      
+            if($this->Transaksi_model->get_saldo_awal_pajak($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))){                      
                 $saldo_awal = $this->Transaksi_model->get_saldo_awal_pajak($this->session->userdata('tahun_aktif'),$this->input->get('bulan'))->saldo_awal;
             }else{
                 $saldo_awal = '0';
