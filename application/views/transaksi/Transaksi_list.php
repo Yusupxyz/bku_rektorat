@@ -28,7 +28,7 @@
             <div class="col-md-3 text-right">
             <a href="#myModal" data-toggle="modal" class="btn btn-success"><i class="fa fa-file-excel"></i> Import</a>
 
-		<!-- <?php echo anchor(site_url('transaksi/excel'), '<i class="fa fa-file-excel"></i> Excel', 'class="btn btn-success"'); ?><form action="<?php echo site_url('transaksi/index'); ?>" class="form-inline" method="get" style="margin-top:10px"> -->
+		<?php echo anchor(site_url('transaksi/excel'), '<i class="fa fa-file-excel"></i> Excel', 'class="btn btn-success"'); ?><form action="<?php echo site_url('transaksi/index'); ?>" class="form-inline" method="get" style="margin-top:10px">
                     <div class="input-group">
                         <input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
                         <span class="input-group-btn">
