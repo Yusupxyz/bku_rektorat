@@ -19,6 +19,9 @@ class Transaksi_model extends CI_Model
     function get_all()
     {
         $this->db->order_by($this->id, $this->order);
+        $this->db->join('tbl_jenis_pembayaran','tbl_jenis_pembayaran.jp_id=tbl_transaksi.trx_id_jenis_pembayaran','left');
+        $this->db->join('tbl_metode_pembayaran','tbl_metode_pembayaran.mp_id=tbl_transaksi.trx_id_metode_pembayaran','left');
+        $this->db->join('unit','unit.id=tbl_transaksi.trx_fk_unit','left');
         return $this->db->get($this->table)->result();
     }
 

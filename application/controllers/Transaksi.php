@@ -388,12 +388,14 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
 
     public function excel()
     {
+        // $this->Transaksi_model->get_all();
+        // echo $this->db->last_query();
+
         $this->load->helper('exportexcel');
-        $namaFile = "tbl_transaksi.xls";
-        $judul = "tbl_transaksi";
+        $namaFile = "kontrol transaksi.xls";
+        $judul = "Kontrol Transaksi BKU";
         $tablehead = 0;
         $tablebody = 1;
-        $nourut = 1;
         //penulisan header
         header("Pragma: public");
         header("Expires: 0");
@@ -407,34 +409,46 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
         xlsBOF();
 
         $kolomhead = 0;
-        xlsWriteLabel($tablehead, $kolomhead++, "No");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Id");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Nomor Bukti");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Mak");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Uraian");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Jml Kotor");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Ppn");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 21");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 22");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 23");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Pph 4 2");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Jml Bersih");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Tanggal");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Id Jenis Pembayaran");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Id Metode Pembayaran");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Id Unit");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Jenis");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Penerimaan");
-        xlsWriteLabel($tablehead, $kolomhead++, "Trx Pengeluaran");
+        xlsWriteLabel($tablehead, $kolomhead++, "Jenis Transaksi");
+        xlsWriteLabel($tablehead, $kolomhead++, "Tanggal");
+        xlsWriteLabel($tablehead, $kolomhead++, "Nomor Bukti");
+        xlsWriteLabel($tablehead, $kolomhead++, "MAK");
+        xlsWriteLabel($tablehead, $kolomhead++, "Penerima");
+        xlsWriteLabel($tablehead, $kolomhead++, "Uraian");
+        xlsWriteLabel($tablehead, $kolomhead++, "Jumlah Kotor");
+        xlsWriteLabel($tablehead, $kolomhead++, "PPn");
+        xlsWriteLabel($tablehead, $kolomhead++, "PPh 21");
+        xlsWriteLabel($tablehead, $kolomhead++, "PPh 22");
+        xlsWriteLabel($tablehead, $kolomhead++, "PPh 23");
+        xlsWriteLabel($tablehead, $kolomhead++, "PPh 4(2)");
+        xlsWriteLabel($tablehead, $kolomhead++, "Jumlah Pajak");
+        xlsWriteLabel($tablehead, $kolomhead++, "Jumlah Bersih");
+        xlsWriteLabel($tablehead, $kolomhead++, "Penerimaan");
+        xlsWriteLabel($tablehead, $kolomhead++, "Pengeluaran");
+        xlsWriteLabel($tablehead, $kolomhead++, "Saldo");
+        xlsWriteLabel($tablehead, $kolomhead++, "Jenis Pembayaran");
+        xlsWriteLabel($tablehead, $kolomhead++, "Metode Pembayaran");
 
-	    foreach ($this->Transaksi_model->get_all() as $data) {
+        $saldo_akhir=0;
+        $transaksi=$this->Transaksi_model->get_all();
+        $transaksi_unit=array();
+        foreach ($transaksi as $key) {
+            $transaksi_unit[] = $this->Transaksi_unit_model->get_data($key->trx_id);
+        }
+        $i=0;
+	    foreach ($transaksi as $data) {
             $kolombody = 0;
-
+            $saldo_akhir=$saldo_akhir+$data->trx_penerimaan-$data->trx_pengeluaran;
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
-            xlsWriteNumber($tablebody, $kolombody++, $nourut);
-            xlsWriteNumber($tablebody, $kolombody++, $data->trx_id);
+            xlsWriteLabel($tablebody, $kolombody++, 'Utama');
+            xlsWriteLabel($tablebody, $kolombody++, $data->trx_tanggal);
             xlsWriteLabel($tablebody, $kolombody++, $data->trx_nomor_bukti);
             xlsWriteLabel($tablebody, $kolombody++, $data->trx_mak);
+            if ($data->trx_fk_unit=='0'){ 
+                xlsWriteLabel($tablebody, $kolombody++, $data->trx_id_unit);
+            }else{ 
+                xlsWriteLabel($tablebody, $kolombody++, $data->nama);
+            }
             xlsWriteLabel($tablebody, $kolombody++, $data->trx_uraian);
             xlsWriteNumber($tablebody, $kolombody++, $data->trx_jml_kotor);
             xlsWriteNumber($tablebody, $kolombody++, $data->trx_ppn);
@@ -442,17 +456,37 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
             xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_22);
             xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_23);
             xlsWriteNumber($tablebody, $kolombody++, $data->trx_pph_4_2);
+            xlsWriteNumber($tablebody, $kolombody++, $data->trx_ppn+$data->trx_pph_21+$data->trx_pph_22+$data->trx_pph_23+$data->trx_pph_4_2);
             xlsWriteNumber($tablebody, $kolombody++, $data->trx_jml_bersih);
-            xlsWriteLabel($tablebody, $kolombody++, $data->trx_tanggal);
-            xlsWriteNumber($tablebody, $kolombody++, $data->trx_id_jenis_pembayaran);
-            xlsWriteNumber($tablebody, $kolombody++, $data->trx_id_metode_pembayaran);
-            xlsWriteNumber($tablebody, $kolombody++, $data->trx_id_unit);
-            xlsWriteLabel($tablebody, $kolombody++, $data->trx_jenis);
             xlsWriteNumber($tablebody, $kolombody++, $data->trx_penerimaan);
             xlsWriteNumber($tablebody, $kolombody++, $data->trx_pengeluaran);
-
+            xlsWriteNumber($tablebody, $kolombody++, $saldo_akhir);
+            xlsWriteNumber($tablebody, $kolombody++, $data->jp_nama);
+            xlsWriteNumber($tablebody, $kolombody++, $data->mp_nama);
             $tablebody++;
-            $nourut++;
+                foreach ($transaksi_unit[$i++] as $transaksi2)
+                { 
+                    $kolombody = 0;
+                    xlsWriteLabel($tablebody, $kolombody++, 'Unit');
+                    xlsWriteLabel($tablebody, $kolombody++, $transaksi2->trxu_tanggal);
+                    xlsWriteLabel($tablebody, $kolombody++, '');
+                    xlsWriteLabel($tablebody, $kolombody++, $transaksi2->nama);
+                    xlsWriteLabel($tablebody, $kolombody++, $transaksi2->trxu_uraian);
+                    xlsWriteNumber($tablebody, $kolombody++, $transaksi2->trxu_jml_kotor);
+                    xlsWriteNumber($tablebody, $kolombody++, $transaksi2->trxu_ppn);
+                    xlsWriteNumber($tablebody, $kolombody++, $transaksi2->trxu_pph_21);
+                    xlsWriteNumber($tablebody, $kolombody++, $transaksi2->trxu_pph_22);
+                    xlsWriteNumber($tablebody, $kolombody++, $transaksi2->trxu_pph_23);
+                    xlsWriteNumber($tablebody, $kolombody++, $transaksi2->trxu_pph_4_2);
+                    xlsWriteNumber($tablebody, $kolombody++, $transaksi2->trxu_ppn+$transaksi2->trxu_pph_21+$transaksi2->trxu_pph_22+$transaksi2->trxu_pph_23+$transaksi2->trxu_pph_4_2);
+                    xlsWriteNumber($tablebody, $kolombody++, $transaksi2->trxu_jml_bersih);
+                    xlsWriteNumber($tablebody, $kolombody++, '');
+                    xlsWriteNumber($tablebody, $kolombody++, '');
+                    xlsWriteNumber($tablebody, $kolombody++, '');
+                    xlsWriteNumber($tablebody, $kolombody++, $transaksi2->jp_nama);
+                    xlsWriteNumber($tablebody, $kolombody++, $transaksi2->mp_nama);
+                    $tablebody++;
+                }
         }
 
         xlsEOF();

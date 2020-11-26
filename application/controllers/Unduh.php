@@ -54,7 +54,7 @@ class Unduh extends CI_Controller
     // Export ke excel
     public function export()
     {
-        $config['per_page'] = 10;
+        $config['per_page'] = 1000;
         $start = intval($this->input->get('start'));
         $q = urldecode($this->input->get('q', TRUE));
 
@@ -63,20 +63,12 @@ class Unduh extends CI_Controller
         $pejabat1=$this->Pejabat_model->get_by_id('1');
         $pejabat2=$this->Pejabat_model->get_by_id('2');
 
-        // if($this->input->post('trx_bulan') && $this->session->userdata('tahun_aktif')){
-        //     $saldo_awal = $this->Transaksi_model->get_saldo_awal($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_awal;
-        // }else{
-        //     $saldo_awal = '0';
-        // }
-        // $saldo_akhir = $this->Transaksi_model->get_saldo_akhir($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->saldo_akhir;
-        // $sum_penerimaan = $this->Transaksi_model->get_penerimaan($this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'))->penerimaan;
-        // $saldo_total=$saldo_awal+$sum_penerimaan;
+        
         $bku_umum = $this->Transaksi_model->get_limit_data_bku($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'));
         $bku_tunai = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),'2');
         $bku_bank = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),'1');
         $bp_up = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),'1');
         $bp_lsb = $this->Transaksi_model->get_limit_data_bku_pembantu2($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),'2');
-        // echo $this->db->last_query();
 
         $bku_tbp = $this->Transaksi_model->get_limit_data_bku_pembantu($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'),'3');
         $bp_pajak = $this->Transaksi_model->get_limit_data_bku_pajak_pungut($config['per_page'], $start, $q,$this->session->userdata('tahun_aktif'),$this->input->post('trx_bulan'));
