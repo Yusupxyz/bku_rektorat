@@ -594,6 +594,10 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
 
                 $jenis=$penerimaan==''?'0':'1';
                 if($jenis_data=='Utama'){
+                    $fetchData=array();
+                    if (count($fetchData)>0){
+                        unset($fetchData);
+                    }
                     $fetchData[] = array('trx_nomor_bukti' => $no, 
                                     'trx_mak' => $mak, 
                                     'trx_uraian' => $uraian,
@@ -619,8 +623,11 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
                         $this->session->set_flashdata('message', 'Import Excel Success');
                     }
                 }else{
-                 echo   $no=$this->Transaksi_model->get_by_no($no)->trx_id;
-                    echo $this->db->last_query();
+                    $fetchData2=array();
+                    if (count($fetchData2)>0){
+                        unset($fetchData2);
+                    }
+                    $no=$this->Transaksi_model->get_by_no($no)->trx_id;
                     $fetchData2[] = array('trxu_nomor_bukti' => $no, 
                                     'trxu_mak' => $mak, 
                                     'trxu_uraian' => $uraian,
@@ -634,14 +641,18 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
                                     'trxu_tanggal' => $tgl,
                                     'trxu_id_jenis_pembayaran' => $bt,
                                     'trxu_id_metode_pembayaran' => $guls);
+                                    var_dump($fetchData2);
+
                     $this->Transaksi_unit_model->setBatchImport($fetchData2);
+
+                    // echo $this->db->last_query();
+
                     if(!$this->Transaksi_unit_model->importData()){
                         $this->session->set_flashdata('message', 'Import Excel Success');
                     }
                 }
             }   
             $data['dataInfo'] = $fetchData;
-            // var_dump($fetchData);
             redirect('transaksi');
 
         } else {
