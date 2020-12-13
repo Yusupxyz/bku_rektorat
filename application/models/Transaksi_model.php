@@ -486,6 +486,11 @@ class Transaksi_model extends CI_Model
         $this->db->insert_batch('tbl_transaksi', $data);
     }
 
+    public function hapus_transaksi() {
+        $this->db->empty_table('tbl_transaksi'); 
+
+    }
+
 }
 
 /* End of file Transaksi_model.php */

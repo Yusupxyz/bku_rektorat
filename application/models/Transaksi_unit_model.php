@@ -259,6 +259,11 @@ class Transaksi_unit_model extends CI_Model
             $this->db->insert_batch('tbl_transaksi_unit', $data);
         }
 
+        public function hapus_transaksi_unit() {
+            $this->db->from('tbl_transaksi_unit');
+            $this->db->truncate();
+        }
+
 }
 
 /* End of file Transaksi_unit_model.php */

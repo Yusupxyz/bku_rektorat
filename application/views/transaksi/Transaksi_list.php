@@ -78,7 +78,7 @@
         <font size="1">
         <table class="table table-bordered" style="margin-bottom: 10px" style="width:100%;">
             <tr>
-                <th style="width: 10px;"><input type="checkbox" name="selectall" /></th>
+                <!-- <th style="width: 10px;"><input type="checkbox" name="selectall" /></th> -->
                 <!-- <th>No</th> -->
                 <th>Tanggal</th>
 		    <th>No. Bukti</th>
@@ -111,7 +111,7 @@
                 ?>
                 <tr style="background-color:#f2efed">
                 
-		<td  style="width: 10px;padding-left: 8px;"><input type="checkbox" name="id" value="<?= $transaksi->trx_id;?>" />&nbsp;</td>
+		<!-- <td  style="width: 10px;padding-left: 8px;"><input type="checkbox" name="id" value="<?= $transaksi->trx_id;?>" />&nbsp;</td> -->
                 
 			<!-- <td width="80px"><?php echo ++$start ?></td> -->
 			<td><?php echo $transaksi->trx_tanggal ?></td>
@@ -149,15 +149,20 @@
             foreach ($transaksi_unit[$i++] as $transaksi2)
 
             { 
+                
                 $pajak=$transaksi2->trxu_ppn+$transaksi2->trxu_pph_21+$transaksi2->trxu_pph_22+$transaksi2->trxu_pph_23+$transaksi2->trxu_pph_4_2;
                 $saldo_awal2=$saldo_awal+$saldo_akhir2;
                 $saldo_akhir2=$saldo_awal2-$transaksi2->trxu_jml_kotor;
 
                 ?>
+                 
                 <tr >
                 
-		<td  style="width: 10px;padding-left: 8px;"><input type="checkbox" name="id" value="<?= $transaksi2->trxu_id;?>" />&nbsp;</td>
-                
+		<!-- <td  style="width: 10px;padding-left: 8px;"><input type="checkbox" name="id" value="<?= $transaksi2->trxu_id;?>" />&nbsp;</td> -->
+                <!-- <td><button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Unit</button>
+  <div id="demo" class="collapse">
+    Lorem 
+  </div></td> -->
 			<!-- <td width="80px"><?php echo ++$start ?></td> -->
 			<td><?php echo $transaksi2->trxu_tanggal ?></td>
 			<td ></td>
@@ -195,7 +200,8 @@
         </table></font>
          <div class="row" style="margin-bottom: 10px;">
             <div class="col-md-12">
-                <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i> Hapus Data Terpilih</button> <a href="#" class="btn bg-yellow">Total Record : <?php echo $total_rows ?></a>
+                <!-- <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i> Hapus Data Terpilih</button> -->
+                 <a href="#" class="btn bg-yellow">Total Record : <?php echo $total_rows ?></a>
             </div>
         </div>
         </form>
@@ -333,12 +339,36 @@
             <h6><i>Template file import excel yang diterima. <a href="<?php echo site_url('assets/template/template.xlsx'); ?>"> Unduh. </a></i></h6>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Import</button>
+        <a href="#myModal2" data-toggle="modal" class="btn btn-success">Import</a>
+            <!-- <button type="submit" class="btn btn-success">Import</button> -->
           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
         </div>
-        </form>
       </div>
       
     </div>
   </div>
+
+<!-- alert modal -->
+  <div class="modal" id="myModal2" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><b>Alert!</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p><i>Data akan dihapus dan ditimpa dengan data baru yang diimport. 
+        Apa Anda yakin untuk melakukan impot?</i></p>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-danger">Lanjutkan Import</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    </form>
+
+  </div>
+</div>
 

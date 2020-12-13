@@ -429,6 +429,7 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
         xlsWriteLabel($tablehead, $kolomhead++, "Jenis Pembayaran");
         xlsWriteLabel($tablehead, $kolomhead++, "Metode Pembayaran");
 
+
         $saldo_akhir=0;
         $transaksi=$this->Transaksi_model->get_all();
         $transaksi_unit=array();
@@ -495,6 +496,9 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
 
     public function import(){
     if(!empty($_FILES['file']['name'])) { 
+        $this->Transaksi_unit_model->hapus_transaksi_unit();
+        $this->Transaksi_model->hapus_transaksi();
+
         // get file extension
         $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
