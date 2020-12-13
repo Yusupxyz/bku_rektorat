@@ -461,7 +461,7 @@ class Transaksi_model extends CI_Model
     function dd()
     {
         // ambil data dari db
-        $this->db->where('trx_fk_unit!=0');
+        // $this->db->where('trx_fk_unit!=0');
         $this->db->order_by($this->id, $this->order);
         $result = $this->db->get($this->table);
         // bikin array

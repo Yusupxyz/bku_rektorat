@@ -641,7 +641,7 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
                                     'trxu_tanggal' => $tgl,
                                     'trxu_id_jenis_pembayaran' => $bt,
                                     'trxu_id_metode_pembayaran' => $guls);
-                                    var_dump($fetchData2);
+                                    // var_dump($fetchData2);
 
                     $this->Transaksi_unit_model->setBatchImport($fetchData2);
 
