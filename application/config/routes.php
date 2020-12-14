@@ -56,4 +56,4 @@ $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'auth/login';
 $route['user'] = 'users';
 $route['forgot_password'] = 'auth/forgot_password';
-
+$route['transaksi/(:any)'] = 'transaksi/index/$1';

@@ -74,12 +74,12 @@
                 <h4><b>Saldo Akhir : Rp <?= number_format($saldo->saldo_awal-$saldo->saldo_akhir)?></b></h4>
             </div>
         </div>
+        <a href="<?= $url ?>" class="btn bg-<?= $color ?>"><?= $teks ?></a>
+
         <form method="post" action="<?= site_url('transaksi/deletebulk');?>" id="formbulk">
         <font size="1">
         <table class="table table-bordered" style="margin-bottom: 10px" style="width:100%;">
-            <tr>
-                <!-- <th style="width: 10px;"><input type="checkbox" name="selectall" /></th> -->
-                <!-- <th>No</th> -->
+            <tr> 
                 <th>Tanggal</th>
 		    <th>No. Bukti</th>
 		    <th>MAK</th>
@@ -109,11 +109,9 @@
                 $saldo_akhir=$saldo_awal-$transaksi->trx_pengeluaran;
 
                 ?>
-                <tr style="background-color:#f2efed">
+                <tr style="background-color:#f2efed" >
                 
-		<!-- <td  style="width: 10px;padding-left: 8px;"><input type="checkbox" name="id" value="<?= $transaksi->trx_id;?>" />&nbsp;</td> -->
                 
-			<!-- <td width="80px"><?php echo ++$start ?></td> -->
 			<td><?php echo $transaksi->trx_tanggal ?></td>
 			<td ><?php echo $transaksi->trx_nomor_bukti ?></td>
 			<td><?php echo $transaksi->trx_mak ?></td>
@@ -145,18 +143,18 @@
 			</td>
 		</tr>
         <?php
-            $saldo_akhir2=0; 
+            $saldo_akhir2=0; $x=1;
             foreach ($transaksi_unit[$i++] as $transaksi2)
 
             { 
-                
+                $x++;
                 $pajak=$transaksi2->trxu_ppn+$transaksi2->trxu_pph_21+$transaksi2->trxu_pph_22+$transaksi2->trxu_pph_23+$transaksi2->trxu_pph_4_2;
                 $saldo_awal2=$saldo_awal+$saldo_akhir2;
                 $saldo_akhir2=$saldo_awal2-$transaksi2->trxu_jml_kotor;
 
                 ?>
                  
-                <tr >
+                <tr style="<?= $style ?>">
                 
 		<!-- <td  style="width: 10px;padding-left: 8px;"><input type="checkbox" name="id" value="<?= $transaksi2->trxu_id;?>" />&nbsp;</td> -->
                 <!-- <td><button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Unit</button>
