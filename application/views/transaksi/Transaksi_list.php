@@ -185,7 +185,7 @@
 				<?php 
 				echo anchor(site_url('transaksi_unit/update/'.$transaksi2->trxu_id),' <i class="fa fa-edit"></i>', 'class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit"'); 
 				echo ' '; 
-				echo anchor(site_url('transaksi_unit/delete/'.$transaksi2->trxu_id),' <i class="fa fa-trash"></i>','class="btn btn-xs btn-danger" onclick="javasciprt: return confirmdelete(\'transaksi_unit/delete/'.$transaksi2->trxu_id.'\')"  data-toggle="tooltip" title="Delete" '); 
+				echo anchor(site_url('transaksi_unit/delete/'.$transaksi2->trxu_id),' <i class="fa fa-trash"></i>','class="btn btn-xs btn-danger" onclick="javasciprt: return confirmdelete('.site_url('transaksi_unit/delete/'.$transaksi2->trxu_id).')"  data-toggle="tooltip" title="Delete" '); 
 				?>
 			</td>
 		</tr>
