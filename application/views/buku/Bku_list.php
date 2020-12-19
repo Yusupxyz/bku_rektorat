@@ -104,7 +104,11 @@
 			<td><?php echo $transaksi->trx_nomor_bukti ?></td>
 			<td><?php echo $transaksi->trx_mak ?></td>
 			<td><?php echo $transaksi->trx_id_unit ?></td>
-			<td><?php echo substr($transaksi->trx_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView<?php echo $transaksi->trx_id;?>">detail</a></td>
+            <?php if($bukutitle=='BUKU KAS UNIT'){ ?>
+                <td><?php echo substr($transaksi->trxu_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView<?php echo $transaksi->trx_id;?>">detail</a></td>
+            <?php }else{ ?>
+			    <td><?php echo substr($transaksi->trx_uraian,0,50).'... ' ;?><a lass="btn" data-toggle="modal" href="#ModalView<?php echo $transaksi->trx_id;?>">detail</a></td>
+            <?php } ?>
             <td style="text-align:right;"><?php echo 'Rp '.number_format($transaksi->trx_penerimaan) ?></td>
             <td style="text-align:right;"><?php echo 'Rp '.number_format($transaksi->trx_pengeluaran) ?></td>
             <td style="text-align:right;"><?php echo 'Rp '.number_format($saldo) ?></td>
