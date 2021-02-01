@@ -603,10 +603,12 @@ if(! $this->Transaksi_model->is_exist($this->input->post('trx_nomor_bukti'))){
                 $penerimaan = filter_var(trim($dataNoTrx[$i][$penerimaan]), FILTER_SANITIZE_NUMBER_FLOAT);
                 $pengeluaran = filter_var(trim($dataNoTrx[$i][$pengeluaran]), FILTER_SANITIZE_NUMBER_FLOAT);
                 $bt = $this->Jenis_pembayaran_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$bt]), FILTER_SANITIZE_STRING))->jp_id;
+               
                 $guls = $this->Metode_pembayaran_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$guls]), FILTER_SANITIZE_STRING))->mp_id;
                 $unit = $this->Unit_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$unit]), FILTER_SANITIZE_STRING))->id;
+                                echo $this->db->last_query();
+
                 $pajak = $this->Pajak_model->get_by_nama(filter_var(trim($dataNoTrx[$i][$pajak]), FILTER_SANITIZE_STRING))->id;
-                // echo $this->db->last_query();
 
                 $jenis=$penerimaan==''?'0':'1';
                 if($jenis_data=='Utama'){
